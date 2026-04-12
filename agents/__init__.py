@@ -19,6 +19,9 @@ from agents.insurance_agent import InsuranceAgent
 from agents.ma_valuation_agent import MAValuationAgent
 from agents.esg_risk_agent import ESGRiskAgent
 
+# GROUP D — Delta 모니터링 + 시나리오 시뮬레이션
+from agents.all_agents import MonitorAgent, ScenarioAgent
+
 # 검증 에이전트
 from agents.verify_tax import VerifyTax, VerifyOps, VerifyStrategy, VerifyResult
 
@@ -35,6 +38,8 @@ __all__ = [
     "WebResearchAgent", "PolicyFundingAgent", "CashFlowAgent",
     "CreditRatingAgent", "RealEstateAgent", "InsuranceAgent",
     "MAValuationAgent", "ESGRiskAgent",
+    # GROUP D
+    "MonitorAgent", "ScenarioAgent",
     # verifiers
     "VerifyTax", "VerifyOps", "VerifyStrategy", "VerifyResult",
     "VerifyAgent",

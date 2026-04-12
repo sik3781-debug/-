@@ -33,6 +33,7 @@ from agents.insurance_agent import InsuranceAgent
 from agents.ma_valuation_agent import MAValuationAgent
 from agents.esg_risk_agent import ESGRiskAgent
 from agents.verify_tax import VerifyTax, VerifyOps, VerifyStrategy, VerifyResult
+from agents.all_agents import MonitorAgent, ScenarioAgent
 from report_to_ppt import build_ppt
 
 MAX_WORKERS = 2
@@ -164,6 +165,9 @@ def build_queries(data: dict) -> dict[str, str]:
             f"임직원 {emp}명, 업종: {ind}, 주요 고객사: {', '.join(customers)}. "
             f"E·S·G 항목별 리스크 점수와 우선 개선 과제, EU CBAM 대응 전략을 제시하시오."
         ),
+        # GROUP D — analyze(company_data) 인터페이스 사용 (쿼리는 내부 생성)
+        "MonitorAgent":  "__USE_ANALYZE__",
+        "ScenarioAgent": "__USE_ANALYZE__",
     }
 
 
@@ -173,6 +177,7 @@ def build_queries(data: dict) -> dict[str, str]:
 
 def _build_agent_map(verbose: bool) -> dict[str, BaseAgent]:
     return {
+        # GROUP A~C — 기존 16개 전문 에이전트
         "TaxAgent":         TaxAgent(verbose=verbose),
         "StockAgent":       StockAgent(verbose=verbose),
         "SuccessionAgent":  SuccessionAgent(verbose=verbose),
@@ -189,6 +194,9 @@ def _build_agent_map(verbose: bool) -> dict[str, BaseAgent]:
         "InsuranceAgent":   InsuranceAgent(verbose=verbose),
         "MAValuationAgent": MAValuationAgent(verbose=verbose),
         "ESGRiskAgent":     ESGRiskAgent(verbose=verbose),
+        # GROUP D — Delta 모니터링 + 시나리오 시뮬레이션
+        "MonitorAgent":     MonitorAgent(verbose=verbose),
+        "ScenarioAgent":    ScenarioAgent(verbose=verbose),
     }
 
 
@@ -202,6 +210,9 @@ VERIFY_GROUPS = {
     "VerifyStrategy": ["PolicyFundingAgent", "CashFlowAgent", "CreditRatingAgent",
                        "MAValuationAgent", "ESGRiskAgent", "IndustryAgent", "WebResearchAgent"],
 }
+
+# GROUP_D — Delta 모니터링 + 시나리오 시뮬레이션 (Phase 1 마지막 배치)
+GROUP_D = ["MonitorAgent", "ScenarioAgent"]
 
 
 # ──────────────────────────────────────────────────────────────────────────
@@ -302,10 +313,15 @@ class Orchestrator:
     def __init__(self, verbose: bool = False) -> None:
         self.verbose = verbose
 
-    def _run_agent_safe(self, agent: BaseAgent, query: str) -> tuple[str, str | None]:
-        """에이전트 실행 (오류 격리)."""
+    def _run_agent_safe(self, agent: BaseAgent, query: str,
+                        company_data: dict | None = None) -> tuple[str, str | None]:
+        """에이전트 실행 (오류 격리).
+        query == '__USE_ANALYZE__' 이면 agent.analyze(company_data) 호출."""
         try:
-            result = agent.run(query, reset=True)
+            if query == "__USE_ANALYZE__" and hasattr(agent, "analyze") and company_data:
+                result = agent.analyze(company_data)
+            else:
+                result = agent.run(query, reset=True)
             return result, None
         except Exception as e:
             return "", str(e)
@@ -316,11 +332,11 @@ class Orchestrator:
 
         print(f"\n{'='*72}")
         print(f"  중소기업 컨설팅 에이전트 시스템 v2")
-        print(f"  대상: {company_name}  |  에이전트: 16개 + 검증 3개")
+        print(f"  대상: {company_name}  |  에이전트: 18개(GROUP D 포함) + 검증 3개")
         print(f"{'='*72}\n")
 
         # ── Phase 1: 16개 에이전트 배치 병렬 실행 (MAX_WORKERS=2, 그룹 간 sleep) ──
-        print("[Phase 1] 16개 전문 에이전트 배치 실행 중 (그룹당 4개, sleep 10초)...")
+        print("[Phase 1] 18개 전문 에이전트 배치 실행 중 (그룹당 4개, sleep 10초, GROUP_D 마지막 배치)...")
         agents = _build_agent_map(self.verbose)
         queries = build_queries(company_data)
 
@@ -341,7 +357,7 @@ class Orchestrator:
             print(f"  --- 그룹 {g_idx+1}/{len(groups)} 실행 ({len(group)}개 에이전트) ---")
             with ThreadPoolExecutor(max_workers=MAX_WORKERS) as ex:
                 futures = {
-                    ex.submit(self._run_agent_safe, agent, queries[name]): name
+                    ex.submit(self._run_agent_safe, agent, queries[name], company_data): name
                     for name, agent in group
                 }
                 for future in as_completed(futures):
