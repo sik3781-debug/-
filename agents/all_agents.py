@@ -13,7 +13,8 @@ from __future__ import annotations
 import json
 import os
 import glob
-from datetime import datetime
+import datetime
+from datetime import datetime as _dt
 from agents.base_agent import BaseAgent, MODEL
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -188,7 +189,7 @@ class MonitorAgent(BaseAgent):
     def _save_snapshot(cls, company_name: str, data: dict) -> str:
         """현재 COMPANY_DATA를 JSON 스냅샷으로 저장."""
         os.makedirs(cls.SNAPSHOT_DIR, exist_ok=True)
-        ts   = datetime.now().strftime("%Y%m%d_%H%M%S")
+        ts   = _dt.now().strftime("%Y%m%d_%H%M%S")
         path = os.path.join(cls.SNAPSHOT_DIR, f"{company_name}_{ts}.json")
         with open(path, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
@@ -520,3 +521,194 @@ class ScenarioAgent(BaseAgent):
             f"주식 {shr//4:,}주 증여 기준 절세 효과와 일감몰아주기 리스크를 분석하십시오."
         )
         return self.run(query, reset=True)
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# TaxLawUpdateAgent
+# ═══════════════════════════════════════════════════════════════════════════
+
+_TAX_LAW_SYS = """당신은 대한민국 세법 최신 개정 동향 전문 분석가입니다.
+법인세법, 소득세법, 상속세및증여세법, 조세특례제한법, 국세기본법 개정 사항을
+중소기업 경영컨설팅 관점에서 요약합니다.
+
+【출력 형식 — 반드시 준수】
+## 세법 개정 최신 동향 보고
+
+### 1. 핵심 개정 사항 (즉시 실무 적용 필요)
+| 법령 | 개정 내용 | 시행일 | 컨설팅 영향 |
+|------|---------|--------|-----------|
+...
+
+### 2. 중소기업 절세 혜택 변경
+- 항목: 변경 전 → 변경 후 / 활용 방안
+
+### 3. 주의·리스크 항목
+- 항목: 내용 / 대응 방안
+
+### 4. 향후 예고된 개정 예정 사항
+- 법령 / 예정 내용 / 시행 예정일"""
+
+
+class TaxLawUpdateAgent(BaseAgent):
+    """세법 최신 개정 동향을 조회하고 결과를 일자 기준으로 캐시하는 에이전트."""
+
+    name  = "TaxLawUpdateAgent"
+    role  = "세법 최신 개정 동향 분석 전문가"
+    model = MODEL
+    system_prompt = _TAX_LAW_SYS
+
+    # output/tax_law_cache.json 경로 (프로젝트 루트 기준)
+    CACHE_PATH = os.path.join(os.path.dirname(__file__), "..", "output", "tax_law_cache.json")
+
+    def _load_cache(self) -> dict | None:
+        """캐시 파일 로드. 없거나 손상 시 None 반환."""
+        if not os.path.exists(self.CACHE_PATH):
+            return None
+        try:
+            with open(self.CACHE_PATH, encoding="utf-8") as f:
+                return json.load(f)
+        except (json.JSONDecodeError, OSError):
+            return None
+
+    def _save_cache(self, result: str) -> None:
+        """결과를 오늘 날짜와 함께 캐시 저장."""
+        os.makedirs(os.path.dirname(self.CACHE_PATH), exist_ok=True)
+        payload = {
+            "date":   str(datetime.date.today()),
+            "result": result,
+        }
+        with open(self.CACHE_PATH, "w", encoding="utf-8") as f:
+            json.dump(payload, f, ensure_ascii=False, indent=2)
+
+    def fetch_updates(self, query: str | None = None) -> str:
+        """
+        세법 개정 동향을 반환합니다.
+        - 오늘 날짜 캐시 존재 시: 웹검색 생략하고 캐시 반환
+        - 캐시 없거나 날짜 불일치 시: LLM 검색 실행 후 캐시 저장
+        """
+        cache = self._load_cache()
+        today = str(datetime.date.today())
+
+        if cache and cache.get("date") == today:
+            self._log(f"캐시 히트 ({today}) — 웹검색 생략")
+            return cache["result"]
+
+        self._log(f"캐시 미스 ({cache.get('date') if cache else '없음'} ≠ {today}) — 세법 조회 실행")
+
+        prompt = query or (
+            f"오늘({today}) 기준 대한민국 세법 최신 개정 동향을 분석하십시오.\n"
+            "법인세법, 소득세법, 상속세및증여세법, 조세특례제한법 중심으로 "
+            "중소기업 경영에 영향을 미치는 개정 사항을 요약하십시오."
+        )
+        result = self.run(prompt, reset=True)
+        self._save_cache(result)
+        self._log(f"캐시 저장 완료 → {self.CACHE_PATH}")
+        return result
+
+    def analyze(self, company_data: dict) -> str:
+        """orchestrator GROUP_D 인터페이스 호환 (company_data 미사용)."""
+        return self.fetch_updates()
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# AutoFixAgent
+# ═══════════════════════════════════════════════════════════════════════════
+
+_AUTO_FIX_SYS = """당신은 컨설팅 보고서 자동 교정 전문가입니다.
+logic_error 유형의 오류를 받아 수정된 내용을 반환합니다.
+수정된 결과만 출력하고 설명은 생략하십시오."""
+
+
+class AutoFixAgent(BaseAgent):
+    """
+    에이전트 결과의 오류를 자동 수정하는 에이전트.
+
+    fail_item 구조:
+      {
+        "type":    "format_error" | "missing_field" | "logic_error" | ...,
+        "field":   str,          # 오류 발생 필드 (format_error / missing_field)
+        "message": str,          # 오류 설명
+        "value":   Any,          # 현재 값 (있을 경우)
+        "content": str,          # logic_error 교정 대상 원문
+      }
+    """
+
+    name  = "AutoFixAgent"
+    role  = "보고서 자동 교정 전문가"
+    model = MODEL
+    system_prompt = _AUTO_FIX_SYS
+
+    # format_error / missing_field 직접 수정 규칙
+    _FORMAT_DEFAULTS: dict[str, str] = {
+        "date":    str(datetime.date.today()),
+        "status":  "검토 필요",
+        "score":   "0",
+        "summary": "(요약 없음)",
+    }
+
+    # ── 직접 수정 (LLM 호출 없음) ─────────────────────────────────────────
+
+    def _fix_format_error(self, fail_item: dict) -> dict:
+        field   = fail_item.get("field", "unknown")
+        value   = fail_item.get("value")
+        default = self._FORMAT_DEFAULTS.get(field, "")
+        fixed   = str(value).strip() if value not in (None, "", " ") else default
+        print(f"  [AutoFixAgent] format_error 직접 수정 -- 필드: '{field}' / 적용값: '{fixed}'")
+        return {"type": "format_error", "field": field, "fixed_value": fixed, "status": "fixed"}
+
+    def _fix_missing_field(self, fail_item: dict) -> dict:
+        field   = fail_item.get("field", "unknown")
+        default = self._FORMAT_DEFAULTS.get(field, f"({field} 기본값)")
+        print(f"  [AutoFixAgent] missing_field 직접 수정 -- 필드: '{field}' / 기본값 삽입: '{default}'")
+        return {"type": "missing_field", "field": field, "fixed_value": default, "status": "fixed"}
+
+    # ── LLM 재시도 (logic_error, 최대 1회) ───────────────────────────────
+
+    def _fix_logic_error(self, fail_item: dict) -> dict:
+        content = fail_item.get("content", "")
+        message = fail_item.get("message", "")
+        if not content:
+            print(f"  [AutoFixAgent] logic_error -- content 없음, 스킵")
+            return {"type": "logic_error", "status": "skipped", "reason": "content 없음"}
+
+        prompt = (
+            f"다음 보고서 내용에서 아래 오류를 수정하십시오.\n\n"
+            f"[오류 설명] {message}\n\n"
+            f"[원문]\n{content}"
+        )
+        print(f"  [AutoFixAgent] logic_error LLM 재시도 1회 -- {message[:60]}")
+        try:
+            fixed = self.run(prompt, reset=True)
+            print(f"  [AutoFixAgent] logic_error 수정 완료 ({len(fixed)}자)")
+            return {"type": "logic_error", "fixed_value": fixed, "status": "fixed"}
+        except Exception as e:
+            print(f"  [AutoFixAgent] logic_error LLM 재시도 실패 -- {e}")
+            return {"type": "logic_error", "status": "failed", "reason": str(e)}
+
+    # ── 공개 인터페이스 ────────────────────────────────────────────────────
+
+    def fix(self, fail_item: dict) -> dict:
+        """
+        단일 fail_item을 받아 수정 결과를 반환합니다.
+
+        - format_error / missing_field : LLM 호출 없이 직접 수정
+        - logic_error                  : LLM 최대 1회 재시도
+        - 그 외                         : 스킵
+        """
+        error_type = fail_item.get("type", "")
+
+        if error_type == "format_error":
+            return self._fix_format_error(fail_item)
+
+        if error_type == "missing_field":
+            return self._fix_missing_field(fail_item)
+
+        if error_type == "logic_error":
+            return self._fix_logic_error(fail_item)
+
+        print(f"  [AutoFixAgent] 알 수 없는 오류 타입 '{error_type}' -- 스킵")
+        return {"type": error_type, "status": "skipped", "reason": "처리 대상 타입 아님"}
+
+    def fix_all(self, fail_items: list[dict]) -> list[dict]:
+        """fail_item 목록 전체를 순차 처리합니다."""
+        return [self.fix(item) for item in fail_items]

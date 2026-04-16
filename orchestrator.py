@@ -20,6 +20,22 @@ from typing import Any
 
 from agents.base_agent import BaseAgent, MODEL
 from agents.consulting_agents import TaxAgent, StockAgent, SuccessionAgent, FinanceAgent
+
+# ──────────────────────────────────────────────────────────────────────────
+# 에이전트별 모델 매핑
+# ──────────────────────────────────────────────────────────────────────────
+
+MODEL_MAP: dict[str, str] = {
+    "DataValidationAgent":  "claude-haiku-4-5-20251001",
+    "TaxLawUpdateAgent":    "claude-haiku-4-5-20251001",
+    "AutoFixAgent":         "claude-haiku-4-5-20251001",
+    "MonitorAgent":         "claude-haiku-4-5-20251001",
+    "TaxAgent":             "claude-sonnet-4-6",
+    "FinancialAgent":       "claude-sonnet-4-6",
+    "ScenarioAgent":        "claude-sonnet-4-6",
+    "VerifyAgent":          "claude-sonnet-4-6",
+    "Orchestrator":         "claude-opus-4-6",
+}
 from agents.legal_agent import LegalAgent
 from agents.patent_agent import PatentAgent
 from agents.labor_agent import LaborAgent
@@ -37,6 +53,18 @@ from agents.all_agents import MonitorAgent, ScenarioAgent
 from report_to_ppt import build_ppt
 
 MAX_WORKERS = 2
+
+
+def extract_context(output: str) -> dict:
+    lines = [l.strip() for l in output.split('\n') if l.strip()]
+    return {
+        "summary": ' '.join(lines[:3]),
+        "key_metrics": [l for l in lines if any(c.isdigit() for c in l)][:10],
+        "flags": [l for l in lines if any(
+            kw in l for kw in ['위험', '주의', 'RISK', 'WARNING', 'FAIL', '오류']
+        )]
+    }
+
 
 # ──────────────────────────────────────────────────────────────────────────
 # 쿼리 빌더 — COMPANY_DATA → 에이전트별 맞춤 질의
@@ -176,27 +204,33 @@ def build_queries(data: dict) -> dict[str, str]:
 # ──────────────────────────────────────────────────────────────────────────
 
 def _build_agent_map(verbose: bool) -> dict[str, BaseAgent]:
+    def _agent(name: str, cls) -> BaseAgent:
+        a = cls(verbose=verbose)
+        if name in MODEL_MAP:
+            a.model = MODEL_MAP[name]
+        return a
+
     return {
         # GROUP A~C — 기존 16개 전문 에이전트
-        "TaxAgent":         TaxAgent(verbose=verbose),
-        "StockAgent":       StockAgent(verbose=verbose),
-        "SuccessionAgent":  SuccessionAgent(verbose=verbose),
-        "FinanceAgent":     FinanceAgent(verbose=verbose),
-        "LegalAgent":       LegalAgent(verbose=verbose),
-        "PatentAgent":      PatentAgent(verbose=verbose),
-        "LaborAgent":       LaborAgent(verbose=verbose),
-        "IndustryAgent":    IndustryAgent(verbose=verbose),
-        "WebResearchAgent": WebResearchAgent(verbose=verbose),
-        "PolicyFundingAgent": PolicyFundingAgent(verbose=verbose),
-        "CashFlowAgent":    CashFlowAgent(verbose=verbose),
-        "CreditRatingAgent": CreditRatingAgent(verbose=verbose),
-        "RealEstateAgent":  RealEstateAgent(verbose=verbose),
-        "InsuranceAgent":   InsuranceAgent(verbose=verbose),
-        "MAValuationAgent": MAValuationAgent(verbose=verbose),
-        "ESGRiskAgent":     ESGRiskAgent(verbose=verbose),
+        "TaxAgent":           _agent("TaxAgent",           TaxAgent),
+        "StockAgent":         _agent("StockAgent",         StockAgent),
+        "SuccessionAgent":    _agent("SuccessionAgent",    SuccessionAgent),
+        "FinanceAgent":       _agent("FinanceAgent",       FinanceAgent),
+        "LegalAgent":         _agent("LegalAgent",         LegalAgent),
+        "PatentAgent":        _agent("PatentAgent",        PatentAgent),
+        "LaborAgent":         _agent("LaborAgent",         LaborAgent),
+        "IndustryAgent":      _agent("IndustryAgent",      IndustryAgent),
+        "WebResearchAgent":   _agent("WebResearchAgent",   WebResearchAgent),
+        "PolicyFundingAgent": _agent("PolicyFundingAgent", PolicyFundingAgent),
+        "CashFlowAgent":      _agent("CashFlowAgent",      CashFlowAgent),
+        "CreditRatingAgent":  _agent("CreditRatingAgent",  CreditRatingAgent),
+        "RealEstateAgent":    _agent("RealEstateAgent",    RealEstateAgent),
+        "InsuranceAgent":     _agent("InsuranceAgent",     InsuranceAgent),
+        "MAValuationAgent":   _agent("MAValuationAgent",   MAValuationAgent),
+        "ESGRiskAgent":       _agent("ESGRiskAgent",       ESGRiskAgent),
         # GROUP D — Delta 모니터링 + 시나리오 시뮬레이션
-        "MonitorAgent":     MonitorAgent(verbose=verbose),
-        "ScenarioAgent":    ScenarioAgent(verbose=verbose),
+        "MonitorAgent":       _agent("MonitorAgent",       MonitorAgent),
+        "ScenarioAgent":      _agent("ScenarioAgent",      ScenarioAgent),
     }
 
 
@@ -238,10 +272,16 @@ class ReportAgent(BaseAgent):
     def generate_report(self, company_name: str,
                         agent_results: dict[str, str],
                         verify_results: dict[str, VerifyResult]) -> str:
-        # 요약 입력 구성 (토큰 절약)
+        # 요약 입력 구성 (토큰 절약) — extract_context() 로 핵심만 전달
         summaries = []
         for name, result in agent_results.items():
-            summaries.append(f"[{name}]\n{result[:800]}")
+            ctx = extract_context(result)
+            summaries.append(
+                f"[{name}]\n"
+                f"summary: {ctx['summary']}\n"
+                f"key_metrics: {'; '.join(ctx['key_metrics'])}\n"
+                f"flags: {'; '.join(ctx['flags'])}"
+            )
 
         verify_summary = "\n".join(
             f"[{k}] {v.status} {v.score}/100" for k, v in verify_results.items()
@@ -376,18 +416,30 @@ class Orchestrator:
 
         # ── Phase 2: 검증 에이전트 3개 병렬 실행 ───────────────────────
         print("[Phase 2] 검증 에이전트 3개 병렬 실행 중...")
+        verify_model = MODEL_MAP.get("VerifyAgent", MODEL)
         verifiers = {
             "VerifyTax":      VerifyTax(verbose=self.verbose),
             "VerifyOps":      VerifyOps(verbose=self.verbose),
             "VerifyStrategy": VerifyStrategy(verbose=self.verbose),
         }
+        for v in verifiers.values():
+            v.model = verify_model
 
         def run_verify(vname: str, verifier) -> tuple[str, VerifyResult]:
             group = VERIFY_GROUPS[vname]
             combined_q = f"기업: {company_name}\n업종: {company_data.get('industry', '')}"
             combined_r = "\n\n".join(
-                f"[{n}]\n{agent_results.get(n, '결과 없음')[:600]}"
-                for n in group if n in agent_results
+                "[{n}]\n{ctx}".format(
+                    n=n,
+                    ctx="\n".join([
+                        f"summary: {ctx['summary']}",
+                        f"key_metrics: {'; '.join(ctx['key_metrics'])}",
+                        f"flags: {'; '.join(ctx['flags'])}",
+                    ])
+                )
+                for n in group
+                if n in agent_results
+                for ctx in [extract_context(agent_results[n])]
             )
             try:
                 vr = verifier.verify(combined_q, combined_r)
@@ -411,6 +463,7 @@ class Orchestrator:
         print("[Phase 3] ReportAgent 통합 보고서 작성 중...")
         try:
             reporter = ReportAgent(verbose=self.verbose)
+            reporter.model = MODEL_MAP.get("Orchestrator", MODEL)
             final_report = reporter.generate_report(company_name, agent_results, verify_results)
         except Exception as e:
             final_report = f"[보고서 생성 오류] {str(e)}"

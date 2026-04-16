@@ -4,4 +4,7 @@ __pycache__/
 output/*.txt
 output/*.pptx
 output/*.xlsx
+output/*.json
+output/snapshots/
 .env
+node_modules/
