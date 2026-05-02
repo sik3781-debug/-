@@ -1,0 +1,15 @@
+{"date": "2026-05-03", "agent": "TaxAgent", "response_time_sec": null, "token_count": null, "accuracy_pct": null, "status": "pending_measurement", "note": "초기화 — 7일 측정 후 실측값 업데이트"}
+{"date": "2026-05-03", "agent": "StockAgent", "response_time_sec": null, "token_count": null, "accuracy_pct": null, "status": "pending_measurement", "note": "초기화"}
+{"date": "2026-05-03", "agent": "ProvisionalPaymentAgent", "response_time_sec": null, "token_count": null, "accuracy_pct": null, "status": "pending_measurement", "note": "초기화"}
+{"date": "2026-05-03", "agent": "FinanceAgent", "autofix_success": true, "fix_type": "autofix_v2"}
+{"date": "2026-05-03", "agent": "TaxAgent", "autofix_success": true, "fix_type": "autofix_v2"}
+{"date": "2026-05-03", "agent": "TaxAgent", "autofix_success": true, "fix_type": "autofix_v2"}
+{"date": "2026-05-03", "agent": "TaxAgent", "autofix_success": true, "fix_type": "autofix_v2"}
+{"date": "2026-05-03", "agent": "TestAgent", "autofix_success": true, "fix_type": "autofix_v2"}
+{"date": "2026-05-03", "agent": "NewAgent", "autofix_success": true, "fix_type": "autofix_v2"}
+{"date": "2026-05-03", "agent": "FinanceAgent", "autofix_success": true, "fix_type": "autofix_v2"}
+{"date": "2026-05-03", "agent": "TaxAgent", "autofix_success": true, "fix_type": "autofix_v2"}
+{"date": "2026-05-03", "agent": "TaxAgent", "autofix_success": true, "fix_type": "autofix_v2"}
+{"date": "2026-05-03", "agent": "TaxAgent", "autofix_success": true, "fix_type": "autofix_v2"}
+{"date": "2026-05-03", "agent": "TestAgent", "autofix_success": true, "fix_type": "autofix_v2"}
+{"date": "2026-05-03", "agent": "NewAgent", "autofix_success": true, "fix_type": "autofix_v2"}

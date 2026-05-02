@@ -1,0 +1,5 @@
+{"id": "EP001", "agent": "TaxAgent", "error_type": "unit_consistency", "pattern": "대형숫자_단위없음", "fix": "억원 단위 명시 추가", "count": 9, "last_seen": "2026-05-03", "permanent_applied": true}
+{"id": "EP002", "agent": "StockAgent", "error_type": "article_existence", "pattern": "조문번호_범위초과", "fix": "조문번호 §54~56 범위 내로 수정", "count": 1, "last_seen": "2026-05-03", "permanent_applied": false}
+{"id": "EP003", "agent": "FinanceAgent", "error_type": "perspective_missing", "pattern": "금융기관관점_누락", "fix": "신용등급·대출한도 문장 추가", "count": 3, "last_seen": "2026-05-03", "permanent_applied": false}
+{"id": "EP004", "agent": "ProvisionalPaymentAgent", "error_type": "formula_missing", "pattern": "인정이자_산식_미표기", "fix": "인정이자 = 가지급금잔액 × 4.6% 명시", "count": 1, "last_seen": "2026-05-03", "permanent_applied": false}
+{"id": "EP005", "agent": "NomineeStockAgent", "error_type": "amendment_currency", "pattern": "구버전_시행일_2024이하", "fix": "2026년 귀속 기준으로 시행일 업데이트", "count": 3, "last_seen": "2026-05-03", "permanent_applied": false}
