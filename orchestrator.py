@@ -45,6 +45,16 @@ try:
 except Exception:
     _router = None  # 라우터 로드 실패 시 기존 로직 사용
 
+# ── 자가검증 3축 (PART 4 통합) ───────────────────────────────────────────────
+try:
+    from validation.self_check import SelfCheck as _SelfCheck
+    from validation.check_logger import CheckLogger as _CheckLogger
+    _check_logger = _CheckLogger()
+    _self_check = _SelfCheck(logger=_check_logger)
+except Exception:
+    _self_check = None   # 로드 실패 시 검증 없이 직접 출력
+    _check_logger = None
+
 # ──────────────────────────────────────────────────────────────────────────
 # 에이전트별 모델 매핑
 # ──────────────────────────────────────────────────────────────────────────
@@ -541,7 +551,8 @@ class Orchestrator:
 
     def __init__(self, verbose: bool = False) -> None:
         self.verbose = verbose
-        self.router = _router  # 자연어 라우터 (None이면 비활성)
+        self.router     = _router       # 자연어 라우터 (PART 3)
+        self.self_check = _self_check   # 자가검증 3축 (PART 4)
 
     def handle_request(self, user_input: str,
                        company_data: dict | None = None) -> dict:
@@ -576,13 +587,50 @@ class Orchestrator:
 
     def _run_agent_safe(self, agent: BaseAgent, query: str,
                         company_data: dict | None = None) -> tuple[str, str | None]:
-        """에이전트 실행 (오류 격리).
+        """에이전트 실행 (오류 격리) + 자가검증 3축 (PART 4).
         query == '__USE_ANALYZE__' 이면 agent.analyze(company_data) 호출."""
         try:
             if query == "__USE_ANALYZE__" and hasattr(agent, "analyze") and company_data:
                 result = agent.analyze(company_data)
             else:
                 result = agent.run(query, reset=True)
+
+            # ── PART 4: 자가검증 3축 ──────────────────────────────────────
+            if self.self_check and isinstance(result, str) and result:
+                agent_name = getattr(agent, 'name', type(agent).__name__)
+                output_dict = {"text": result, "agent": agent_name,
+                               "require_full_4_perspective": True}
+                check = self.self_check.validate(output_dict)
+
+                if not check["overall_pass"]:
+                    # AutoFixAgent가 있으면 위임, 없으면 경고만 첨부
+                    auto_fix = getattr(self, '_auto_fix_agent', None)
+                    for _retry in range(3):
+                        if auto_fix:
+                            try:
+                                result = auto_fix.fix(
+                                    output={"text": result},
+                                    error_type="validation_failure",
+                                    failed_axes=check["failed_axes"],
+                                )
+                                if isinstance(result, dict):
+                                    result = result.get("text", str(result))
+                            except Exception:
+                                pass
+                        check = self.self_check.validate(
+                            {"text": result, "agent": agent_name,
+                             "require_full_4_perspective": True}
+                        )
+                        if check["overall_pass"]:
+                            break
+
+                    if not check["overall_pass"]:
+                        # 3회 실패 → 경고 메시지 첨부 후 출력 허용
+                        warn = ("\n\n---\n[검증 경고] 자가검증 3축 미통과 — "
+                                f"실패 축: {check['failed_axes']}\n"
+                                "사용자 검토 후 사용하십시오.")
+                        result = result + warn
+
             return result, None
         except Exception as e:
             return "", str(e)
