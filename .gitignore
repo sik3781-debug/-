@@ -14,3 +14,9 @@ node_modules/
 sk-ant-api03*.txt
 *.apikey
 기타/,end.txt
+기타/*.env
+기타/api_key_placeholder.txt
+*.secrets
+.secrets/
+**/*apikey*.txt
+**/*api_key*.txt
