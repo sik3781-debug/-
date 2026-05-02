@@ -1,10 +1,27 @@
 """
 orchestrator.py
 ===============
-16개 전문 에이전트 완전 병렬 실행 + 3개 검증 에이전트 병렬 검증 + ReportAgent 통합 보고
+53개 전문 에이전트 완전 병렬 실행 + 3개 검증 에이전트 병렬 검증 + ReportAgent 통합 보고
+
+에이전트 구성:
+  GROUP A (4): TaxAgent·StockAgent·SuccessionAgent·FinanceAgent
+  GROUP B (5): LegalAgent·PatentAgent·LaborAgent·RealEstateAgent·InsuranceAgent
+  GROUP C (7): IndustryAgent·WebResearchAgent·PolicyFundingAgent·CashFlowAgent·
+               CreditRatingAgent·MAValuationAgent·ESGRiskAgent
+  GROUP D (3): MonitorAgent·ScenarioAgent·BusinessPlanAgent (analyze() 인터페이스)
+  GROUP E (3): ProvisionalPaymentAgent·NomineeStockAgent·ExecutivePayAgent (전담)
+  GROUP F (5): GiftTaxAgent·InheritanceTaxAgent·VATAgent·RDTaxCreditAgent·InvestTaxCreditAgent
+  GROUP G (6): FinancialForecastAgent·CostAnalysisAgent·SocialInsuranceAgent·
+               PerformancePayAgent·DividendPolicyAgent·RelatedPartyAgent
+  GROUP H (6): GlobalExpansionAgent·DXAgent·SubcontractAgent·
+               IPOAgent·FranchiseAgent·DebtRestructuringAgent
+  GROUP I (8): ComplianceAgent·ContractReviewAgent·WorkingCapitalAgent·PrivacyAgent·
+               HRDAgent·SupplyChainAgent·TradeAgent·VentureCapitalAgent
+  INFRA  (6): DataValidationAgent·QueryClassifierAgent·RiskScoreAgent·SummaryAgent·
+               VerifyFinance·VerifyCompliance
 
 실행 흐름:
-  Phase 1 ── 16개 에이전트 병렬 실행 (ThreadPoolExecutor max_workers=2, 배치)
+  Phase 1 ── 53개 에이전트 배치 병렬 실행 (ThreadPoolExecutor max_workers=2, 그룹 간 sleep)
   Phase 2 ── 3개 검증 에이전트 병렬 검증
   Phase 3 ── ReportAgent 최종 통합 보고서 생성
   Phase 4 ── PPT 자동 변환 (report_to_ppt)
@@ -48,6 +65,43 @@ from agents.real_estate_agent import RealEstateAgent
 from agents.insurance_agent import InsuranceAgent
 from agents.ma_valuation_agent import MAValuationAgent
 from agents.esg_risk_agent import ESGRiskAgent
+from agents.business_plan_agent import BusinessPlanAgent
+from agents.provisional_payment_agent import ProvisionalPaymentAgent
+from agents.nominee_stock_agent import NomineeStockAgent
+from agents.executive_pay_agent import ExecutivePayAgent
+from agents.gift_tax_agent import GiftTaxAgent
+from agents.inheritance_tax_agent import InheritanceTaxAgent
+from agents.vat_agent import VATAgent
+from agents.rd_tax_credit_agent import RDTaxCreditAgent
+from agents.invest_tax_credit_agent import InvestTaxCreditAgent
+from agents.global_expansion_agent import GlobalExpansionAgent
+from agents.dx_agent import DXAgent
+from agents.subcontract_agent import SubcontractAgent
+from agents.ipo_agent import IPOAgent
+from agents.franchise_agent import FranchiseAgent
+from agents.debt_restructuring_agent import DebtRestructuringAgent
+from agents.financial_forecast_agent import FinancialForecastAgent
+from agents.cost_analysis_agent import CostAnalysisAgent
+from agents.social_insurance_agent import SocialInsuranceAgent
+from agents.performance_pay_agent import PerformancePayAgent
+from agents.dividend_policy_agent import DividendPolicyAgent
+from agents.related_party_agent import RelatedPartyAgent
+# GROUP I — 컴플라이언스·지원 전담 에이전트
+from agents.compliance_agent import ComplianceAgent
+from agents.contract_review_agent import ContractReviewAgent
+from agents.working_capital_agent import WorkingCapitalAgent
+from agents.privacy_agent import PrivacyAgent
+from agents.hrd_agent import HRDAgent
+from agents.supply_chain_agent import SupplyChainAgent
+from agents.trade_agent import TradeAgent
+from agents.venture_capital_agent import VentureCapitalAgent
+# 6단계 인프라·검증 에이전트
+from agents.verify_finance import VerifyFinance
+from agents.verify_compliance import VerifyCompliance
+from agents.data_validation_agent import DataValidationAgent
+from agents.query_classifier_agent import QueryClassifierAgent
+from agents.risk_score_agent import RiskScoreAgent
+from agents.summary_agent import SummaryAgent
 from agents.verify_tax import VerifyTax, VerifyOps, VerifyStrategy, VerifyResult
 from agents.all_agents import MonitorAgent, ScenarioAgent
 from report_to_ppt import build_ppt
@@ -95,6 +149,13 @@ def build_queries(data: dict) -> dict[str, str]:
     re_type = data.get("real_estate", {}).get("type", "공장")
     customers = data.get("main_customers", [])
     concerns = "\n".join(f"- {c}" for c in data.get("concerns", []))
+    # GROUP E 전담 에이전트 전용 데이터
+    nominee_shares  = data.get("nominee_shares", 0)                   # 차명주식 주수
+    nom_acq_year    = data.get("nominee_share_acquisition_year", 2010) # 차명주식 취득연도
+    nom_face_val    = data.get("nominee_face_value", 5_000)            # 차명주식 액면가(원/주)
+    ceo_salary      = data.get("ceo_salary", 0)                        # 대표이사 연봉
+    ceo_tenure      = data.get("ceo_tenure", 10)                       # 대표이사 근속연수(년)
+    has_retire_rule = data.get("retirement_pay_provision", False)      # 퇴직금 규정 유무
 
     brief = (
         f"[기업개요] {n} | 업종: {ind} | 업력: {yrs}년 | 임직원: {emp}명 | "
@@ -193,9 +254,75 @@ def build_queries(data: dict) -> dict[str, str]:
             f"임직원 {emp}명, 업종: {ind}, 주요 고객사: {', '.join(customers)}. "
             f"E·S·G 항목별 리스크 점수와 우선 개선 과제, EU CBAM 대응 전략을 제시하시오."
         ),
+        # GROUP E — 가지급금·차명주식·임원보수 전담 에이전트
+        "ProvisionalPaymentAgent": (
+            f"{brief}\n\n"
+            f"[가지급금 현황] 잔액 {pp:,.0f}원 | 인정이자율 4.6% 기준 연간 인정이자 "
+            f"{pp * 0.046:,.0f}원 | 상여처분 시 대표이사 소득세 추가 부담 발생.\n\n"
+            f"① 인정이자 정량 산출 (법인세법 시행규칙 §43)\n"
+            f"② 급여증액·배당·직접상환·DES·자본감소 5가지 해소 방법별 법인+개인 합산 세부담 비교\n"
+            f"③ 최적 해소 방법 추천 및 월별 단계적 실행 로드맵, 필요 증빙 서류를 제시하시오."
+        ),
+        "NomineeStockAgent": (
+            f"{brief}\n\n"
+            f"[차명주식 현황] 차명주식 {nominee_shares:,}주 | 액면가 {nom_face_val:,}원/주 | "
+            f"취득연도 {nom_acq_year}년 | 1주당 현재 평가액 {nas:,.0f}원.\n\n"
+            f"① 명의신탁 증여의제 과세위험 정량화 (상증세법 §45의2, 가산세 포함)\n"
+            f"② 부과제척기간 분석 (일반 10년 / 부정행위 15년) — {nom_acq_year}년 취득 기준\n"
+            f"③ 명의개서·증여·매매·자기주식취득 4가지 해소 방법별 세부담 비교\n"
+            f"④ 과점주주 간주취득세 리스크 (지방세법 §7⑤) 주의사항을 포함하여 "
+            f"최적 해소 전략과 실행 로드맵을 제시하시오."
+        ),
+        "ExecutivePayAgent": (
+            f"{brief}\n\n"
+            f"[임원 보수 현황] 대표이사 연봉 {ceo_salary:,.0f}원 | 근속연수 {ceo_tenure}년 | "
+            f"퇴직금 규정 {'有' if has_retire_rule else '無'} | 대표이사 나이 {ceo_age}세.\n\n"
+            f"① 임원 퇴직금 손금산입 한도 산출 (법인세법 시행령 §44②: 3년 평균급여 × 1/10 × 근속연수)\n"
+            f"② 퇴직소득세 완전 계산 (근속연수공제 + 환산급여공제 적용)\n"
+            f"③ 급여·배당·퇴직금 3가지 시나리오 세후 가처분소득 비교 → 최적 보수 믹스 추천\n"
+            f"④ 퇴직금 규정 정비 방안과 중간정산 활용 타이밍을 제시하시오."
+        ),
+        # GROUP F — 세금·절세 전담 에이전트 (analyze() 인터페이스)
+        "GiftTaxAgent":         "__USE_ANALYZE__",
+        "InheritanceTaxAgent":  "__USE_ANALYZE__",
+        "VATAgent":             "__USE_ANALYZE__",
+        "RDTaxCreditAgent":     "__USE_ANALYZE__",
+        "InvestTaxCreditAgent": "__USE_ANALYZE__",
+        # GROUP H — 전략·성장 특화 에이전트 (analyze() 인터페이스)
+        "GlobalExpansionAgent":    "__USE_ANALYZE__",
+        "DXAgent":                 "__USE_ANALYZE__",
+        "SubcontractAgent":        "__USE_ANALYZE__",
+        "IPOAgent":                "__USE_ANALYZE__",
+        "FranchiseAgent":          "__USE_ANALYZE__",
+        "DebtRestructuringAgent":  "__USE_ANALYZE__",
+        # GROUP G — 재무·HR 특화 에이전트 (analyze() 인터페이스)
+        "FinancialForecastAgent": "__USE_ANALYZE__",
+        "CostAnalysisAgent":      "__USE_ANALYZE__",
+        "SocialInsuranceAgent":   "__USE_ANALYZE__",
+        "PerformancePayAgent":    "__USE_ANALYZE__",
+        "DividendPolicyAgent":    "__USE_ANALYZE__",
+        "RelatedPartyAgent":      "__USE_ANALYZE__",
+        # GROUP I — 컴플라이언스·지원 전담 에이전트 (analyze() 인터페이스)
+        "ComplianceAgent":       "__USE_ANALYZE__",
+        "ContractReviewAgent":   "__USE_ANALYZE__",
+        "WorkingCapitalAgent":   "__USE_ANALYZE__",
+        "PrivacyAgent":          "__USE_ANALYZE__",
+        "HRDAgent":              "__USE_ANALYZE__",
+        "SupplyChainAgent":      "__USE_ANALYZE__",
+        "TradeAgent":            "__USE_ANALYZE__",
+        "VentureCapitalAgent":   "__USE_ANALYZE__",
+        # 인프라·검증 에이전트 (analyze() 인터페이스)
+        "DataValidationAgent":   "__USE_ANALYZE__",
+        "QueryClassifierAgent":  "__USE_ANALYZE__",
+        "RiskScoreAgent":        "__USE_ANALYZE__",
+        "SummaryAgent":          "__USE_ANALYZE__",
+        "VerifyFinance":         "__USE_ANALYZE__",
+        "VerifyCompliance":      "__USE_ANALYZE__",
         # GROUP D — analyze(company_data) 인터페이스 사용 (쿼리는 내부 생성)
-        "MonitorAgent":  "__USE_ANALYZE__",
-        "ScenarioAgent": "__USE_ANALYZE__",
+        "MonitorAgent":      "__USE_ANALYZE__",
+        "ScenarioAgent":     "__USE_ANALYZE__",
+        # 사업계획서 전담 — analyze(company_data) 인터페이스 (유형 자동 판단 후 초안 작성)
+        "BusinessPlanAgent": "__USE_ANALYZE__",
     }
 
 
@@ -227,7 +354,48 @@ def _build_agent_map(verbose: bool) -> dict[str, BaseAgent]:
         "RealEstateAgent":    _agent("RealEstateAgent",    RealEstateAgent),
         "InsuranceAgent":     _agent("InsuranceAgent",     InsuranceAgent),
         "MAValuationAgent":   _agent("MAValuationAgent",   MAValuationAgent),
-        "ESGRiskAgent":       _agent("ESGRiskAgent",       ESGRiskAgent),
+        "ESGRiskAgent":             _agent("ESGRiskAgent",             ESGRiskAgent),
+        "BusinessPlanAgent":        _agent("BusinessPlanAgent",        BusinessPlanAgent),
+        # GROUP E — 전담 에이전트 (가지급금·차명주식·임원보수)
+        "ProvisionalPaymentAgent":  _agent("ProvisionalPaymentAgent",  ProvisionalPaymentAgent),
+        "NomineeStockAgent":        _agent("NomineeStockAgent",        NomineeStockAgent),
+        "ExecutivePayAgent":        _agent("ExecutivePayAgent",        ExecutivePayAgent),
+        # GROUP F — 세금·절세 전담 (증여세·상속세·VAT·R&D공제·투자공제)
+        "GiftTaxAgent":             _agent("GiftTaxAgent",             GiftTaxAgent),
+        "InheritanceTaxAgent":      _agent("InheritanceTaxAgent",      InheritanceTaxAgent),
+        "VATAgent":                 _agent("VATAgent",                 VATAgent),
+        "RDTaxCreditAgent":         _agent("RDTaxCreditAgent",         RDTaxCreditAgent),
+        "InvestTaxCreditAgent":     _agent("InvestTaxCreditAgent",     InvestTaxCreditAgent),
+        # GROUP G — 재무·HR 특화 (재무예측·원가·4대보험·성과급·배당·특수관계)
+        "FinancialForecastAgent":   _agent("FinancialForecastAgent",   FinancialForecastAgent),
+        "CostAnalysisAgent":        _agent("CostAnalysisAgent",        CostAnalysisAgent),
+        "SocialInsuranceAgent":     _agent("SocialInsuranceAgent",     SocialInsuranceAgent),
+        "PerformancePayAgent":      _agent("PerformancePayAgent",      PerformancePayAgent),
+        "DividendPolicyAgent":      _agent("DividendPolicyAgent",      DividendPolicyAgent),
+        "RelatedPartyAgent":        _agent("RelatedPartyAgent",        RelatedPartyAgent),
+        # GROUP H — 전략·성장 특화 (해외진출·DX·하도급·IPO·프랜차이즈·부채)
+        "GlobalExpansionAgent":   _agent("GlobalExpansionAgent",   GlobalExpansionAgent),
+        "DXAgent":                _agent("DXAgent",                DXAgent),
+        "SubcontractAgent":       _agent("SubcontractAgent",       SubcontractAgent),
+        "IPOAgent":               _agent("IPOAgent",               IPOAgent),
+        "FranchiseAgent":         _agent("FranchiseAgent",         FranchiseAgent),
+        "DebtRestructuringAgent": _agent("DebtRestructuringAgent", DebtRestructuringAgent),
+        # GROUP I — 컴플라이언스·지원 전담 에이전트
+        "ComplianceAgent":       _agent("ComplianceAgent",       ComplianceAgent),
+        "ContractReviewAgent":   _agent("ContractReviewAgent",   ContractReviewAgent),
+        "WorkingCapitalAgent":   _agent("WorkingCapitalAgent",   WorkingCapitalAgent),
+        "PrivacyAgent":          _agent("PrivacyAgent",          PrivacyAgent),
+        "HRDAgent":              _agent("HRDAgent",              HRDAgent),
+        "SupplyChainAgent":      _agent("SupplyChainAgent",      SupplyChainAgent),
+        "TradeAgent":            _agent("TradeAgent",            TradeAgent),
+        "VentureCapitalAgent":   _agent("VentureCapitalAgent",   VentureCapitalAgent),
+        # 인프라·검증 에이전트
+        "DataValidationAgent":   _agent("DataValidationAgent",   DataValidationAgent),
+        "QueryClassifierAgent":  _agent("QueryClassifierAgent",  QueryClassifierAgent),
+        "RiskScoreAgent":        _agent("RiskScoreAgent",        RiskScoreAgent),
+        "SummaryAgent":          _agent("SummaryAgent",          SummaryAgent),
+        "VerifyFinance":         _agent("VerifyFinance",         VerifyFinance),
+        "VerifyCompliance":      _agent("VerifyCompliance",      VerifyCompliance),
         # GROUP D — Delta 모니터링 + 시나리오 시뮬레이션
         "MonitorAgent":       _agent("MonitorAgent",       MonitorAgent),
         "ScenarioAgent":      _agent("ScenarioAgent",      ScenarioAgent),
@@ -239,10 +407,23 @@ def _build_agent_map(verbose: bool) -> dict[str, BaseAgent]:
 # ──────────────────────────────────────────────────────────────────────────
 
 VERIFY_GROUPS = {
-    "VerifyTax":      ["TaxAgent", "FinanceAgent", "StockAgent", "SuccessionAgent"],
-    "VerifyOps":      ["LegalAgent", "LaborAgent", "PatentAgent", "RealEstateAgent", "InsuranceAgent"],
+    # GROUP A+E+F+G(세무): 세무·절세·전담 에이전트 — 세법 정합성·계산값 교차검증
+    "VerifyTax":      ["TaxAgent", "FinanceAgent", "StockAgent", "SuccessionAgent",
+                       "ProvisionalPaymentAgent", "NomineeStockAgent", "ExecutivePayAgent",
+                       "GiftTaxAgent", "InheritanceTaxAgent", "VATAgent",
+                       "RDTaxCreditAgent", "InvestTaxCreditAgent",
+                       "DividendPolicyAgent", "RelatedPartyAgent"],
+    # GROUP B+G(HR): 법무·노무·특허·부동산·보험·HR — 법령 준수 및 리스크 검증
+    "VerifyOps":      ["LegalAgent", "LaborAgent", "PatentAgent", "RealEstateAgent", "InsuranceAgent",
+                       "SocialInsuranceAgent", "PerformancePayAgent", "SubcontractAgent", "FranchiseAgent",
+                       "ComplianceAgent", "ContractReviewAgent", "PrivacyAgent", "HRDAgent", "SupplyChainAgent"],
+    # GROUP C+D+BP+G(재무): 정책·현금흐름·신용·M&A·ESG·업종·웹조사·사업계획·재무예측·원가 — 전략 실현가능성 검증
     "VerifyStrategy": ["PolicyFundingAgent", "CashFlowAgent", "CreditRatingAgent",
-                       "MAValuationAgent", "ESGRiskAgent", "IndustryAgent", "WebResearchAgent"],
+                       "MAValuationAgent", "ESGRiskAgent", "IndustryAgent", "WebResearchAgent",
+                       "BusinessPlanAgent", "FinancialForecastAgent", "CostAnalysisAgent",
+                       "GlobalExpansionAgent", "DXAgent", "IPOAgent", "DebtRestructuringAgent",
+                       "TradeAgent", "VentureCapitalAgent", "WorkingCapitalAgent",
+                       "VerifyFinance", "VerifyCompliance", "RiskScoreAgent", "SummaryAgent"],
 }
 
 # GROUP_D — Delta 모니터링 + 시나리오 시뮬레이션 (Phase 1 마지막 배치)
@@ -258,7 +439,7 @@ class ReportAgent(BaseAgent):
     role = "최종 통합 보고서 작성 전문가"
     system_prompt = (
         "당신은 중소기업 경영컨설팅 통합 보고서 작성 전문가입니다.\n"
-        "16개 전문 에이전트의 분석 결과와 3개 검증 결과를 종합하여 "
+        "53개 전문 에이전트의 분석 결과와 3개 검증 결과를 종합하여 "
         "경영진 보고용 핵심 요약 보고서를 작성하십시오.\n\n"
         "【보고서 구조】\n"
         "1. 경영 현황 종합 진단 (신호등: RED/YELLOW/GREEN)\n"
@@ -308,14 +489,15 @@ class OrchestratorResult:
     agent_errors: dict[str, str] = field(default_factory=dict)
     verify_results: dict[str, VerifyResult] = field(default_factory=dict)
     final_report: str = ""
-    elapsed_seconds: float = 0.0
+    ppt_path: str = ""
+    total_time: float = 0.0
 
     def print_summary(self) -> None:
         sep = "=" * 72
         thin = "-" * 72
         print(f"\n{sep}")
         print(f"  종합 컨설팅 결과 — {self.company_name}")
-        print(f"  실행 시간: {self.elapsed_seconds:.1f}초  |  에이전트: {len(self.agent_results)}개 완료")
+        print(f"  실행 시간: {self.total_time:.1f}초  |  에이전트: {len(self.agent_results)}개 완료")
         print(sep)
 
         for name, result in self.agent_results.items():
@@ -348,7 +530,7 @@ class OrchestratorResult:
 
 
 class Orchestrator:
-    """16개 에이전트 + 3개 검증 + 1개 리포트 통합 실행기."""
+    """22개 에이전트(GROUP A~E) + 3개 검증 + 1개 리포트 통합 실행기."""
 
     def __init__(self, verbose: bool = False) -> None:
         self.verbose = verbose
@@ -371,12 +553,12 @@ class Orchestrator:
         start = time.time()
 
         print(f"\n{'='*72}")
-        print(f"  중소기업 컨설팅 에이전트 시스템 v2")
-        print(f"  대상: {company_name}  |  에이전트: 18개(GROUP D 포함) + 검증 3개")
+        print(f"  중소기업 컨설팅 에이전트 시스템 v4")
+        print(f"  대상: {company_name}  |  에이전트: 39개(GROUP A~H) + 검증 3개")
         print(f"{'='*72}\n")
 
-        # ── Phase 1: 16개 에이전트 배치 병렬 실행 (MAX_WORKERS=2, 그룹 간 sleep) ──
-        print("[Phase 1] 18개 전문 에이전트 배치 실행 중 (그룹당 4개, sleep 10초, GROUP_D 마지막 배치)...")
+        # ── Phase 1: 22개 에이전트 배치 병렬 실행 (MAX_WORKERS=2, 그룹 간 sleep) ──
+        print("[Phase 1] 39개 전문 에이전트 배치 실행 중 (그룹당 4개, sleep 10초)...")
         agents = _build_agent_map(self.verbose)
         queries = build_queries(company_data)
 
@@ -497,5 +679,6 @@ class Orchestrator:
             agent_errors=agent_errors,
             verify_results=verify_results,
             final_report=final_report,
-            elapsed_seconds=total_time,
+            ppt_path=ppt_path,
+            total_time=total_time,
         )

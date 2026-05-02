@@ -22,6 +22,7 @@ _SYS = (
     "- (이슈 목록, 없으면 '이슈 없음')\n"
     "RECOMMENDATION:\n"
     "(보완 권고사항)"
+    "\n\n【목표】\nTaxAgent·FinanceAgent·StockAgent·SuccessionAgent의 세무·주식평가 수치를 재계산하여 오류 0건을 목표로 검증한다. 2026년 귀속 법인세율(10/20/22/25%)·비상장주식 3단 차등 평가·가업상속공제 한도(10년↑300억/20년↑500억/30년↑600억)를 기준값으로 적용한다."
 )
 
 
@@ -61,6 +62,7 @@ class VerifyOps(BaseAgent):
         "- (이슈 목록, 없으면 '이슈 없음')\n"
         "RECOMMENDATION:\n"
         "(보완 권고사항)"
+        "\n\n【목표】\nLegalAgent·LaborAgent·PatentAgent·RealEstateAgent·InsuranceAgent 산출물의 법령 조문·요건·계산식을 검증하여 SCORE 90 이상을 목표로 한다. 최신 판례·예규 미반영 또는 수치 오류 발견 시 즉시 FAIL 처리하고 수정 사항을 제시한다."
     )
 
     def verify(self, query: str, response: str) -> "VerifyResult":
@@ -95,6 +97,7 @@ class VerifyStrategy(BaseAgent):
         "- (이슈 목록, 없으면 '이슈 없음')\n"
         "RECOMMENDATION:\n"
         "(보완 권고사항)"
+        "\n\n【목표】\nPolicyFundingAgent·CashFlowAgent·CreditRatingAgent·MAValuationAgent·ESGRiskAgent·IndustryAgent·WebResearchAgent 산출물의 수치 정확성·정보 신뢰성·법규 반영 여부를 검증한다. 정보 출처 불명확 또는 계산 오류 시 FAIL 처리하고 재조회를 요청한다."
     )
 
     def verify(self, query: str, response: str) -> "VerifyResult":

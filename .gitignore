@@ -8,3 +8,9 @@ output/*.json
 output/snapshots/
 .env
 node_modules/
+
+# API 키 파일 제외
+기타/sk-ant-api03*.txt
+sk-ant-api03*.txt
+*.apikey
+기타/,end.txt

@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Read",
+      "Write",
+      "Edit",
+      "Bash(npm*)",
+      "Bash(node*)",
+      "Bash(python*)",
+      "Bash(pip*)",
+      "Bash(ls*)",
+      "Bash(cat*)",
+      "Bash(find*)",
+      "Bash(cd*)",
+      "WebFetch"
+    ]
+  },
+  "env": {
+    "CONSULTING_PROJECT": "true",
+    "TAX_YEAR": "2026"
+  }
+}
