@@ -38,6 +38,13 @@ from typing import Any
 from agents.base_agent import BaseAgent, MODEL
 from agents.consulting_agents import TaxAgent, StockAgent, SuccessionAgent, FinanceAgent
 
+# ── 자연어 라우터 (PART 3 통합) ──────────────────────────────────────────────
+try:
+    from router.command_router import CommandRouter as _CommandRouter
+    _router = _CommandRouter()
+except Exception:
+    _router = None  # 라우터 로드 실패 시 기존 로직 사용
+
 # ──────────────────────────────────────────────────────────────────────────
 # 에이전트별 모델 매핑
 # ──────────────────────────────────────────────────────────────────────────
@@ -534,6 +541,38 @@ class Orchestrator:
 
     def __init__(self, verbose: bool = False) -> None:
         self.verbose = verbose
+        self.router = _router  # 자연어 라우터 (None이면 비활성)
+
+    def handle_request(self, user_input: str,
+                       company_data: dict | None = None) -> dict:
+        """
+        자연어 또는 /슬래시 명령 진입점.
+        라우터가 활성화된 경우 자동 매칭 → 에이전트 실행 명세 반환.
+        라우터 미활성 또는 매칭 실패 시 기존 run() 로직으로 폴백.
+        """
+        if self.router:
+            route_result = self.router.route(user_input)
+            if route_result.status == "auto_route" and route_result.best:
+                return self.router.execute(
+                    route_result.best,
+                    self._extract_inputs(user_input, company_data),
+                )
+            elif route_result.status == "ask_user":
+                return {
+                    "status": "ask_user",
+                    "message": self.router._ask_user_prompt(route_result.candidates),
+                    "candidates": [c.to_dict() for c in route_result.candidates],
+                }
+        # 폴백: company_data 직접 실행
+        if company_data:
+            result = self.run(company_data)
+            return {"status": "completed", "result": result}
+        return {"status": "no_match", "message": "입력을 인식할 수 없습니다."}
+
+    def _extract_inputs(self, user_input: str,
+                        company_data: dict | None) -> dict:
+        """자연어에서 입력 추출 (현재는 company_data 패스스루)"""
+        return {"user_input": user_input, "company_data": company_data or {}}
 
     def _run_agent_safe(self, agent: BaseAgent, query: str,
                         company_data: dict | None = None) -> tuple[str, str | None]:
