@@ -154,7 +154,7 @@ class PIIMaskingAgent:
                   "*_unmasked.*", "*_raw_data.*"]
         existing: set[str] = set()
         if os.path.exists(gi_path):
-            with open(gi_path, encoding="utf-8") as f:
+            with open(gi_path, encoding="utf-8", errors="ignore") as f:
                 existing = {l.strip() for l in f}
         to_add = [n for n in needed if n not in existing]
         if to_add:

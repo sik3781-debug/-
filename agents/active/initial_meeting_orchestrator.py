@@ -70,17 +70,17 @@ class InitialMeetingOrchestrator:
         parsed: dict[str, Any] = {}
         if "kredtop" in files:
             raw = self.kred_parser.parse(files["kredtop"])
-            parsed["kredtop"] = self.pii_masker.mask(raw, label_source="kredtop")
+            parsed["kredtop"] = self.pii_masker.mask(raw, source_label="kredtop")
 
         if "registry" in files:
             raw = self.reg_parser.parse(files["registry"])
-            parsed["registry"] = self.pii_masker.mask(raw, label_source="registry")
+            parsed["registry"] = self.pii_masker.mask(raw, source_label="registry")
 
         if "fs_pdf" in files:
             with open(files["fs_pdf"], encoding="utf-8", errors="ignore") as f:
                 text = f.read()
             raw = self.fs_parser.parse_text(text)
-            parsed["fs"] = self.pii_masker.mask(raw, label_source="fs_pdf")
+            parsed["fs"] = self.pii_masker.mask(raw, source_label="fs_pdf")
 
         # ── 단계 3: 통합 프로필 ────────────────────────────────
         profile = self._build_profile(parsed)
