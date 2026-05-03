@@ -1,0 +1,10 @@
+{"id": "AR001", "name": "PIIMaskingAgent", "file": "agents/active/pii_masking_agent.py", "category": "security", "status": "active", "added": "2026-05-03", "discovery_aware": true}
+{"id": "AR002", "name": "KredTopParser", "file": "agents/active/kredtop_parser.py", "category": "parser", "status": "active", "added": "2026-05-03", "discovery_aware": true}
+{"id": "AR003", "name": "CorporateRegistryParser", "file": "agents/active/corporate_registry_parser.py", "category": "parser", "status": "active", "added": "2026-05-03", "discovery_aware": true}
+{"id": "AR004", "name": "PolicyFundMatcher", "file": "agents/active/policy_fund_matcher.py", "category": "matcher", "status": "active", "added": "2026-05-03", "discovery_aware": true}
+{"id": "AR005", "name": "FinancialStatementPDFParser", "file": "agents/active/financial_statement_pdf_parser.py", "category": "parser", "status": "active", "added": "2026-05-03", "discovery_aware": true}
+{"id": "AR006", "name": "InitialMeetingOrchestrator", "file": "agents/active/initial_meeting_orchestrator.py", "category": "orchestrator", "status": "active", "added": "2026-05-03", "discovery_aware": true}
+{"id": "AR007", "name": "SystemEnhancementDiscoveryAgent", "file": "agents/active/discovery_agent.py", "category": "meta", "status": "active", "added": "2026-05-03", "discovery_aware": true}
+{"id": "AR008", "name": "SystemEnhancementExecutorAgent", "file": "agents/active/executor_agent.py", "category": "meta", "status": "active", "added": "2026-05-03", "discovery_aware": true}
+{"id": "AR009", "name": "EnhancementVerifierAgent", "file": "agents/active/verifier_agent.py", "category": "meta", "status": "active", "added": "2026-05-03", "discovery_aware": true}
+{"id": "AR010", "name": "AutoFixAgentV2", "file": "agents/autofix_agent_v2.py", "category": "infra", "status": "active", "added": "2026-05-03", "discovery_aware": true}
