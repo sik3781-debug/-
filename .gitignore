@@ -9,13 +9,13 @@ output/snapshots/
 .env
 node_modules/
 
-# API Å° ÆÄÀÏ Á¦¿Ü
-±âÅ¸/sk-ant-api03*.txt
+# API Å° ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+ï¿½ï¿½Å¸/sk-ant-api03*.txt
 sk-ant-api03*.txt
 *.apikey
-±âÅ¸/,end.txt
-±âÅ¸/*.env
-±âÅ¸/api_key_placeholder.txt
+ï¿½ï¿½Å¸/,end.txt
+ï¿½ï¿½Å¸/*.env
+ï¿½ï¿½Å¸/api_key_placeholder.txt
 *.secrets
 .secrets/
 **/*apikey*.txt
@@ -26,3 +26,7 @@ sk-ant-api03*.txt
 *_pii_*.json
 *_unmasked.*
 *_raw_data.*
+
+# ëŸ°íƒ€ìž„ ë¡œê·¸
+logs/
+*.log
