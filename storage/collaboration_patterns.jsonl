@@ -1,0 +1,5 @@
+{"id": "CP001", "key": "succession_mega", "name": "가업승계 메가", "agents": 10, "discovery_aware": true, "added": "2026-05-03"}
+{"id": "CP002", "key": "stock_valuation_precision", "name": "비상장주식 정밀 평가", "agents": 5, "discovery_aware": true, "added": "2026-05-03"}
+{"id": "CP003", "key": "retained_earnings_integrated", "name": "미처분이익잉여금 통합", "agents": 5, "discovery_aware": true, "added": "2026-05-03"}
+{"id": "CP004", "key": "capital_structure_funding", "name": "재무구조+정책자금", "agents": 4, "discovery_aware": true, "added": "2026-05-03"}
+{"id": "CP005", "key": "patent_npv", "name": "특허 NPV 통합", "agents": 4, "discovery_aware": true, "added": "2026-05-03"}
