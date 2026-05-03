@@ -13,3 +13,4 @@
 {"date": "2026-05-03", "agent": "TaxAgent", "autofix_success": true, "fix_type": "autofix_v2"}
 {"date": "2026-05-03", "agent": "TestAgent", "autofix_success": true, "fix_type": "autofix_v2"}
 {"date": "2026-05-03", "agent": "NewAgent", "autofix_success": true, "fix_type": "autofix_v2"}
+{"date": "2026-05-03", "ts": "2026-05-03T09:27:47", "agent": "InitialMeetingOrchestrator", "response_time_sec": 0.01600000000325963, "token_count": null, "accuracy_pct": null, "status": "measured"}
