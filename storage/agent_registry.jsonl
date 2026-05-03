@@ -11,3 +11,5 @@
 {"id": "AR011", "name": "LegalMonitoringHub", "file": "agents/active/legal_monitoring_hub.py", "category": "monitor", "status": "active", "added": "2026-05-03", "discovery_aware": true, "schedule": "daily_06:00"}
 {"id": "AR012", "name": "RiskPropagationAgent", "file": "agents/active/risk_propagation.py", "category": "monitor", "status": "active", "added": "2026-05-03", "discovery_aware": true}
 {"id": "AR013", "name": "HistoricalCaseImpactAgent", "file": "agents/active/historical_case_impact.py", "category": "monitor", "status": "proposal", "added": "2026-05-03", "discovery_aware": true, "schedule": "weekly_tue_09:00"}
+{"id": "AR014", "name": "PostManagementTracker", "file": "agents/active/post_management_tracker.py", "category": "tracker", "status": "active", "added": "2026-05-03", "discovery_aware": true, "schedule": "monthly_1st_07:00"}
+{"id": "AR015", "name": "PPTPolisher", "file": "agents/active/ppt_polisher.py", "category": "quality", "status": "active", "added": "2026-05-03", "discovery_aware": true}
