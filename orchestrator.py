@@ -123,6 +123,23 @@ from agents.verify_tax import VerifyTax, VerifyOps, VerifyStrategy, VerifyResult
 from agents.all_agents import MonitorAgent, ScenarioAgent
 from report_to_ppt import build_ppt
 
+# ──────────────────────────────────────────────────────────────────────────
+# PART6 신설 4종 — agents/active/ 라우터 동적 호출 + 5축·4단계헷지·3중루프 강제
+# 본 정통 오케스트레이터 batch에는 포함되지 않으며, command_router.json 경유
+# 자율 호출. 직접 import 가능하도록 ACTIVE_AGENTS_REGISTRY에 등록.
+# ──────────────────────────────────────────────────────────────────────────
+from agents.active.rnd_lab_notebook       import RnDLabNotebookAgent
+from agents.active.business_plan_pro      import BusinessPlanProAgent
+from agents.active.legal_risk_hedge       import LegalRiskHedgeAgent
+from agents.active.legal_document_drafter import LegalDocumentDrafterAgent
+
+ACTIVE_AGENTS_REGISTRY: dict[str, type] = {
+    "RnDLabNotebookAgent":       RnDLabNotebookAgent,
+    "BusinessPlanProAgent":      BusinessPlanProAgent,
+    "LegalRiskHedgeAgent":       LegalRiskHedgeAgent,
+    "LegalDocumentDrafterAgent": LegalDocumentDrafterAgent,
+}
+
 MAX_WORKERS = 2
 
 
