@@ -1,4 +1,4 @@
-# setup.ps1 — 컨설팅 에이전트 시스템 자동 설치 스크립트
+﻿# setup.ps1 — 컨설팅 에이전트 시스템 자동 설치 스크립트
 # 실행: powershell -ExecutionPolicy Bypass -File setup.ps1
 
 $ErrorActionPreference = "Stop"
