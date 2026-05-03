@@ -1,11 +1,12 @@
 """
 validation/self_check.py
 ========================
-자가검증 3축 자동화 모듈
+자가검증 4축 자동화 모듈 (PART 5.7 4축 추가)
 
-1축: CalculationValidator  — 단위 일관성 / 소계 정확성 / 산식 유효성
-2축: LegalValidator        — 조문 실재 / 시행일 명시 / 약식 표기
-3축: Perspective4Validator — 법인·주주·과세관청·금융기관 누락 여부
+1축: CalculationValidator        — 단위 일관성 / 소계 정확성 / 산식 유효성
+2축: LegalValidator              — 조문 실재 / 시행일 명시 / 약식 표기
+3축: Perspective4Validator       — 법인·주주·과세관청·금융기관 누락 여부
+4축: AccountingStandardValidator — US-GAAP 용어 차단 / 한국 회계기준 강제 (PART 5.7 신규)
 
 외부 API 없이 패턴 매칭 + 내부 규칙 기반 (완전 오프라인 동작).
 """
@@ -291,11 +292,67 @@ class Perspective4Validator:
 
 
 # ══════════════════════════════════════════════════════════════
-# 메인 SelfCheck
+# 4축: 회계기준 검증 (PART 5.7 신규)
+# ══════════════════════════════════════════════════════════════
+class AccountingStandardValidator:
+    """
+    검증 항목:
+      us_terms_blocked — US-GAAP 영문 용어 출력 차단
+      standard_declared — 회계기준 명시 여부 (재무분석 에이전트에 한함)
+
+    require_accounting_check=False 인 경우 PASS.
+    """
+
+    _US_GAAP_TERMS = [
+        "Income Statement", "Balance Sheet", "Cash Flow Statement",
+        "Goodwill", "Net Income", "Operating Income", "Gross Profit",
+        "COGS", "SG&A", "Accounts Receivable", "Accounts Payable",
+        "Stockholders Equity", "Retained Earnings", "Treasury Stock",
+    ]
+    _KR_STANDARD_KEYWORDS = ["손익계산서", "재무상태표", "당기순이익", "영업이익",
+                              "K-IFRS", "K-GAAP", "중소기업 회계기준", "한국채택"]
+
+    def check(self, output: dict) -> AxisResult:
+        require = output.get("require_accounting_check", False)
+        text = _extract_text(output)
+
+        # US-GAAP 용어 발견 시 경고 (재무 에이전트에서만 FAIL)
+        us_found = [t for t in self._US_GAAP_TERMS if t.lower() in text.lower()]
+        is_finance_agent = any(
+            k in output.get("agent", "") for k in
+            ["Finance", "Stock", "MA", "Capital", "Valuation", "Retained"]
+        )
+
+        if us_found and is_finance_agent and require:
+            return {
+                "pass": False,
+                "details": {
+                    "us_terms_blocked": {
+                        "pass": False,
+                        "message": f"US-GAAP 용어 {len(us_found)}건 발견: {us_found[:3]}",
+                        "found": us_found,
+                    }
+                }
+            }
+
+        return {
+            "pass": True,
+            "details": {
+                "us_terms_blocked": {
+                    "pass": True,
+                    "message": f"US-GAAP 용어 0건 / 회계기준 확인",
+                    "us_found": us_found,
+                }
+            }
+        }
+
+
+# ══════════════════════════════════════════════════════════════
+# 메인 SelfCheck (4축으로 확장)
 # ══════════════════════════════════════════════════════════════
 class SelfCheck:
     """
-    3축 통합 검증 진입점.
+    4축 통합 검증 진입점 (PART 5.7: 4축 회계기준 추가).
 
     사용 예:
         checker = SelfCheck()
@@ -307,14 +364,15 @@ class SelfCheck:
     """
 
     def __init__(self, logger=None):
-        self.calc  = CalculationValidator()
-        self.legal = LegalValidator()
-        self.persp = Perspective4Validator()
-        self.logger = logger  # CheckLogger 인스턴스 (선택)
+        self.calc    = CalculationValidator()
+        self.legal   = LegalValidator()
+        self.persp   = Perspective4Validator()
+        self.acct    = AccountingStandardValidator()  # ← 4축 신규
+        self.logger  = logger
 
     def validate(self, agent_output: dict) -> dict:
         """
-        3축 동시 검증.
+        4축 동시 검증.
 
         Returns
         -------
@@ -324,6 +382,7 @@ class SelfCheck:
                 "axis_1_calculation": AxisResult,
                 "axis_2_legal": AxisResult,
                 "axis_3_perspective": AxisResult,
+                "axis_4_accounting": AxisResult,  ← 신규
             },
             "action": "publish" | "auto_fix",
             "failed_axes": list[str],
@@ -334,6 +393,7 @@ class SelfCheck:
             "axis_1_calculation":  self.calc.check(agent_output),
             "axis_2_legal":        self.legal.check(agent_output),
             "axis_3_perspective":  self.persp.check(agent_output),
+            "axis_4_accounting":   self.acct.check(agent_output),   # ← 신규
         }
         failed = [k for k, v in results.items() if not v["pass"]]
         overall = len(failed) == 0
