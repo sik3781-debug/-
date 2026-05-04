@@ -11,7 +11,7 @@
 
 ### 작업 2 — 신규 4종 에이전트 (PART6)
 - `/연구노트` (RnDLabNotebookAgent, sonnet) — 직무발명·R&D 입증
-- `/사업계획서` (BusinessPlanProAgent, opus) — 정책자금·가업승계·인증
+- `/사업계획서` (BusinessPlanAgent, opus) — 정책자금·가업승계·인증
 - `/법률리스크체크` (LegalRiskHedgeAgent, opus) — 5대 영역 리스크 정량화
 - `/법무서류` (LegalDocumentDrafterAgent, sonnet) — 7종 표준 양식
 - 4종 모두 5축 검증 + 4단계 헷지 + 3중 루프 + 4자×3시점 매트릭스 ALL PASS
@@ -54,7 +54,7 @@ cd $env:USERPROFILE\consulting-agent; .\bootstrap\sync_from_remote.ps1
 
 ### 2-2. UTF-8 BOM (5개 신규 파일)
 - [ ] `agents/active/rnd_lab_notebook.py` BOM 확인
-- [ ] `agents/active/business_plan_pro.py` BOM 확인
+- [ ] `agents/active/business_plan_agent.py` BOM 확인
 - [ ] `agents/active/legal_risk_hedge.py` BOM 확인
 - [ ] `agents/active/legal_document_drafter.py` BOM 확인
 - [ ] `bootstrap/sync_from_remote.ps1` BOM 확인
@@ -144,7 +144,7 @@ git pull --ff-only
 ### 발견된 함정·리스크
 - **(함정 1)** consulting-agent 레포 이름이 `-` (dash 1글자) → 1줄 iwr URL 사용 시 주의
 - **(함정 2)** ANTHROPIC_API_KEY 미설정 상태 — analyze() 호출은 정상이나 run() 호출 시 KeyError. 4종 에이전트는 BaseAgent.__init__ 우회 패턴으로 회피
-- **(리스크 1)** BusinessPlanProAgent 클래스명 — 기존 agents/business_plan_agent.py:BusinessPlanAgent 와 충돌 회피 위해 Pro 접미사
+- **(리스크 1)** BusinessPlanAgent 클래스명 — 기존 agents/business_plan_agent.py:BusinessPlanAgent 와 충돌 회피 위해 Pro 접미사
 - **(리스크 2)** orchestrator.py ACTIVE_AGENTS_REGISTRY는 임포트만, _build_agent_map에는 미등록 — 정통 orchestrator.run() 실행 시 자동 호출 안 됨 (의도)
 
 ### 다음 컨설턴트 이용 시 주의사항

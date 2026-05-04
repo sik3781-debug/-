@@ -102,7 +102,7 @@ Write-Section "2. UTF-8 BOM 검증·재저장"
 $BOM = [byte[]](0xEF, 0xBB, 0xBF)
 $targets = @(
     "$ConsultingPath\agents\active\rnd_lab_notebook.py",
-    "$ConsultingPath\agents\active\business_plan_pro.py",
+    "$ConsultingPath\agents\active\business_plan_agent.py",
     "$ConsultingPath\agents\active\legal_risk_hedge.py",
     "$ConsultingPath\agents\active\legal_document_drafter.py",
     "$ConsultingPath\bootstrap\sync_from_remote.ps1"
@@ -188,7 +188,7 @@ for slash in ['/연구노트', '/사업계획서', '/법률리스크체크', '/�
 import importlib
 for cls_name, mod_path in [
     ('RnDLabNotebookAgent',       'agents.active.rnd_lab_notebook'),
-    ('BusinessPlanProAgent',      'agents.active.business_plan_pro'),
+    ('BusinessPlanAgent',      'agents.active.business_plan_agent'),
     ('LegalRiskHedgeAgent',       'agents.active.legal_risk_hedge'),
     ('LegalDocumentDrafterAgent', 'agents.active.legal_document_drafter'),
 ]:
@@ -221,7 +221,7 @@ print('SMOKE_TEST_RESULT=' + json.dumps(results, ensure_ascii=False))
                     Add-Failure ("슬래시 매칭 FAIL: " + $key)
                 }
             }
-            foreach ($cls in @('RnDLabNotebookAgent','BusinessPlanProAgent','LegalRiskHedgeAgent','LegalDocumentDrafterAgent')) {
+            foreach ($cls in @('RnDLabNotebookAgent','BusinessPlanAgent','LegalRiskHedgeAgent','LegalDocumentDrafterAgent')) {
                 $r = $smokeJson.$cls
                 $allOk = $r.'5axis' -and $r.hedge_4stage -and $r.self_4axis -and ($r.matrix_cells -eq 12)
                 if ($allOk) {

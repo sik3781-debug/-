@@ -1,8 +1,8 @@
-# BusinessPlanProAgent — `/사업계획서`
+# BusinessPlanAgent — `/사업계획서` (PART7 통합본)
 
 정책자금·가업승계·기업인증·IPO 대비 5년 사업계획서 자동 생성.
 
-⚠ **명명 주의**: 기존 `agents/business_plan_agent.py:BusinessPlanAgent`(슬래시 `/사업계획서작성`)와 클래스명 충돌 회피 위해 `BusinessPlanProAgent`로 명명. 슬래시 `/사업계획서` (기존과 분리).
+✅ **PART7 통합 완료**: 구 `agents/business_plan_agent.py:BusinessPlanAgent` (LLM 기반 본문 생성, str 반환)는 deprecation re-export로 대체. 정식 단일화 클래스 `agents.active.business_plan_agent.BusinessPlanAgent` (5축·4단계·매트릭스 dict 반환). 슬래시 `/사업계획서` (정식) + `/사업계획서작성` (alias, v1.1.0/2026-11-04 자동 삭제).
 
 ## 핵심 기능
 - 5년 매출·영업이익 추정 (낙관·중립·비관 3시나리오)
@@ -47,8 +47,8 @@
 
 ## 사용 예
 ```python
-from agents.active.business_plan_pro import BusinessPlanProAgent
-result = BusinessPlanProAgent().analyze({
+from agents.active.business_plan_agent import BusinessPlanAgent
+result = BusinessPlanAgent().analyze({
     "company_name": "가나산업", "industry": "제조업",
     "current_revenue": 5_000_000_000,
     "growth_rate_assumption": 0.15,

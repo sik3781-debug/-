@@ -1,10 +1,11 @@
 ﻿"""
-사업계획서 에이전트 (BusinessPlanProAgent)
-==========================================
-정책자금·가업승계 사후관리·기업인증용 5년 사업계획서 자동 생성.
+사업계획서 에이전트 (BusinessPlanAgent — 정식 통합본)
+=====================================================
+정책자금·가업승계 사후관리·기업인증·IPO 대비 5년 사업계획서 자동 생성.
 
-⚠ 클래스명: 기존 agents/business_plan_agent.py:BusinessPlanAgent 와 충돌 회피를
-   위해 `BusinessPlanProAgent` 명명. 슬래시 `/사업계획서` (기존 `/사업계획서작성` 분리).
+본 파일은 PART6 신설 (Pro 접미사) → PART7 통합 (Pro 제거) 정식 단일화 결과물.
+구 agents/business_plan_agent.py (LLM 기반 BusinessPlanAgent)는 deprecation
+re-export로 대체되어 본 모듈로 자동 라우팅됨 (v1.1.0 / 2026-11-04 자동 삭제).
 
 핵심 법령:
 - 중소기업기본법 §2 (중소기업 적격성 — 매출·자산 기준)
@@ -59,10 +60,15 @@ POLICY_FUND_MATCH = {
 }
 
 
-class BusinessPlanProAgent(BaseAgent):
-    """정책자금·가업승계·인증용 5년 사업계획서 작성 에이전트."""
+class BusinessPlanAgent(BaseAgent):
+    """정책자금·가업승계·인증·IPO 대비 5년 사업계획서 작성 에이전트.
 
-    name: str = "BusinessPlanProAgent"
+    PART6→PART7 통합본. 구 agents/business_plan_agent.py:BusinessPlanAgent
+    (LLM 기반 본문 생성)는 deprecation 처리되었으며, 본 클래스가 정식.
+    LLM 기반 본문 생성 능력은 후속 세션에서 narrative 메서드로 보강 예정.
+    """
+
+    name: str = "BusinessPlanAgent"
     role: str = "정책자금·가업승계 사업계획서 전문가"
     model: str = "claude-opus-4-7"
     system_prompt: str = (

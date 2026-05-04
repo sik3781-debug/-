@@ -1,4 +1,4 @@
-"""
+﻿"""
 orchestrator.py
 ===============
 53개 전문 에이전트 완전 병렬 실행 + 3개 검증 에이전트 병렬 검증 + ReportAgent 통합 보고
@@ -82,7 +82,9 @@ from agents.real_estate_agent import RealEstateAgent
 from agents.insurance_agent import InsuranceAgent
 from agents.ma_valuation_agent import MAValuationAgent
 from agents.esg_risk_agent import ESGRiskAgent
-from agents.business_plan_agent import BusinessPlanAgent
+# BusinessPlanAgent는 PART7 통합 — agents/active/business_plan_agent.py가 정식.
+# 구 import 경로(agents.business_plan_agent)는 deprecation re-export로 유지.
+from agents.active.business_plan_agent import BusinessPlanAgent
 from agents.provisional_payment_agent import ProvisionalPaymentAgent
 from agents.nominee_stock_agent import NomineeStockAgent
 from agents.executive_pay_agent import ExecutivePayAgent
@@ -129,13 +131,13 @@ from report_to_ppt import build_ppt
 # 자율 호출. 직접 import 가능하도록 ACTIVE_AGENTS_REGISTRY에 등록.
 # ──────────────────────────────────────────────────────────────────────────
 from agents.active.rnd_lab_notebook       import RnDLabNotebookAgent
-from agents.active.business_plan_pro      import BusinessPlanProAgent
 from agents.active.legal_risk_hedge       import LegalRiskHedgeAgent
 from agents.active.legal_document_drafter import LegalDocumentDrafterAgent
+# BusinessPlanAgent는 위에서 import (PART7 통합)
 
 ACTIVE_AGENTS_REGISTRY: dict[str, type] = {
     "RnDLabNotebookAgent":       RnDLabNotebookAgent,
-    "BusinessPlanProAgent":      BusinessPlanProAgent,
+    "BusinessPlanAgent":         BusinessPlanAgent,
     "LegalRiskHedgeAgent":       LegalRiskHedgeAgent,
     "LegalDocumentDrafterAgent": LegalDocumentDrafterAgent,
 }
@@ -608,7 +610,14 @@ class Orchestrator:
         query == '__USE_ANALYZE__' 이면 agent.analyze(company_data) 호출."""
         try:
             if query == "__USE_ANALYZE__" and hasattr(agent, "analyze") and company_data:
-                result = agent.analyze(company_data)
+                raw = agent.analyze(company_data)
+                # PART7 통합: 신규 5축·4단계·매트릭스 dict 반환 호환
+                if isinstance(raw, dict):
+                    # text 키 추출 (5축·4단계 metadata는 agent 인스턴스에 보존)
+                    agent._last_analysis_dict = raw
+                    result = raw.get("text") or str(raw)
+                else:
+                    result = raw
             else:
                 result = agent.run(query, reset=True)
 
