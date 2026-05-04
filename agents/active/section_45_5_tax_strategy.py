@@ -72,6 +72,7 @@ class Section45_5TaxStrategyAgent:
             "process":  process,
             "post":     post,
             "matrix_4x3":             matrix,
+            "matrix_12cells":         matrix,
             "text":                   text,
             "summary":                strategy["summary"],
             "require_full_4_perspective": True,
