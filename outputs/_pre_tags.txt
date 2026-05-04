@@ -1,2 +1,0 @@
-﻿backup-before-redo-20260504-OFFICE-B
-rollback-before-sync-20260504_115018

@@ -1,4 +1,0 @@
-﻿  backup-before-sync-20260504_115018
-* main
-  remotes/origin/HEAD -> origin/main
-  remotes/origin/main
