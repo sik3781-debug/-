@@ -4,7 +4,7 @@
     "created": "2026-05-05",
     "device": "DESKTOP-IHLF847",
     "description": "한국어 슬래시 명령 별칭 레지스트리 (router/ 로컬 — 정규화 + alias 기준)",
-    "total_commands": 52,
+    "total_commands": 55,
     "note": "자연어 트리거는 junggi-workspace/claude-code/commands/command_router.json 참조"
   },
 
@@ -267,5 +267,20 @@
     "agent": "AuditPreparationAgent",
     "module": "agents.active.audit_preparation",
     "aliases": ["/감사대비", "/Audit재무", "/외감대비"]
+  },
+  "/자금리서치알림": {
+    "agent": "FundingResearchAlertAgent",
+    "module": "agents.active.funding_research_alert",
+    "aliases": ["/자금리서치", "/ECOS조회", "/금리알림"]
+  },
+  "/카톡알림": {
+    "agent": "KakaoNotifierAgent",
+    "module": "agents.active.kakao_notifier",
+    "aliases": ["/카카오알림", "/알림톡", "/KakaoNotify"]
+  },
+  "/Gmail발송": {
+    "agent": "GmailSenderAgent",
+    "module": "agents.active.gmail_sender",
+    "aliases": ["/Gmail", "/이메일발송", "/GmailSend"]
   }
 }
