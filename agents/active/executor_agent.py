@@ -173,22 +173,33 @@ class SystemEnhancementExecutorAgent:
 
         company_data가 비어있으면 Discovery 결과를 자동으로 가져와 처리.
         user_approval_fn=None으로 USER_APPROVAL은 pending 상태로 보고만 (자동 승인 X).
+        dry_run=True 시 실제 변경 없이 시뮬레이션만 수행.
         """
-        # 1. 최신 Discovery 보고서 자동 로드 (없으면 빈 보고서)
-        from agents.active.discovery_agent import SystemEnhancementDiscoveryAgent
-        try:
-            discovery = SystemEnhancementDiscoveryAgent().discover()
-        except Exception as e:
-            discovery = {
-                "date": date.today().isoformat(),
-                "total_opportunities": 0,
-                "prioritized_top10": [],
-                "summary": f"discovery 실행 실패: {e}",
-                "raw": {},
-            }
+        dry_run = (company_data or {}).get("dry_run", False)
 
-        # 2. execute() — user_approval_fn=None (USER_APPROVAL은 pending 보고만)
-        executor_result = self.execute(discovery, user_approval_fn=None)
+        # dry_run 모드: Discovery 없이 빈 결과로 시뮬레이션
+        if dry_run:
+            executor_result = {
+                "date":    date.today().isoformat(),
+                "results": [],
+                "changes": [],
+                "summary": "dry_run 모드 — 실제 변경 없음",
+            }
+        else:
+            # 1. 최신 Discovery 보고서 자동 로드 (없으면 빈 보고서)
+            from agents.active.discovery_agent import SystemEnhancementDiscoveryAgent
+            try:
+                discovery = SystemEnhancementDiscoveryAgent().discover()
+            except Exception as e:  # noqa: BLE001
+                discovery = {
+                    "date": date.today().isoformat(),
+                    "total_opportunities": 0,
+                    "prioritized_top10": [],
+                    "summary": f"discovery 실행 실패: {e}",
+                    "raw": {},
+                }
+            # 2. execute() — user_approval_fn=None (USER_APPROVAL은 pending 보고만)
+            executor_result = self.execute(discovery, user_approval_fn=None)
 
         # 3. 본문 + 매트릭스·헷지·5축·자가검증
         n_auto    = sum(1 for r in executor_result["results"] if r["status"] == "auto_executed")
@@ -214,6 +225,9 @@ class SystemEnhancementExecutorAgent:
         result["risk_hedge_4stage"] = self._generate_4stage_hedge()
         result["risk_5axis"]        = self._validate_5axis(result, executor_result)
         result["self_check_4axis"]  = self._self_check_4axis(text, result)
+        # 5-1 이행 검증 필수 필드
+        result["actions_taken"]     = executor_result.get("changes", [])
+        result["rollback_available"] = True  # 모든 auto-commit은 git revert 가능
         return result
 
     def _build_4x3_matrix(self, er: dict) -> dict:

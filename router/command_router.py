@@ -29,6 +29,8 @@ _WORKSPACE = os.path.normpath(os.path.join(_HERE, "..", "..", "junggi-workspace"
 _JSON_PATH = os.path.join(
     _WORKSPACE, "claude-code", "commands", "command_router.json"
 )
+# 로컬 alias 레지스트리 (router/command_router.json)
+_ALIAS_JSON_PATH = os.path.join(_HERE, "command_router.json")
 
 
 # ──────────────────────────────────────────────────────────────
@@ -136,20 +138,16 @@ class RouteResult:
 # 메인 라우터
 # ──────────────────────────────────────────────────────────────
 class CommandRouter:
-    """
-    자연어 또는 슬래시 명령 → 에이전트 라우팅.
+    """자연어 또는 슬래시 명령 → 에이전트 라우팅."""
 
-    사용 예:
-        router = CommandRouter()
-        result = router.route("비상장주식 평가해줘")
-        if result.status == "auto_route":
-            print(result.best.command, result.best.confidence)
-    """
-
-    def __init__(self, json_path: str = _JSON_PATH):
+    def __init__(self, json_path: str = _JSON_PATH,
+                 alias_json_path: str = _ALIAS_JSON_PATH):
         self.json_path = json_path
+        self.alias_json_path = alias_json_path
         self.commands: dict[str, dict] = {}
         self._trigger_index: list[tuple[str, str, set[str]]] = []
+        # alias → canonical command (e.g. "/RnD노트" → "/연구노트")
+        self._alias_index: dict[str, str] = {}
         self._load()
 
     def _load(self) -> None:
@@ -157,17 +155,44 @@ class CommandRouter:
             raw: dict = json.load(f)
 
         for cmd, meta in raw.items():
-            if cmd.startswith("_"):  # _meta 등 스킵
+            if cmd.startswith("_"):
                 continue
             self.commands[cmd] = meta
             triggers: list[str] = meta.get("natural_language_triggers", [])
             for t in triggers:
                 self._trigger_index.append((cmd, t, _tokenize(t)))
 
+        # 로컬 alias 레지스트리 로드 (없으면 건너뜀)
+        if os.path.exists(self.alias_json_path):
+            try:
+                with open(self.alias_json_path, encoding="utf-8") as f:
+                    alias_raw: dict = json.load(f)
+                for canonical, meta in alias_raw.items():
+                    if canonical.startswith("_"):
+                        continue
+                    # canonical 자체도 alias index에 등록 (대소문자 정규화용)
+                    self._alias_index[canonical.lower()] = canonical
+                    for alias in meta.get("aliases", []):
+                        self._alias_index[alias.lower()] = canonical
+                        self._alias_index[alias] = canonical
+                    # alias JSON에만 있는 명령도 commands에 등록
+                    if canonical not in self.commands:
+                        self.commands[canonical] = {
+                            "agent": meta.get("agent", ""),
+                            "agent_file": meta.get("module", "").replace(".", "/") + ".py",
+                            "natural_language_triggers": [],
+                            "output_format": meta.get("output_format", "md"),
+                            "model": meta.get("model", "sonnet"),
+                            "category": meta.get("category", "보조"),
+                        }
+            except (json.JSONDecodeError, OSError):
+                pass
+
     def reload(self) -> None:
         """JSON 변경 시 런타임 핫 리로드"""
         self.commands.clear()
         self._trigger_index.clear()
+        self._alias_index.clear()
         self._load()
 
     # ── 퍼블릭 API ───────────────────────────────────────────
@@ -216,12 +241,21 @@ class CommandRouter:
     # ── 내부 메서드 ──────────────────────────────────────────
 
     def _direct_match(self, slash_input: str) -> RouteMatch | None:
-        """슬래시 명령 정확 매칭 (공백 앞까지)"""
-        cmd = slash_input.split()[0]  # "/명령 인자..." → "/명령"
+        """슬래시 명령 정확 매칭 — alias 포함."""
+        cmd = slash_input.split()[0]
+
+        # 1. 완전 일치
         if cmd in self.commands:
             meta = self.commands[cmd]
             return RouteMatch(cmd, meta, confidence=1.0, matched_trigger=cmd)
-        # 대소문자·공백 정규화 재시도
+
+        # 2. alias → canonical 변환 후 재매칭
+        canonical = self._alias_index.get(cmd) or self._alias_index.get(cmd.lower())
+        if canonical and canonical in self.commands:
+            meta = self.commands[canonical]
+            return RouteMatch(canonical, meta, confidence=1.0, matched_trigger=cmd)
+
+        # 3. 대소문자 정규화 재시도
         for registered in self.commands:
             if registered.lower() == cmd.lower():
                 meta = self.commands[registered]
@@ -294,3 +328,27 @@ class CommandRouter:
             )
         lines.append("번호를 입력하거나 더 구체적으로 다시 입력해주세요.")
         return "\n".join(lines)
+
+
+# ──────────────────────────────────────────────────────────────
+# 모듈 수준 편의 함수 (테스트·검증 스크립트용)
+# ──────────────────────────────────────────────────────────────
+_default_router: "CommandRouter | None" = None
+
+
+def route_command(text: str) -> "RouteResult | None":
+    """
+    슬래시 명령 또는 자연어 → RouteResult.
+    no_match 시 None 반환. 싱글턴 CommandRouter 재사용.
+
+    사용 예:
+        from router.command_router import route_command
+        result = route_command("/자기주식주가유동화")
+        result = route_command("/주가유동화")          # alias OK
+        result = route_command("비상장주식 평가해줘")  # 자연어 OK
+    """
+    global _default_router
+    if _default_router is None:
+        _default_router = CommandRouter()
+    result = _default_router.route(text)
+    return None if result.status == "no_match" else result

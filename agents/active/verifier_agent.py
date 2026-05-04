@@ -210,6 +210,12 @@ class EnhancementVerifierAgent:
         result["risk_5axis"]        = self._validate_5axis(result, verify_result)
         result["self_check_4axis"]  = self._self_check_4axis(text, result)
 
+        # 검증 점수 (0~100) — 5-1 이행 검증 필수 필드
+        func  = verify_result.get("report", {}).get("functional", {})
+        passed = func.get("passed", 0)
+        total  = func.get("total", len(_5_SIMULATORS))
+        result["verification_score"] = round((passed / total * 100) if total else 100)
+
         return result
 
     def _build_4x3_matrix(self, vr: dict) -> dict:

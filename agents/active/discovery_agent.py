@@ -232,6 +232,8 @@ class SystemEnhancementDiscoveryAgent:
             "summary": f"발견 기회 {report['total_opportunities']}건 — TOP: {top1_key}",
             "discovery_report": report,
             "require_full_4_perspective": True,
+            # 5-1 이행 검증 필수 필드
+            "findings": report.get("prioritized_top10", []),
         }
         result["matrix_4x3"]        = self._build_4x3_matrix(report)
         result["risk_hedge_4stage"] = self._generate_4stage_hedge()

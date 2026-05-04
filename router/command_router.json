@@ -1,0 +1,191 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "created": "2026-05-05",
+    "device": "DESKTOP-IHLF847",
+    "description": "한국어 슬래시 명령 별칭 레지스트리 (router/ 로컬 — 정규화 + alias 기준)",
+    "total_commands": 36,
+    "note": "자연어 트리거는 junggi-workspace/claude-code/commands/command_router.json 참조"
+  },
+
+  "/연구노트": {
+    "agent": "RnDLabNotebookAgent",
+    "module": "agents.active.rnd_lab_notebook",
+    "aliases": ["/연구노트작성", "/RnD노트", "/lab_notebook", "/연구노트생성"]
+  },
+  "/사업계획서": {
+    "agent": "BusinessPlanAgent",
+    "module": "agents.active.business_plan_agent",
+    "aliases": ["/사업계획서작성", "/BP", "/business_plan", "/사업계획"]
+  },
+  "/법무서류": {
+    "agent": "LegalDocumentDrafterAgent",
+    "module": "agents.active.legal_document_drafter",
+    "aliases": ["/법무서류작성", "/legal_doc", "/정관작성", "/이사회의사록"]
+  },
+  "/법무서류검증": {
+    "agent": "LegalRiskHedgeAgent",
+    "module": "agents.active.legal_risk_hedge",
+    "aliases": ["/법률리스크체크", "/legal_risk", "/risk_hedge", "/법률리스크", "/법무검증"]
+  },
+  "/자기주식주가유동화": {
+    "agent": "TreasuryStockLiquidationAgent",
+    "module": "agents.active.treasury_stock_liquidation",
+    "aliases": ["/자기주식유동화", "/주가유동화", "/treasury_liquidation", "/자기주식주가", "/주가유동"]
+  },
+  "/상증45의5절세": {
+    "agent": "Section45_5TaxStrategyAgent",
+    "module": "agents.active.section_45_5_tax_strategy",
+    "aliases": ["/45의5절세", "/특정법인절세", "/section_45_5", "/상증45의5", "/특정법인거래절세"]
+  },
+  "/시스템검증": {
+    "agent": "EnhancementVerifierAgent",
+    "module": "agents.active.verifier_agent",
+    "aliases": ["/검증실행", "/verifier", "/자가검증", "/회귀검증"]
+  },
+  "/시스템발견": {
+    "agent": "SystemEnhancementDiscoveryAgent",
+    "module": "agents.active.discovery_agent",
+    "aliases": ["/개선발견", "/discovery", "/고도화발견", "/시스템개선발견"]
+  },
+  "/시스템실행": {
+    "agent": "SystemEnhancementExecutorAgent",
+    "module": "agents.active.executor_agent",
+    "aliases": ["/자동실행", "/executor", "/고도화실행", "/시스템개선실행"]
+  },
+  "/자기주식전략": {
+    "agent": "TreasuryStockStrategyAgent",
+    "module": "agents.active.treasury_stock_strategy",
+    "aliases": ["/자기주식5종", "/treasury_stock", "/자기주식", "/자사주전략"]
+  },
+  "/자녀법인설계": {
+    "agent": "ChildCorpDesignAgent",
+    "module": "agents.active.child_corp_design",
+    "aliases": ["/자녀법인", "/child_corp", "/일감몰아주기설계", "/자녀법인신설"]
+  },
+  "/민사신탁": {
+    "agent": "CivilTrustAgent",
+    "module": "agents.active.civil_trust",
+    "aliases": ["/신탁설계", "/civil_trust", "/유언대용신탁", "/타익신탁"]
+  },
+  "/사내복지기금": {
+    "agent": "CorporateBenefitsFundAgent",
+    "module": "agents.active.corporate_benefits_fund",
+    "aliases": ["/복지기금", "/benefits_fund", "/사내근로복지기금", "/복지기금출연"]
+  },
+  "/특수관계거래": {
+    "agent": "SpecialCorpTransactionAgent",
+    "module": "agents.active.special_corp_transaction",
+    "aliases": ["/45의5거래", "/상증45의5거래", "/special_corp", "/특수관계법인거래"]
+  },
+  "/미처분이익잉여금": {
+    "agent": "RetainedEarningsManagementAgent",
+    "module": "agents.active.retained_earnings_management",
+    "aliases": ["/이익잉여금처리", "/retained_earnings", "/이익잉여금", "/이익소각"]
+  },
+  "/장기자산이전": {
+    "agent": "LongTermAssetTransferAgent",
+    "module": "agents.active.long_term_asset_transfer",
+    "aliases": ["/10년로드맵", "/자산이전로드맵", "/long_term_asset", "/20년승계"]
+  },
+  "/재무구조개선": {
+    "agent": "CapitalStructureImprovementAgent",
+    "module": "agents.active.capital_structure_improvement",
+    "aliases": ["/재무구조조달", "/capital_structure", "/ABL메자닌", "/재무구조"]
+  },
+  "/특허현금흐름시뮬": {
+    "agent": "PatentCashflowSimulator",
+    "module": "agents.active.patent_cashflow_simulator",
+    "aliases": ["/특허NPV시뮬", "/patent_cashflow", "/특허현금흐름", "/특허통합NPV"]
+  },
+  "/부동산탁상감정": {
+    "agent": "RealEstateDesktopAppraisalAgent",
+    "module": "agents.active.real_estate_desktop_appraisal",
+    "aliases": ["/탁상감정", "/desktop_appraisal", "/부동산약식평가", "/30초감정"]
+  },
+  "/부동산정식평가": {
+    "agent": "RealEstateValuationAgent",
+    "module": "agents.active.real_estate_valuation",
+    "aliases": ["/부동산4종평가", "/real_estate_valuation", "/부동산정밀평가", "/공시지가평가"]
+  },
+  "/평가최적화": {
+    "agent": "ValuationOptimizationAgent",
+    "module": "agents.active.valuation_optimization",
+    "aliases": ["/평가액조정", "/valuation_optimization", "/상증54평가", "/비상장평가최적화"]
+  },
+  "/초회미팅분석": {
+    "agent": "InitialMeetingOrchestrator",
+    "module": "agents.active.initial_meeting_orchestrator",
+    "aliases": ["/초회미팅", "/initial_meeting", "/첫미팅분석", "/신규고객자료"]
+  },
+  "/크레탑분석": {
+    "agent": "KredTopParser",
+    "module": "agents.active.kredtop_parser",
+    "aliases": ["/크레탑", "/kredtop", "/신용조회분석", "/크레탑파싱"]
+  },
+  "/재무제표분석": {
+    "agent": "FinancialStatementPDFParser",
+    "module": "agents.active.financial_statement_pdf_parser",
+    "aliases": ["/재무제표파싱", "/financial_statement", "/결산서분석", "/PDF재무제표"]
+  },
+  "/PII마스킹": {
+    "agent": "PIIMaskingAgent",
+    "module": "agents.active.pii_masking_agent",
+    "aliases": ["/개인정보마스킹", "/pii_masking", "/주민번호마스킹", "/민감정보마스킹"]
+  },
+  "/마스터컨설팅": {
+    "agent": "Orchestrator",
+    "module": "orchestrator",
+    "aliases": ["/전체컨설팅", "/master_consulting", "/5단계파이프라인", "/종합컨설팅"]
+  },
+  "/가업승계시뮬": {
+    "agent": "SuccessionAgent",
+    "module": "agents.consulting_agents",
+    "aliases": ["/가업승계", "/succession", "/가업승계시뮬레이션", "/승계전략"]
+  },
+  "/비상장주식평가": {
+    "agent": "StockAgent",
+    "module": "agents.consulting_agents",
+    "aliases": ["/비상장평가", "/stock_valuation", "/주식평가", "/비상장주식"]
+  },
+  "/법인재무종합분석": {
+    "agent": "TaxAgent",
+    "module": "agents.consulting_agents",
+    "aliases": ["/법인세절세", "/corporate_tax", "/법인세", "/법인재무분석"]
+  },
+  "/가지급금해소시뮬": {
+    "agent": "ProvisionalPaymentAgent",
+    "module": "agents.provisional_payment_agent",
+    "aliases": ["/가지급금", "/provisional_payment", "/가지급금해소", "/인정이자계산"]
+  },
+  "/차명주식해소": {
+    "agent": "NomineeStockAgent",
+    "module": "agents.nominee_stock_agent",
+    "aliases": ["/차명주식", "/nominee_stock", "/명의신탁해소", "/바지주주정리"]
+  },
+  "/임원퇴직금한도": {
+    "agent": "ExecutivePayAgent",
+    "module": "agents.executive_pay_agent",
+    "aliases": ["/임원퇴직금", "/executive_retirement", "/대표이사퇴직금", "/퇴직금한도"]
+  },
+  "/가업승계종합": {
+    "agent": "CollaborationPatterns.succession_mega",
+    "module": "workflows.collaboration_patterns",
+    "aliases": ["/가업승계종합설계", "/승계종합", "/succession_mega", "/10년자산이전"]
+  },
+  "/비상장정밀평가": {
+    "agent": "CollaborationPatterns.stock_valuation_precision",
+    "module": "workflows.collaboration_patterns",
+    "aliases": ["/비상장정밀", "/stock_valuation_precision", "/주식정밀평가"]
+  },
+  "/시나리오시뮬": {
+    "agent": "ScenarioComparatorAgent",
+    "module": "agents.active.scenario_comparator",
+    "aliases": ["/시나리오비교", "/scenario_sim", "/절세시나리오", "/시나리오비교시뮬"]
+  },
+  "/경정청구": {
+    "agent": "TaxRefundClaimAgent",
+    "module": "agents.active.scenario_comparator",
+    "aliases": ["/세금환급", "/tax_refund", "/과납세금환급", "/5년환급"]
+  }
+}
