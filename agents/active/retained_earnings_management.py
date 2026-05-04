@@ -1,4 +1,16 @@
-"""미처분이익잉여금 처리 4방안 에이전트 — 4단계 워크플로우"""
+"""
+미처분이익잉여금 처리 4방안 에이전트 (/미처분이익잉여금) — 4단계 워크플로우
+
+핵심 법령:
+  소득세법§17②4호 (자기주식 소각 — 의제배당)
+  소득세법§17②2호 (자본전입 — 의제배당)
+  소득세법§94①3호 (주식 양도소득)
+  법인세법§16 (배당금 손금 불산입)
+  상법§341 (자기주식 취득 요건)
+  상증§38 (합병에 따른 이익의 증여 — 자본전입 연동)
+  조특§91의14 (중소기업 배당소득 분리과세 특례)
+  국기법§47의3 (원천징수 불이행 가산세)
+"""
 from __future__ import annotations
 
 
@@ -44,16 +56,24 @@ class RetainedEarningsManagementAgent:
         buyback_tax = retained * owner_pct * self.BUYBACK_RATE
 
         methods = [
-            {"method": "① 배당",              "tax": div_tax,
+            {"name": "① 배당 (소득세법§17①1호)",
+             "method": "① 배당",              "tax": div_tax,
              "after": retained * owner_pct - div_tax,
-             "effective_rate": f"{div_tax / max(retained, 1):.1%}"},
-            {"method": "② 자기주식 취득→양도", "tax": buyback_tax,
+             "effective_rate": f"{div_tax / max(retained, 1):.1%}",
+             "law": "소득세법§17①1호 배당소득 + 조특§91의14 분리과세 검토"},
+            {"name": "② 자기주식 취득→양도 (소득세법§94①3호)",
+             "method": "② 자기주식 취득→양도", "tax": buyback_tax,
              "after": retained * owner_pct - buyback_tax,
-             "effective_rate": f"{buyback_tax / max(retained, 1):.1%}"},
-            {"method": "③ 자본전입",           "tax": div_tax,
-             "after": 0, "effective_rate": f"{div_tax / max(retained, 1):.1%}"},
-            {"method": "④ 이익소각",           "tax": buyback_tax,
-             "after": 0, "effective_rate": f"{buyback_tax / max(retained, 1):.1%}"},
+             "effective_rate": f"{buyback_tax / max(retained, 1):.1%}",
+             "law": "상법§341 취득 요건 + 소득세법§94①3호 양도소득"},
+            {"name": "③ 자본전입 (소득세법§17②2호 의제배당)",
+             "method": "③ 자본전입",           "tax": div_tax,
+             "after": 0, "effective_rate": f"{div_tax / max(retained, 1):.1%}",
+             "law": "소득세법§17②2호 의제배당 → 원천징수 의무 (국기법§47의3)"},
+            {"name": "④ 이익소각 (소득세법§17②4호 의제배당)",
+             "method": "④ 이익소각",           "tax": buyback_tax,
+             "after": 0, "effective_rate": f"{buyback_tax / max(retained, 1):.1%}",
+             "law": "소득세법§17②4호 소각 시 의제배당 — 취득단가 > 소각가 시 과세"},
         ]
         best = min(methods, key=lambda m: m["tax"])
 

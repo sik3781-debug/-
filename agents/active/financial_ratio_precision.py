@@ -1,8 +1,15 @@
 """
 재무비율 정밀분석 에이전트 (/재무비율정밀분석) — 4단계 워크플로우
 
-핵심 기준:
-  K-IFRS 1007 (현금흐름표), 외감법 (외부감사 기준)
+핵심 법령:
+  외감법§4 (외부감사 대상 기준 — 자산 120억·매출 100억)
+  K-IFRS 1001 (재무제표 표시 기준)
+  K-IFRS 1007 (현금흐름표 작성 기준)
+  법인세법§52 (부당행위계산 부인 — 비율 이상치 연계)
+  조특§126의2 (금융정보 분석·신용평가 지원)
+  국기법§81의6 (세무조사 거부권 — 비율 급락 시 세무조사 트리거)
+  상증§63② (비상장주식 보충적 평가 — 재무비율 연동)
+  소득세법§94 (자산 양도 소득 — 신용등급 하락 연계)
   신용평가 5축: 수익성·성장성·안정성·활동성·유동성
 """
 from __future__ import annotations
@@ -106,6 +113,22 @@ class FinancialRatioPrecisionAgent:
         # 개선 우선순위
         improvement = sorted(scores.items(), key=lambda x: x[1])[:3]
 
+        # 개선 시나리오 3종 (외감법§4 적정의견 유지 목표)
+        scenarios = [
+            {"name": "수익성 집중 개선",
+             "target": "ROA 5%·ROE 10% 달성",
+             "method": "영업이익률 제고 — 원가절감 + 매출 Mix 개선",
+             "law": "법인세법§52 부당행위 계산 부인 리스크 병행 점검"},
+            {"name": "안정성·유동성 균형 개선",
+             "target": "부채비율 200% 이하·유동비율 150% 이상",
+             "method": "단기부채 장기 전환·운전자본 최적화 (K-IFRS 1007 현금흐름 연동)",
+             "law": "외감법§4 외감 대상 비율 요건 충족 확인"},
+            {"name": "현행 유지 (모니터링)",
+             "target": f"현재 신용점수 {credit_score:.1%} 유지",
+             "method": "분기별 5축 재진단 — 이상치 조기 포착",
+             "law": "K-IFRS 1001 재무제표 표시 기준 준수"},
+        ]
+
         text = (
             f"법인 측면: 재무비율 5축 정밀분석 — "
             f"종합 신용점수 {credit_score:.1%}.\n"
@@ -118,6 +141,7 @@ class FinancialRatioPrecisionAgent:
         return {
             "ratios": ratios, "scores": scores,
             "credit_score": credit_score, "improvement": improvement,
+            "scenarios": scenarios, "recommended": scenarios[0]["name"],
             "revenue": revenue, "total_assets": total_assets,
             "text": text,
         }

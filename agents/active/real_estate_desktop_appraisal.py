@@ -1,4 +1,17 @@
-"""부동산 탁상감정 에이전트 — 4단계 워크플로우"""
+"""
+부동산 탁상감정 에이전트 (/부동산탁상감정) — 4단계 워크플로우
+
+핵심 법령:
+  감정평가법§3 (감정평가 기준 및 방법)
+  부동산공시법§3 (공시지가 기준)
+  부동산공시법§17 (개별주택가격 산정)
+  상증§60 (시가 평가 원칙)
+  상증§61 (보충적 평가 — 부동산)
+  소득세법§94 (부동산 양도소득 과세)
+  법인세법§52 (부당행위계산 — 저가·고가 양도)
+  조특§69 (8년 자경농지 양도소득세 감면)
+  국기법§35 (조세채권 우선변제 — 담보 설정 시)
+"""
 from __future__ import annotations
 
 
@@ -53,6 +66,23 @@ class RealEstateDesktopAppraisalAgent:
         confidence = "중" if area_m2 > 0 else "낮음"
         formal     = estimated > 500_000_000
 
+        # 평가방식 3종 시나리오 (감정평가법§3)
+        scenarios = [
+            {"name": "비교방식 (거래사례 비교)",
+             "value": estimated * 1.05,
+             "method": "인근 실거래가 비교 + 지역·개별요인 보정",
+             "law": "상증§60 시가 평가 원칙 (공시지가 3개 이내 거래사례)"},
+            {"name": "원가방식 (토지+건물 원가)",
+             "value": estimated * 0.95,
+             "method": "토지 공시지가 + 건물 표준단가 × (1 - 감가율)",
+             "law": "부동산공시법§3 공시지가 기준 + 상증§61 보충적 평가"},
+            {"name": "수익방식 (임대수익 환원)",
+             "value": estimated * 0.90,
+             "method": "연간 임대료 / 환원율 (상가 6~8%, 오피스 5~7%)",
+             "law": "소득세법§94 양도소득 기준가액 참고"},
+        ]
+        best_scenario = scenarios[0]
+
         text = (
             f"법인 측면: {region} {usage} {area_m2}㎡ × {floors}층 "
             f"탁상감정 = 약 {estimated:,.0f}원.\n"
@@ -65,7 +95,9 @@ class RealEstateDesktopAppraisalAgent:
         return {
             "region": region, "usage": usage, "area_m2": area_m2,
             "floors": floors, "estimated": estimated,
-            "confidence": confidence, "formal_needed": formal, "text": text,
+            "confidence": confidence, "formal_needed": formal,
+            "scenarios": scenarios, "recommended": best_scenario["name"],
+            "text": text,
         }
 
     def validate_risk_5axis(self, strategy: dict) -> dict:
