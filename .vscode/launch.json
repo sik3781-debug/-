@@ -1,0 +1,36 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "🤖 orchestrator.py",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/orchestrator.py",
+      "console": "integratedTerminal",
+      "justMyCode": false,
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}"
+      }
+    },
+    {
+      "name": "🧪 현재 파일 실행",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal",
+      "justMyCode": false,
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}"
+      }
+    },
+    {
+      "name": "🔬 pytest (전체 테스트)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "pytest",
+      "args": ["test/", "-v", "--tb=short"],
+      "console": "integratedTerminal",
+      "justMyCode": false
+    }
+  ]
+}

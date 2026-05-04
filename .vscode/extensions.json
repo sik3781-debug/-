@@ -1,0 +1,15 @@
+{
+  "recommendations": [
+    "ms-python.python",
+    "ms-python.debugpy",
+    "ms-python.black-formatter",
+    "ms-python.pylint",
+    "esbenp.prettier-vscode",
+    "yzhang.markdown-all-in-one",
+    "mechatroner.rainbow-csv",
+    "GrapeCity.gc-excelviewer",
+    "ms-vscode.powershell",
+    "GitHub.vscode-pull-request-github",
+    "eamodio.gitlens"
+  ]
+}

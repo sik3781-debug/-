@@ -1,0 +1,108 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "🤖 consulting-agent 실행",
+      "detail": "orchestrator.py 실행 (메인 컨설팅 AI 진입점)",
+      "type": "shell",
+      "command": "python orchestrator.py",
+      "options": { "cwd": "${workspaceFolder}" },
+      "presentation": { "reveal": "always", "panel": "dedicated", "focus": true },
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": []
+    },
+    {
+      "label": "🔄 sync: git pull origin main",
+      "detail": "원격 최신화 (매일 작업 시작 전 실행)",
+      "type": "shell",
+      "command": "git pull origin main && git status",
+      "options": { "cwd": "${workspaceFolder}" },
+      "presentation": { "reveal": "always", "panel": "shared" },
+      "problemMatcher": []
+    },
+    {
+      "label": "✅ 에이전트 임포트 검증",
+      "detail": "agents/active/ 전체 py_compile + import 검증",
+      "type": "shell",
+      "command": "python -c \"import sys; sys.path.insert(0,'${workspaceFolder}'); from agents.all_agents import *; print('[OK] all agents loaded')\"",
+      "options": { "cwd": "${workspaceFolder}" },
+      "presentation": { "reveal": "always", "panel": "new" },
+      "problemMatcher": []
+    },
+    {
+      "label": "🛡️ 자가검증 3축 테스트",
+      "detail": "수치 계산·법령 근거·4자관점 5샘플 검증",
+      "type": "shell",
+      "command": "python -m pytest test/ -v --tb=short 2>&1 | head -50",
+      "options": { "cwd": "${workspaceFolder}" },
+      "presentation": { "reveal": "always", "panel": "new" },
+      "problemMatcher": []
+    },
+    {
+      "label": "💾 D-1: 통합 전 백업",
+      "detail": ".claude/ 압축 백업 + git add·commit (push 제외)",
+      "type": "shell",
+      "command": "$dir=\"$env:USERPROFILE\\Documents\\claude_backup\"; if(!(Test-Path $dir)){New-Item -ItemType Directory $dir | Out-Null}; $zip=\"$dir\\claude_$(Get-Date -Format yyyyMMdd_HHmm).zip\"; Compress-Archive -Path \"$env:USERPROFILE\\.claude\" -DestinationPath $zip -Force; Write-Output \"백업: $zip ($([math]::Round((Get-Item $zip).Length/1MB,2)) MB)\"",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "shell": { "executable": "powershell", "args": ["-ExecutionPolicy", "Bypass", "-Command"] }
+      },
+      "presentation": { "reveal": "always", "panel": "new" },
+      "problemMatcher": []
+    },
+    {
+      "label": "🔍 에이전트 목록 조회",
+      "detail": "active/ 에이전트 수·파일명 일람 출력",
+      "type": "shell",
+      "command": "python -c \"import os; files=[f for f in os.listdir('agents/active') if f.endswith('.py') and not f.startswith('_')]; [print(f) for f in sorted(files)]; print(f'총 {len(files)}개')\"",
+      "options": { "cwd": "${workspaceFolder}" },
+      "presentation": { "reveal": "always", "panel": "shared" },
+      "problemMatcher": []
+    },
+    {
+      "label": "📊 outputs/ 파일 목록",
+      "detail": "생성된 산출물 목록 + 크기 확인",
+      "type": "shell",
+      "command": "Get-ChildItem outputs/ | Sort-Object LastWriteTime -Descending | Format-Table Name, LastWriteTime, Length -AutoSize",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "shell": { "executable": "powershell", "args": ["-ExecutionPolicy", "Bypass", "-Command"] }
+      },
+      "presentation": { "reveal": "always", "panel": "shared" },
+      "problemMatcher": []
+    },
+    {
+      "label": "🚀 pip 패키지 설치",
+      "detail": "requirements.txt 기반 패키지 일괄 설치",
+      "type": "shell",
+      "command": "pip install -r requirements.txt",
+      "options": { "cwd": "${workspaceFolder}" },
+      "presentation": { "reveal": "always", "panel": "new" },
+      "problemMatcher": []
+    },
+    {
+      "label": "🔌 스킬 목록 조회",
+      "detail": ".skills/ 디렉토리 내 SKILL.md 목록 출력",
+      "type": "shell",
+      "command": "Get-ChildItem .skills -Recurse -Filter SKILL.md | Select-Object FullName",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "shell": { "executable": "powershell", "args": ["-ExecutionPolicy", "Bypass", "-Command"] }
+      },
+      "presentation": { "reveal": "always", "panel": "shared" },
+      "problemMatcher": []
+    },
+    {
+      "label": "📋 슬래시명령 목록 조회",
+      "detail": ".claude/commands/ 내 슬래시명령 파일 목록 출력",
+      "type": "shell",
+      "command": "Get-ChildItem .claude/commands -Filter '*.md' | Select-Object -ExpandProperty BaseName | Sort-Object",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "shell": { "executable": "powershell", "args": ["-ExecutionPolicy", "Bypass", "-Command"] }
+      },
+      "presentation": { "reveal": "always", "panel": "shared" },
+      "problemMatcher": []
+    }
+  ]
+}
