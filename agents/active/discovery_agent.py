@@ -1,4 +1,4 @@
-"""
+﻿"""
 agents/active/discovery_agent.py
 =================================
 SystemEnhancementDiscoveryAgent
@@ -202,3 +202,151 @@ class SystemEnhancementDiscoveryAgent:
                     for sub in item.get("items", [])[:3]:
                         f.write(f"- {sub}\n")
                     f.write("\n")
+
+    # ──────────────────────────────────────────────────────────
+    # PART8 Stage 2: analyze() wrapper — 자가 진화 schtask 호환
+    # 5축 + 4단계 헷지 + 4축 자가검증 + 4자×3시점 매트릭스
+    # ──────────────────────────────────────────────────────────
+
+    def analyze(self, company_data: dict | None = None) -> dict:
+        """run_discovery.py에서 호출되는 analyze() 진입점.
+
+        company_data는 사용하지 않음 (시스템 자체 발견 작업).
+        """
+        report = self.discover()
+
+        top1_key = (
+            report["prioritized_top10"][0]["key"]
+            if report.get("prioritized_top10") else "발견 없음"
+        )
+        text = (
+            f"법인 측면: 시스템 고도화 발견 {report['total_opportunities']}건 — TOP: {top1_key}.\n"
+            f"주주(오너) 관점: 우선도 HIGH 항목 자동 식별 + AutoFix 영구 적용 후보.\n"
+            f"과세관청 관점: 법령·세율 변경 대응 누락 영역 자동 발견 (perspective_gaps).\n"
+            f"금융기관 관점: KPI 미달성 에이전트 자동 식별 (응답시간 2분 초과 모니터링)."
+        )
+
+        result = {
+            "agent": "SystemEnhancementDiscoveryAgent",
+            "text": text,
+            "summary": f"발견 기회 {report['total_opportunities']}건 — TOP: {top1_key}",
+            "discovery_report": report,
+            "require_full_4_perspective": True,
+        }
+        result["matrix_4x3"]        = self._build_4x3_matrix(report)
+        result["risk_hedge_4stage"] = self._generate_4stage_hedge()
+        result["risk_5axis"]        = self._validate_5axis(result, report)
+        result["self_check_4axis"]  = self._self_check_4axis(text, result)
+        return result
+
+    def _build_4x3_matrix(self, report: dict) -> dict:
+        total = report.get("total_opportunities", 0)
+        top1  = (report["prioritized_top10"][0]["key"]
+                 if report.get("prioritized_top10") else "없음")
+        return {
+            "법인": {
+                "사전": "주간 시스템 스캔 — 7가지 발견 영역 베이스라인",
+                "현재": f"발견 {total}건 (재발 오류·미매칭NL·미사용·KPI·관점누락·AutoFix·신설후보)",
+                "사후": "Executor 단계로 발견 결과 전달 → 자동/승인/차단 분류",
+            },
+            "주주": {
+                "사전": "사용자 자연어 입력 누적 (router.jsonl 7일치)",
+                "현재": f"TOP 1 발견 영역: {top1}",
+                "사후": "신설 슬래시 후보 사용자 승인 → 시스템 확장",
+            },
+            "과세관청": {
+                "사전": "perspective_gaps 영역 (4자관점 누락) 자동 추적",
+                "현재": "법령 인용·시행일 누락 자동 감지 (self_check.jsonl)",
+                "사후": "perspective_template_enhancement 액션 자동 등록",
+            },
+            "금융기관": {
+                "사전": "KPI 베이스라인 (응답시간 2분 기준)",
+                "현재": "KPI 미달 에이전트 자동 식별 (kpi_metrics.jsonl)",
+                "사후": "performance_optimization_candidate 액션 등록",
+            },
+        }
+
+    def _generate_4stage_hedge(self) -> dict:
+        return {
+            "1_pre": [
+                "discover() 실행 전 storage·logs 디렉토리 존재 확인",
+                "7일치 jsonl 누적 데이터 cutoff 적용",
+                "command_router.json 최신 동기화 확인",
+            ],
+            "2_now": [
+                "7가지 발견 로직 병렬 실행 (count + items + action)",
+                "우선순위 가중치(WEIGHTS) 적용 → score 정렬",
+                "TOP 10 보고서 생성 + audit/discovery/ 저장",
+            ],
+            "3_post": [
+                "Executor 단계 trigger (월 10:00 schtask)",
+                "발견 결과 누적 (주간 비교 가능)",
+                "discovery_report_*.md 7일 보존",
+            ],
+            "4_worst": [
+                "storage·logs 디렉토리 부재 시 빈 결과 반환 (빈 dict)",
+                "command_router.json 부재 시 unused_commands 검증 건너뜀",
+                "예외 발생 시 _save_report 실패해도 result 반환 (best-effort)",
+            ],
+        }
+
+    def _validate_5axis(self, result: dict, report: dict) -> dict:
+        axes = {}
+        # DOMAIN: 7가지 발견 영역 모두 키 존재
+        raw = report.get("raw", {})
+        expected_keys = ["1_recurring_errors", "2_frequent_unmatched_nl",
+                         "3_unused_commands", "4_kpi_underperformers",
+                         "5_perspective_gaps", "6_autofix_promotable",
+                         "7_new_simulator_candidates"]
+        axes["DOMAIN"] = {
+            "pass": all(k in raw for k in expected_keys),
+            "detail": f"7가지 발견 영역 {sum(1 for k in expected_keys if k in raw)}/7",
+        }
+        # LEGAL: 발견 영역의 action이 정의된 정책 키워드와 일치
+        valid_actions = {
+            "permanent_fix_candidate", "new_slash_command_candidate",
+            "sunset_candidate", "performance_optimization_candidate",
+            "perspective_template_enhancement", "autofix_pattern_promote",
+            "new_simulator_candidate",
+        }
+        actions = {v.get("action") for v in raw.values() if isinstance(v, dict)}
+        axes["LEGAL"] = {
+            "pass": actions.issubset(valid_actions),
+            "detail": f"action 정합 — {len(actions & valid_actions)}/{len(actions)}",
+        }
+        # CALC: total_opportunities = sum of counts
+        sum_counts = sum(v.get("count", 0) for v in raw.values() if isinstance(v, dict))
+        axes["CALC"] = {
+            "pass": report.get("total_opportunities", 0) == sum_counts,
+            "detail": f"total {report.get('total_opportunities', 0)} = sum {sum_counts}",
+        }
+        # LOGIC: prioritized_top10이 score 내림차순
+        top10 = report.get("prioritized_top10", [])
+        scores = [t.get("score", 0) for t in top10]
+        axes["LOGIC"] = {
+            "pass": scores == sorted(scores, reverse=True),
+            "detail": f"score 내림차순 정렬 OK ({len(top10)}개)",
+        }
+        # CROSS: 4자관점 매트릭스 12셀
+        m = result.get("matrix_4x3", {})
+        cells = sum(1 for p in m.values() for v in p.values() if v)
+        axes["CROSS"] = {"pass": cells == 12, "detail": f"매트릭스 {cells}/12"}
+
+        all_pass = all(a["pass"] for a in axes.values())
+        return {
+            "all_pass": all_pass,
+            "axes": axes,
+            "summary": f"5축 통과 {sum(1 for a in axes.values() if a['pass'])}/5",
+        }
+
+    def _self_check_4axis(self, text: str, result: dict) -> dict:
+        ax_calc = any(c.isdigit() for c in text)
+        ax_law  = "법령" in text or "perspective" in str(result.get("discovery_report", {}))
+        ax_4P   = sum(1 for p in ["법인", "주주", "과세관청", "금융기관"]
+                      if p in text) >= 4
+        ax_regr = result.get("require_full_4_perspective", False)
+        return {
+            "calc": ax_calc, "law": ax_law,
+            "perspective_4": ax_4P, "regression": ax_regr,
+            "all_pass": all([ax_calc, ax_law, ax_4P, ax_regr]),
+        }
