@@ -1,0 +1,14 @@
+﻿
+Name                                          LastWriteTime             Length
+----                                          -------------             ------
+AI_컨설팅_하네스_v7_완성보고서.pptx                      2026-04-25(토) 오후 1:13:50  381593
+CHAT_MODE_DETAIL_20260504.md                  2026-05-04(월) 오전 11:51:09   7702
+CHAT_MODE_FILES_LIST_20260504.md              2026-05-04(월) 오전 11:51:09   4858
+CHAT_MODE_REPORT_20260504.md                  2026-05-04(월) 오전 11:51:09   5333
+OFFICE-B_사실확인_20260504.md                     2026-05-04(월) 오후 2:32:54    6853
+SYNC_VERIFICATION_REPORT_OFFICE-B_20260504.md 2026-05-04(월) 오후 12:00:14   4281
+_cleanup_target.json                          2026-05-04(월) 오후 3:04:10     142
+_pre_snapshot.txt                             2026-05-04(월) 오후 3:04:20       0
+
+
+
