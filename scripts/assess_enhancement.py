@@ -1,113 +1,293 @@
 """
-자체 고도화 필요성 평가 스크립트
-실행: python scripts/assess_enhancement.py
-출력: 에이전트별 고도화 우선순위 점수 + 권고 항목
+자체 고도화 필요성 평가 스크립트 (v2 — 전체 22종 + SKILL.md)
+실행: python scripts/assess_enhancement.py [--full]
+출력: 콘솔 + outputs/ENHANCEMENT_ASSESSMENT_[FULL_]YYYYMMDD.json
 """
 from __future__ import annotations
-import sys, os, importlib, inspect
+import sys, importlib, inspect, json, re, os, argparse
+from datetime import datetime
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-# ── 평가 대상 에이전트 목록 ─────────────────────────────────────────────────
-_AGENT_MODULES = [
-    ("agents.active.comprehensive_corporate_tax", "ComprehensiveCorporateTaxAgent"),
-    ("agents.active.cash_flow_precision",         "CashFlowPrecisionAgent"),
-    ("agents.active.working_capital",             "WorkingCapitalAgent"),
-    ("agents.active.debt_structure",              "DebtStructureAgent"),
-    ("agents.active.cost_structure_precision",    "CostStructurePrecisionAgent"),
-    ("agents.active.audit_preparation",           "AuditPreparationAgent"),
+# ── 전체 에이전트 모듈 맵 (클래스명 → 모듈 경로) ────────────────────────────
+_AGENT_MODULE_MAP: dict[str, str] = {
+    "ComprehensiveCorporateTaxAgent":    "agents.active.comprehensive_corporate_tax",
+    "CashFlowPrecisionAgent":            "agents.active.cash_flow_precision",
+    "WorkingCapitalAgent":               "agents.active.working_capital",
+    "DebtStructureAgent":                "agents.active.debt_structure",
+    "CostStructurePrecisionAgent":       "agents.active.cost_structure_precision",
+    "AuditPreparationAgent":             "agents.active.audit_preparation",
+    "FinancialRatioPrecisionAgent":      "agents.active.financial_ratio_precision",
+    "NonListedStockPrecisionAgent":      "agents.active.nonlisted_stock_precision",
+    "RealEstateDesktopAppraisalAgent":   "agents.active.real_estate_desktop_appraisal",
+    "RealEstateValuationAgent":          "agents.active.real_estate_valuation",
+    "TreasuryStockLiquidationAgent":     "agents.active.treasury_stock_liquidation",
+    "TreasuryStockStrategyAgent":        "agents.active.treasury_stock_strategy",
+    "Section45_5TaxStrategyAgent":       "agents.active.section_45_5_tax_strategy",
+    "CapitalStructureImprovementAgent":  "agents.active.capital_structure_improvement",
+    "ChildCorpDesignAgent":              "agents.active.child_corp_design",
+    "CivilTrustAgent":                   "agents.active.civil_trust",
+    "CorporateBenefitsFundAgent":        "agents.active.corporate_benefits_fund",
+    "PatentCashflowSimulator":           "agents.active.patent_cashflow_simulator",
+    "RetainedEarningsManagementAgent":   "agents.active.retained_earnings_management",
+    "SpecialCorpTransactionAgent":       "agents.active.special_corp_transaction",
+    "SuccessionRoadmapAgent":            "agents.active.succession_roadmap",
+    "ValuationOptimizationAgent":        "agents.active.valuation_optimization",
+}
+
+_REQUIRED_METHODS = [
+    "generate_strategy", "validate_risk_5axis", "generate_risk_hedge_4stage",
+    "manage_execution", "post_management",
+]
+_LAW_KEYWORDS = ["§", "K-IFRS", "국기", "외감", "조특", "상증", "법인세", "소득세"]
+
+# SKILL 평가 대상 18종
+_SKILL_TARGETS = [
+    "실효세율계산", "정관진단", "4자관점매트릭스", "배당vs급여Mix",
+    "임원보수한도산출", "통합투자세액공제", "감사대응팩",
+    "DART공시조회", "법령조문조회", "판례검색", "사업자상태조회",
+    "가업상속사후관리", "명의신탁시효표", "자녀법인설계", "특허현금흐름",
+    "가지급금월별추적", "비상장주식할증면제", "이월결손금시뮬",
 ]
 
-# ── 평가 기준 (5항목 × 20점 = 100점) ─────────────────────────────────────────
-def _score_agent(mod_name: str, cls_name: str) -> dict:
-    score = 0
-    details = []
+
+# ── 에이전트 평가 ─────────────────────────────────────────────────────────────
+def _score_agent(cls_name: str, mod_name: str) -> dict:
+    scores: dict[str, int] = {}
+    enhancement_list: list[str] = []
 
     try:
         mod = importlib.import_module(mod_name)
         cls = getattr(mod, cls_name)
     except Exception as e:
-        return {"agent": cls_name, "score": 0, "details": [f"import 실패: {e}"], "priority": "긴급"}
+        return {
+            "agent": cls_name, "total_score": 0, "scores": {},
+            "enhancement_list": [f"import 실패: {e}"],
+            "enhancement_needed": True, "priority": "긴급",
+        }
 
-    # 1. 5축 검증 완비 여부 (20점)
-    required = ["generate_strategy","validate_risk_5axis","generate_risk_hedge_4stage","manage_execution","post_management"]
-    missing = [m for m in required if not hasattr(cls, m)]
+    # 1. 5단계 메서드 완비 (20점)
+    missing = [m for m in _REQUIRED_METHODS if not hasattr(cls, m)]
     if not missing:
-        score += 20; details.append("✅ 5단계 메서드 완비 +20")
+        scores["5단계_메서드"] = 20
     else:
-        details.append(f"❌ 누락 메서드: {missing}")
+        scores["5단계_메서드"] = 0
+        enhancement_list.append(f"누락 메서드 추가: {missing}")
 
-    # 2. _build_4party_3time_matrix 구현 (20점)
+    # 2. 4자×3시점 12셀 완비 (20점)
     if hasattr(cls, "_build_4party_3time_matrix"):
-        src = inspect.getsource(getattr(cls, "_build_4party_3time_matrix"))
-        parties = sum(1 for p in ["법인", "주주", "과세관청", "금융기관"] if p in src)
-        times   = sum(1 for t in ["사전", "현재", "사후"] if t in src)
+        try:
+            src_matrix = inspect.getsource(getattr(cls, "_build_4party_3time_matrix"))
+        except Exception:
+            src_matrix = ""
+        parties = sum(1 for p in ["법인", "주주", "과세관청", "금융기관"] if p in src_matrix)
+        times   = sum(1 for t in ["사전", "현재", "사후"] if t in src_matrix)
         if parties == 4 and times == 3:
-            score += 20; details.append("✅ 4자×3시점 12셀 완비 +20")
+            scores["4자×3시점"] = 20
         else:
-            score += 10; details.append(f"⚠️ 4자×3시점 일부 누락 (관점:{parties}/4 시점:{times}/3) +10")
+            scores["4자×3시점"] = 10
+            enhancement_list.append(f"4자×3시점 보완 (관점:{parties}/4 시점:{times}/3)")
     else:
-        details.append("❌ _build_4party_3time_matrix 없음")
+        scores["4자×3시점"] = 0
+        enhancement_list.append("_build_4party_3time_matrix 구현 필요")
 
     # 3. 법령 참조 충실도 (20점)
-    src_full = inspect.getsource(cls)
-    law_refs = sum(1 for law in ["§", "K-IFRS", "국기", "외감", "조특", "상증"] if law in src_full)
-    if law_refs >= 4:
-        score += 20; details.append(f"✅ 법령 참조 {law_refs}종 +20")
-    elif law_refs >= 2:
-        score += 10; details.append(f"⚠️ 법령 참조 부족 ({law_refs}종) +10")
+    try:
+        src_full = inspect.getsource(cls)
+    except Exception:
+        src_full = ""
+    law_refs = sum(1 for law in _LAW_KEYWORDS if law in src_full)
+    if law_refs >= 5:
+        scores["법령_참조"] = 20
+    elif law_refs >= 3:
+        scores["법령_참조"] = 10
+        enhancement_list.append(f"법령 참조 보강 (현재 {law_refs}종 → 목표 5종)")
     else:
-        details.append(f"❌ 법령 참조 미흡 ({law_refs}종)")
+        scores["법령_참조"] = 0
+        enhancement_list.append(f"법령 참조 대폭 보강 필요 ({law_refs}종)")
 
     # 4. 시나리오 3종 이상 (20점)
-    if "scenarios" in src_full and src_full.count('"name"') >= 3:
-        score += 20; details.append("✅ 시나리오 3종 이상 +20")
+    scenario_count = src_full.count('"name"') + src_full.count("'name'")
+    if scenario_count >= 3:
+        scores["시나리오_3종"] = 20
+    elif scenario_count >= 2:
+        scores["시나리오_3종"] = 10
+        enhancement_list.append("시나리오 3종 이상으로 확대")
     else:
-        score += 10; details.append("⚠️ 시나리오 2종 이하 +10")
+        scores["시나리오_3종"] = 0
+        enhancement_list.append("시나리오 구조 신설 필요")
 
-    # 5. 고도화 항목 자가진단 (20점)
-    enhancement_signals = []
+    # 5. 코드 완결성 (20점) — 실제 pass 문만 탐지 (dict key 'pass' 제외)
+    code_issues: list[str] = []
     if "TODO" in src_full or "FIXME" in src_full:
-        enhancement_signals.append("TODO/FIXME 발견")
-    if src_full.count("pass") > 2:
-        enhancement_signals.append("미구현 pass 블록")
+        code_issues.append("TODO/FIXME 발견")
     if "raise NotImplementedError" in src_full:
-        enhancement_signals.append("NotImplementedError")
-    if not enhancement_signals:
-        score += 20; details.append("✅ 미완성 신호 없음 +20")
+        code_issues.append("NotImplementedError 미구현")
+    real_pass = sum(
+        1 for line in src_full.splitlines()
+        if line.strip() == "pass" or (line.strip().startswith("pass ") and "#" in line)
+    )
+    if real_pass > 0:
+        code_issues.append(f"미구현 pass {real_pass}개")
+    if not code_issues:
+        scores["코드_완결성"] = 20
+    elif len(code_issues) == 1:
+        scores["코드_완결성"] = 10
+        enhancement_list.extend(code_issues)
     else:
-        details.append(f"⚠️ 고도화 필요: {enhancement_signals}")
+        scores["코드_완결성"] = 0
+        enhancement_list.extend(code_issues)
 
-    priority = "낮음" if score >= 80 else ("중간" if score >= 60 else "높음")
-    return {"agent": cls_name, "score": score, "details": details, "priority": priority}
+    total_score = sum(scores.values())
+    priority = "낮음" if total_score >= 80 else ("중간" if total_score >= 60 else "높음")
+    return {
+        "agent": cls_name, "total_score": total_score, "scores": scores,
+        "enhancement_list": enhancement_list,
+        "enhancement_needed": total_score < 80, "priority": priority,
+    }
 
 
-def main() -> None:
-    print("=" * 60)
-    print(" 자체 고도화 필요성 평가 (v3-FINAL)")
-    print("=" * 60)
+# ── SKILL.md 평가 ─────────────────────────────────────────────────────────────
+def _score_skill_md(skill_name: str, skills_dir: Path) -> dict:
+    skill_md = skills_dir / skill_name / "SKILL.md"
+    if not skill_md.exists():
+        return {
+            "skill": f"/{skill_name}", "total_score": 0,
+            "scores": {}, "enhancement_list": ["SKILL.md 부재"],
+            "enhancement_needed": True,
+        }
 
-    results = [_score_agent(m, c) for m, c in _AGENT_MODULES]
-    results.sort(key=lambda r: r["score"])
+    content = skill_md.read_text(encoding="utf-8")
+    scores: dict[str, int] = {}
+    enhancement_list: list[str] = []
 
-    for r in results:
-        bar = "█" * (r["score"] // 5) + "░" * (20 - r["score"] // 5)
-        print(f"\n[{r['priority']:^6}] {r['agent']} — {r['score']:3}/100")
-        print(f"         [{bar}]")
-        for d in r["details"]:
-            print(f"         {d}")
+    # frontmatter 필수 키 (name/trigger/description)
+    fm_keys = ["name:", "trigger:", "description:"]
+    fm_found = sum(1 for k in fm_keys if k in content[:600])
+    scores["frontmatter"] = 20 if fm_found >= 3 else (10 if fm_found >= 2 else 0)
+    if scores["frontmatter"] < 20:
+        enhancement_list.append(f"frontmatter 보완 ({fm_found}/3 키 존재)")
 
-    avg = sum(r["score"] for r in results) / len(results)
-    print("\n" + "=" * 60)
-    print(f" 평균 점수: {avg:.1f}/100")
-    urgent = [r["agent"] for r in results if r["priority"] == "높음"]
-    if urgent:
-        print(f" 우선 고도화 대상: {', '.join(urgent)}")
+    # 입력 파라미터 표 또는 섹션
+    scores["입력_파라미터"] = 20 if ("파라미터" in content or "parameter" in content.lower()) else 0
+    if scores["입력_파라미터"] == 0:
+        enhancement_list.append("입력 파라미터 섹션 추가 필요")
+
+    # 법령 참조
+    law_count = sum(content.count(kw) for kw in ["§", "K-IFRS", "조특", "상증", "국기"])
+    if law_count >= 5:
+        scores["법령_참조"] = 20
+    elif law_count >= 2:
+        scores["법령_참조"] = 10
+        enhancement_list.append(f"법령 참조 보강 ({law_count}회)")
     else:
-        print(" 모든 에이전트 고도화 기준 충족 ✅")
-    print("=" * 60)
+        scores["법령_참조"] = 0
+        enhancement_list.append("법령 참조 추가 필요")
+
+    # 4자관점 명시
+    party_count = sum(1 for p in ["법인", "주주", "과세관청", "금융기관"] if p in content)
+    scores["4자관점"] = 20 if party_count >= 4 else (10 if party_count >= 2 else 0)
+    if scores["4자관점"] < 20:
+        enhancement_list.append(f"4자관점 보완 ({party_count}/4)")
+
+    # 출력 형식 또는 예시 섹션
+    scores["출력_형식"] = 20 if ("출력" in content or "형식" in content or "예시" in content) else 0
+    if scores["출력_형식"] == 0:
+        enhancement_list.append("출력 형식·예시 섹션 추가 필요")
+
+    total_score = sum(scores.values())
+    return {
+        "skill": f"/{skill_name}", "total_score": total_score, "scores": scores,
+        "enhancement_list": enhancement_list,
+        "enhancement_needed": total_score < 80,
+    }
+
+
+# ── 메인 ─────────────────────────────────────────────────────────────────────
+def main(full: bool = False) -> None:
+    out_dir = Path(__file__).parent.parent / "outputs"
+    out_dir.mkdir(exist_ok=True)
+    today = datetime.today().strftime("%Y%m%d")
+
+    # 에이전트 평가 (22종)
+    agent_results = []
+    for cls_name, mod_name in _AGENT_MODULE_MAP.items():
+        r = _score_agent(cls_name, mod_name)
+        agent_results.append(r)
+    agent_results.sort(key=lambda r: r["total_score"])
+
+    # 콘솔 출력
+    print("=" * 72)
+    print(f" 에이전트 고도화 평가 — {len(agent_results)}종 (v2)")
+    print("=" * 72)
+    total_avg = sum(r["total_score"] for r in agent_results) / len(agent_results)
+    need_enh  = sum(1 for r in agent_results if r["enhancement_needed"])
+    print(f"평균 점수: {total_avg:.1f}/100 | 고도화 필요 (80 미만): {need_enh}/{len(agent_results)}종")
+    print()
+
+    brackets = {"90+": 0, "80-89": 0, "70-79": 0, "60-69": 0, "60미만": 0}
+    for r in agent_results:
+        s = r["total_score"]
+        if s >= 90:   brackets["90+"] += 1
+        elif s >= 80: brackets["80-89"] += 1
+        elif s >= 70: brackets["70-79"] += 1
+        elif s >= 60: brackets["60-69"] += 1
+        else:         brackets["60미만"] += 1
+    print("점수대별 분포:")
+    for k, v in brackets.items():
+        print(f"  {k:6}: {'■' * v} ({v}종)")
+    print()
+
+    print("=== 전체 상세 (점수 낮은 순) ===")
+    for r in agent_results:
+        flag = "⚠️" if r["enhancement_needed"] else "✅"
+        print(f"\n{flag} [{r['priority']:^4}] {r['agent']} — {r['total_score']}/100")
+        for k, v in r["scores"].items():
+            bar = "█" * (v // 4)
+            print(f"    {k:12}: {v:2}/20 [{bar:<5}]")
+        for e in r["enhancement_list"]:
+            print(f"     · {e}")
+
+    print("\n" + "=" * 72)
+    urgent = [r["agent"] for r in agent_results if r["priority"] == "높음"]
+    print(f"긴급 고도화: {', '.join(urgent) if urgent else '없음 ✅'}")
+    print("=" * 72)
+
+    # JSON 저장 (에이전트)
+    suffix = "FULL_" if full else ""
+    agent_path = out_dir / f"ENHANCEMENT_ASSESSMENT_{suffix}{today}.json"
+    agent_path.write_text(json.dumps(agent_results, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"\n JSON(에이전트): {agent_path}")
+
+    if not full:
+        return
+
+    # SKILL.md 평가 (18종)
+    skills_dir = Path(os.path.expanduser("~")) / ".claude" / "skills" / "junggi-consulting" / "skills"
+    skill_results = []
+    for s in _SKILL_TARGETS:
+        r = _score_skill_md(s, skills_dir)
+        skill_results.append(r)
+    skill_results.sort(key=lambda r: r["total_score"])
+
+    print("\n" + "=" * 72)
+    print(f" SKILL.md 평가 — {len(skill_results)}종")
+    print("=" * 72)
+    skill_avg  = sum(r["total_score"] for r in skill_results) / len(skill_results)
+    skill_need = sum(1 for r in skill_results if r["enhancement_needed"])
+    print(f"평균: {skill_avg:.1f}/100 | 보강 필요: {skill_need}/{len(skill_results)}종\n")
+    for r in skill_results:
+        flag = "⚠️" if r["enhancement_needed"] else "✅"
+        print(f"{flag} {r['skill']:22} — {r['total_score']}/100  {r['enhancement_list']}")
+
+    skill_path = out_dir / f"SKILL_ASSESSMENT_{today}.json"
+    skill_path.write_text(json.dumps(skill_results, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"\n JSON(SKILL): {skill_path}")
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--full", action="store_true", help="SKILL.md 포함 전체 평가")
+    args = parser.parse_args()
+    main(full=args.full)
