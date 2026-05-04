@@ -1,0 +1,160 @@
+# CYCLE 3 최종 보고서 — HOME-A (DESKTOP-IHLF847)
+**작성일**: 2026-05-05  
+**최종 commit**: `5c85e26` → origin/main push 완료  
+**기준**: CYCLE3_REPORT + 작업 1·2·3 추가 실행 결과
+
+---
+
+## 작업 1: git push 결과
+
+| 항목 | 값 |
+|---|---|
+| push 범위 | `ee048e2..5c85e26` |
+| 원격 반영 | `origin/main = 5c85e26` ✅ |
+| 로컬·원격 일치 | ✅ (SHA 동일 확인) |
+
+**origin/main 최근 3 커밋:**
+```
+5c85e26  feat: 한국어 슬래시 alias + 신규 2종 + PART8 3종 보강 [HOME-A]
+ee048e2  Merge branch 'main' of https://github.com/sik3781-debug/-
+acc75cd  ops: LAPTOP 동기화 자가 검증 8축 ALL PASS + 7/7 ALL PASS
+```
+
+---
+
+## 작업 2: schtasks dry-run 결과
+
+### 2-1. schtasks 등록 상태
+
+| 태스크명 | 상태 | 원인 |
+|---|---|---|
+| JunggiVerifier | ❌ **미등록** | schtasks /create 미실행 |
+| JunggiDiscovery | ❌ **미등록** | 동일 |
+| JunggiExecutor | ❌ **미등록** | 동일 |
+
+- `run_verifier.py`, `run_discovery.py`, `run_executor.py` 실행 스크립트는 존재
+- 스크립트 주석에 "JunggiDiscovery schtask" 기술되어 있으나 실제 등록 미실행
+
+### 2-2. 순차 dry-run 결과
+
+| 단계 | 결과 |
+|---|---|
+| [1] EnhancementVerifierAgent | ✅ verification_score=**100** · 5축 5/5 · status=PASS |
+| [2] SystemEnhancementDiscoveryAgent | ✅ findings=**1건** (3_unused_commands 80건) |
+| [3] SystemEnhancementExecutorAgent | ✅ rollback_available=**True** · dry_run 안전 완료 |
+| **최종** | **✅ Verifier→Discovery→Executor 순차 dry-run OK** |
+
+### 2-3. schtasks 등록 명령 (승인 후 실행)
+
+```powershell
+# 월요일 09:00 Discovery
+schtasks /create /tn "JunggiDiscovery" /tr "python C:\Users\Jy\consulting-agent\run_discovery.py" /sc WEEKLY /d MON /st 09:00 /f
+
+# 월요일 10:00 Executor
+schtasks /create /tn "JunggiExecutor"  /tr "python C:\Users\Jy\consulting-agent\run_executor.py"  /sc WEEKLY /d MON /st 10:00 /f
+
+# 월요일 10:30 Verifier
+schtasks /create /tn "JunggiVerifier"  /tr "python C:\Users\Jy\consulting-agent\run_verifier.py"  /sc WEEKLY /d MON /st 10:30 /f
+```
+
+---
+
+## 작업 3: PART5.7 11종 4단계 워크플로우 적용 매트릭스
+
+| 에이전트 | Part | analyze() | gen_strategy | 5axis | 4stage_hedge | manage_exec | post_mgmt | **4단계 충족** |
+|---|---|---|---|---|---|---|---|---|
+| CorporateBenefitsFundAgent | B | ✅ 1,173자 | ❌ | ❌ | ❌ | ❌ | ❌ | **0/5** |
+| CivilTrustAgent | B | ✅ 715자 | ❌ | ❌ | ❌ | ❌ | ❌ | **0/5** |
+| ChildCorpDesignAgent | B | ✅ 1,463자 | ❌ | ❌ | ❌ | ❌ | ❌ | **0/5** |
+| SpecialCorpTransactionAgent | B | ✅ 1,792자 | ❌ | ❌ | ❌ | ❌ | ❌ | **0/5** |
+| CapitalStructureImprovementAgent | B | ✅ 1,630자 | ❌ | ❌ | ❌ | ❌ | ❌ | **0/5** |
+| PatentCashflowSimulator | B | ✅ 1,796자 | ❌ | ❌ | ❌ | ❌ | ❌ | **0/5** |
+| RetainedEarningsManagementAgent | B | ✅ 2,110자 | ❌ | ❌ | ❌ | ❌ | ❌ | **0/5** |
+| RealEstateValuationAgent | C | ✅ 1,268자 | ❌ | ❌ | ❌ | ❌ | ❌ | **0/5** |
+| RealEstateDesktopAppraisalAgent | C | ✅ 1,282자 | ❌ | ❌ | ❌ | ❌ | ❌ | **0/5** |
+| TreasuryStockStrategyAgent | C | ✅ 2,538자 | ❌ | ❌ | ❌ | ❌ | ❌ | **0/5** |
+| ValuationOptimizationAgent | C | ✅ 2,005자 | ❌ | ❌ | ❌ | ❌ | ❌ | **0/5** |
+
+**결론: 11종 모두 analyze() 구현 완료 · 4단계 메서드 분리 미적용 (보강 대상)**
+
+---
+
+## 다음 사이클 권고
+
+### 최우선 (즉시 결정 필요)
+
+| 항목 | 내용 | 예상 소요 |
+|---|---|---|
+| **schtasks 3종 등록** | JunggiDiscovery·JunggiExecutor·JunggiVerifier 사용자 승인 후 등록 | 5분 |
+| **PART5.7 11종 4단계 보강 결정** | 전체·선별·시기 결정 | 결정만 |
+
+### 사이클 A: PART5.7 11종 4단계 보강 (보강 결정 시)
+
+| 우선순위 | 대상 | 이유 |
+|---|---|---|
+| 1 | TreasuryStockStrategyAgent | 신설 유동화 에이전트와 도메인 연계 |
+| 2 | SpecialCorpTransactionAgent | 신설 §45의5 에이전트와 도메인 연계 |
+| 3 | RetainedEarningsManagementAgent | analyze() 최대 규모 — 분리 효과 큼 |
+| 4~11 | 나머지 8종 | 일괄 보강 |
+| **소요** | **에이전트당 ~150줄 × 11 ≈ 1,650줄** | 1~2 세션 |
+
+### 사이클 B: 진짜 미존재 3종 신설
+
+| 에이전트 | 파일명 | 우선도 |
+|---|---|---|
+| 비상장주식정밀평가 | `nonlisted_stock_valuation.py` | ★★★ |
+| 가업승계로드맵 | `succession_roadmap.py` | ★★★ |
+| 재무비율정밀분석 | `financial_ratio_analysis.py` | ★★ |
+
+### 사이클 C: 비활성 4종 orchestrator 등록
+
+| 에이전트 | 파일 | 조치 |
+|---|---|---|
+| 가지급금정밀해소 | `agents/provisional_payment_agent.py` | orchestrator.py 라우팅 추가 |
+| 차명주식해소정밀 | `agents/nominee_stock_agent.py` | 동일 |
+| 임원퇴직금한도정밀 | `agents/executive_pay_agent.py` | 동일 |
+| 신용등급추정 | `agents/credit_rating_agent.py` | 동일 |
+
+### 사이클 D: 외부 API 연동 7종
+
+| API | 용도 |
+|---|---|
+| DART_API_KEY | 공시 자동 조회 |
+| LAW_API_ID | 법령 원문 조회 |
+| ECOS_API_KEY | 한국은행 경제통계 |
+| PUBLIC_DATA_API_KEY | 정부 공공데이터 |
+> 환경변수 설정 완료 — 에이전트 내 API 호출 구현 미완성
+
+### 사이클 E: router/command_router.json ↔ junggi-workspace 동기화
+
+현재: junggi-workspace JSON(80개 명령·자연어 트리거) ↔ router/command_router.json(36개·alias) 별도 운영  
+개선: natural_language_triggers 통합 → 단일 JSON으로 완전 통합
+
+---
+
+## CYCLE 3 전체 달성 요약
+
+| 작업 | 결과 |
+|---|---|
+| 작업 1: command_router.json + alias | ✅ 36개·21/21 라우팅 |
+| 작업 2: 신규 2종 신설 (4단계·5축·12셀) | ✅ treasury_liquidation + section_45_5 |
+| 작업 3: PART8 3종 보강 | ✅ verification_score·findings·rollback |
+| 작업 4: push | ✅ `5c85e26` origin/main |
+| 작업 5: schtasks dry-run | ✅ 순차 OK (등록은 미완) |
+| 작업 6: 11종 4단계 점검 | ✅ 현황 파악 완료 (보강 사용자 결정 대기) |
+
+---
+
+## RULE-G 자가검증
+
+| 항목 | 결과 |
+|---|---|
+| 사용자 명시 없는 push 0회 | ✅ (push는 명시 승인 후 실행) |
+| MCP 쓰기성 도구 무승인 0회 | ✅ |
+| 단일 호출 5파일·3MCP·2,000토큰 초과 0회 | ✅ |
+
+**→ 3개 전부 ✅ — 정상 종료**
+
+---
+
+*Generated by Claude Sonnet 4.6 — HOME-A Master Session — 2026-05-05*
