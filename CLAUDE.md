@@ -184,6 +184,20 @@
 - 에이전트 결과의 `_model_used` 키로 실제 사용 모델 추적 가능
 - `_success_criteria` 키로 매 실행마다 성공 기준 4가지 달성 여부 확인 가능
 
+## [다기기 동기화]
+- 3대 기기: 데스크탑A(집) / 데스크탑B(사무실 DESKTOP-FJUATON/Jy) / 노트북(sik37)
+- 동기화 스크립트: `sync_all_devices.ps1` (Windows) / `sync_all_devices.sh` (macOS·Linux)
+- 동기화 대상: consulting-agent + junggi-workspace 양 레포
+- 동기화 전 백업 태그 생성 필수: `git tag backup-before-sync-<timestamp>`
+- push는 RULE-G1 적용 — 사용자 명시 승인 후에만
+
+## [VS Code 통합]
+- tasks.json: `.vscode/tasks.json` (10개 태스크 등록)
+- launch.json: `.vscode/launch.json` (orchestrator·pytest·현재파일)
+- 단축키: Ctrl+Shift+B → 🤖 consulting-agent 실행 (기본 빌드 태스크)
+- 스킬 파일: `.skills/` (corp-financial-analysis·pptx·docx·xlsx·pdf)
+- 슬래시명령: `.claude/commands/` (마스터컨설팅·비상장주식평가·가지급금해소·가업승계·차명주식·임원퇴직금·상속증여·특허패키지·금융기관진단·법인재무종합분석)
+
 ## [2026-05 채팅모드 업데이트] 의뢰범위 보호 룰 (RULE-G 시리즈)
 
 본 섹션은 2026-05-04 채팅창에서 발생한 의뢰범위 초과 자동수행 사고를 재발방지하기 위한 강제 룰이다.
