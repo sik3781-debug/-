@@ -313,6 +313,18 @@ class TreasuryStockLiquidationAgent:
             },
         }
 
+    def _build_4party_3time_matrix(self, strategy, risks=None, hedges=None,
+                                    process=None, post=None) -> dict:
+        """4자관점(법인·주주·과세관청·금융기관) × 3시점(사전·현재·사후) 12셀 표준 매트릭스.
+        기존 _build_4x3_matrix 위임 — ProfessionalSolutionAgent 표준 인터페이스 준수."""
+        base = self._build_4x3_matrix(strategy)
+        return {
+            "법인":       {"사전": base["법인"]["사전(Pre)"],   "현재": base["법인"]["현재(Now)"],   "사후": base["법인"]["사후(Post)"]},
+            "주주(오너)": {"사전": base["주주(오너)"]["사전(Pre)"], "현재": base["주주(오너)"]["현재(Now)"], "사후": base["주주(오너)"]["사후(Post)"]},
+            "과세관청":   {"사전": base["과세관청"]["사전(Pre)"], "현재": base["과세관청"]["현재(Now)"], "사후": base["과세관청"]["사후(Post)"]},
+            "금융기관":   {"사전": base["금융기관"]["사전(Pre)"], "현재": base["금융기관"]["현재(Now)"], "사후": base["금융기관"]["사후(Post)"]},
+        }
+
     def _build_text(self, strategy: dict, matrix: dict) -> str:
         lines = []
         for party, timepoints in matrix.items():
