@@ -183,3 +183,60 @@
 - 비표준 네이밍 에이전트: extra_modules 등록 누락 주의 (DARTAgent, CretatopPDFParserAgent, OcrAgent 등)
 - 에이전트 결과의 `_model_used` 키로 실제 사용 모델 추적 가능
 - `_success_criteria` 키로 매 실행마다 성공 기준 4가지 달성 여부 확인 가능
+
+## [2026-05 채팅모드 업데이트] 의뢰범위 보호 룰 (RULE-G 시리즈)
+
+본 섹션은 2026-05-04 채팅창에서 발생한 의뢰범위 초과 자동수행 사고를 재발방지하기 위한 강제 룰이다.
+모든 채팅·Cowork·Code 모드에서 동등 적용된다.
+
+### RULE-G1 — 사용자 명시 없는 git push 금지
+사용자가 명시적으로 "push" 또는 "원격 반영"을 지시하지 않은 경우, 다음 행위 절대 금지:
+- git push (브랜치·태그 무관)
+- gh pr create 후 자동 머지
+- GitHub MCP의 push_files·create_or_update_file·merge_pull_request
+- 기타 원격 저장소 쓰기성 호출
+
+예외: 사용자가 다음 표현 중 하나를 사용한 경우만 허용
+- "push 해 줘", "push 해도 좋아", "원격에 올려 줘", "git push 실행"
+- "GitHub에 반영", "PR 머지 승인"
+
+위반 시: 즉시 중단 + 사용자 보고 + 자동 복구 시도 금지
+
+### RULE-G2 — MCP 쓰기성 도구 자동호출 시 사용자 승인 필수
+다음 카테고리 호출 직전 반드시 승인 요청:
+- 파일·코드 쓰기: GitHub push_files / create_or_update_file / delete_file
+- 메일·메시지 발송: Gmail send_message / Slack send_message
+- 캘린더·일정 변경: Google Calendar create/update/delete_event
+- Drive 쓰기: Google Drive create/update/delete_file
+- 결제·구매: 모든 결제 관련 MCP
+
+승인 요청 형식:
+[MCP 쓰기성 도구 호출 승인 요청]
+- 도구: <도구명>
+- 대상: <대상 자원>
+- 영향: <변경 내용 요약>
+- 승인하시려면 "승인" 또는 "예"로 응답해 주십시오.
+
+예외: 사용자가 본 세션 시작 시 "MCP 자동호출 허용"을 명시한 경우만 면제
+
+### RULE-G3 — API Stream idle timeout 회피 룰
+다음 작업은 반드시 배치 분할 처리:
+- 파일 다수 생성: 5개 파일/배치
+- 대용량 텍스트 생성: 2,000토큰/배치
+- MCP 도구 다수 호출: 3호출/배치
+- git commit 다수: 1커밋/배치
+
+timeout 발생 시 자동복구:
+1. 마지막 성공 배치 위치 기록 (outputs/_resume_state.json)
+2. 동일 배치 재시도 (최대 2회)
+3. 2회 실패 시 사용자 보고 + 작업 중단
+
+금지: 단일 호출에 31개 파일 + git push + MCP 머지 + 검증 묶음 시도
+
+### RULE-G 시리즈 자가검증
+매 세션 종료 직전 다음 자가질문에 답:
+- 본 세션에서 사용자 명시 없는 push 시도 0회?
+- 본 세션에서 MCP 쓰기성 도구 무승인 호출 0회?
+- 본 세션에서 단일 호출 5파일·3MCP·2,000토큰 초과 0회?
+
+3개 모두 ✅ 인 경우만 정상 종료. 1개라도 ❌ 인 경우 사용자 자진 보고.
