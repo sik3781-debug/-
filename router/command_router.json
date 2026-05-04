@@ -4,7 +4,7 @@
     "created": "2026-05-05",
     "device": "DESKTOP-IHLF847",
     "description": "한국어 슬래시 명령 별칭 레지스트리 (router/ 로컬 — 정규화 + alias 기준)",
-    "total_commands": 55,
+    "total_commands": 65,
     "note": "자연어 트리거는 junggi-workspace/claude-code/commands/command_router.json 참조"
   },
 
@@ -282,5 +282,60 @@
     "agent": "GmailSenderAgent",
     "module": "agents.active.gmail_sender",
     "aliases": ["/Gmail", "/이메일발송", "/GmailSend"]
+  },
+  "/DART공시조회": {
+    "agent": "SKILL:DART공시조회",
+    "module": "skills.junggi-consulting.DART공시조회",
+    "aliases": ["/DART", "/공시조회", "/dart_search"]
+  },
+  "/법령조문조회": {
+    "agent": "SKILL:법령조문조회",
+    "module": "skills.junggi-consulting.법령조문조회",
+    "aliases": ["/법령조회", "/조문조회", "/law_article"]
+  },
+  "/판례검색": {
+    "agent": "SKILL:판례검색",
+    "module": "skills.junggi-consulting.판례검색",
+    "aliases": ["/판례조회", "/대법원판례", "/case_search"]
+  },
+  "/사업자상태조회": {
+    "agent": "SKILL:사업자상태조회",
+    "module": "skills.junggi-consulting.사업자상태조회",
+    "aliases": ["/사업자조회", "/폐업조회", "/biz_status"]
+  },
+  "/가업상속사후관리": {
+    "agent": "SKILL:가업상속사후관리",
+    "module": "skills.junggi-consulting.가업상속사후관리",
+    "aliases": ["/가업상속사후", "/상속사후관리", "/family_biz_post"]
+  },
+  "/명의신탁시효표": {
+    "agent": "SKILL:명의신탁시효표",
+    "module": "skills.junggi-consulting.명의신탁시효표",
+    "aliases": ["/명의신탁시효", "/시효표", "/nominee_statute"]
+  },
+  "/자녀법인설계": {
+    "agent": "SKILL:자녀법인설계",
+    "module": "skills.junggi-consulting.자녀법인설계",
+    "aliases": ["/자녀법인", "/법인설계", "/child_corp_design"]
+  },
+  "/특허현금흐름": {
+    "agent": "SKILL:특허현금흐름",
+    "module": "skills.junggi-consulting.특허현금흐름",
+    "aliases": ["/특허CF", "/IP현금흐름", "/patent_cashflow"]
+  },
+  "/가지급금월별추적": {
+    "agent": "SKILL:가지급금월별추적",
+    "module": "skills.junggi-consulting.가지급금월별추적",
+    "aliases": ["/가지급금추적", "/인정이자추적", "/provisional_track"]
+  },
+  "/비상장주식할증면제": {
+    "agent": "SKILL:비상장주식할증면제",
+    "module": "skills.junggi-consulting.비상장주식할증면제",
+    "aliases": ["/할증면제", "/최대주주할증", "/unlisted_premium_exempt"]
+  },
+  "/이월결손금시뮬": {
+    "agent": "SKILL:이월결손금시뮬",
+    "module": "skills.junggi-consulting.이월결손금시뮬",
+    "aliases": ["/이월결손금", "/결손금시뮬", "/nol_simulation"]
   }
 }
