@@ -4,7 +4,7 @@
     "created": "2026-05-05",
     "device": "DESKTOP-IHLF847",
     "description": "한국어 슬래시 명령 별칭 레지스트리 (router/ 로컬 — 정규화 + alias 기준)",
-    "total_commands": 39,
+    "total_commands": 46,
     "note": "자연어 트리거는 junggi-workspace/claude-code/commands/command_router.json 참조"
   },
 
@@ -202,5 +202,40 @@
     "agent": "FinancialRatioPrecisionAgent",
     "module": "agents.active.financial_ratio_precision",
     "aliases": ["/재무비율분석", "/financial_ratio", "/5축재무분석", "/신용점수분석"]
+  },
+  "/실효세율계산": {
+    "agent": "SKILL:실효세율계산",
+    "module": "skills.junggi-consulting.실효세율계산",
+    "aliases": ["/실효세율", "/법인세실효세율", "/세부담분석", "/effective_tax_rate"]
+  },
+  "/정관진단": {
+    "agent": "SKILL:정관진단",
+    "module": "skills.junggi-consulting.정관진단",
+    "aliases": ["/정관검토", "/정관위반", "/정관변경", "/articles_review"]
+  },
+  "/4자관점매트릭스": {
+    "agent": "SKILL:4자관점매트릭스",
+    "module": "skills.junggi-consulting.4자관점매트릭스",
+    "aliases": ["/4자관점", "/12셀매트릭스", "/4party_matrix"]
+  },
+  "/배당vs급여Mix": {
+    "agent": "SKILL:배당vs급여Mix",
+    "module": "skills.junggi-consulting.배당vs급여Mix",
+    "aliases": ["/배당급여Mix", "/보수구조최적화", "/dividend_salary_mix"]
+  },
+  "/임원보수한도산출": {
+    "agent": "SKILL:임원보수한도산출",
+    "module": "skills.junggi-consulting.임원보수한도산출",
+    "aliases": ["/임원보수한도", "/임원급여한도", "/executive_pay_limit"]
+  },
+  "/통합투자세액공제": {
+    "agent": "SKILL:통합투자세액공제",
+    "module": "skills.junggi-consulting.통합투자세액공제",
+    "aliases": ["/투자세액공제", "/조특24조", "/investment_tax_credit"]
+  },
+  "/감사대응팩": {
+    "agent": "SKILL:감사대응팩",
+    "module": "skills.junggi-consulting.감사대응팩",
+    "aliases": ["/감사대응", "/외부감사준비", "/세무조사대응", "/audit_pack"]
   }
 }
