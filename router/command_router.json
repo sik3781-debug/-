@@ -4,7 +4,7 @@
     "created": "2026-05-05",
     "device": "DESKTOP-IHLF847",
     "description": "한국어 슬래시 명령 별칭 레지스트리 (router/ 로컬 — 정규화 + alias 기준)",
-    "total_commands": 46,
+    "total_commands": 52,
     "note": "자연어 트리거는 junggi-workspace/claude-code/commands/command_router.json 참조"
   },
 
@@ -237,5 +237,35 @@
     "agent": "SKILL:감사대응팩",
     "module": "skills.junggi-consulting.감사대응팩",
     "aliases": ["/감사대응", "/외부감사준비", "/세무조사대응", "/audit_pack"]
+  },
+  "/법인세종합진단": {
+    "agent": "ComprehensiveCorporateTaxAgent",
+    "module": "agents.active.comprehensive_corporate_tax",
+    "aliases": ["/법인세진단", "/CIT종합", "/법인세절세종합"]
+  },
+  "/현금흐름정밀분석": {
+    "agent": "CashFlowPrecisionAgent",
+    "module": "agents.active.cash_flow_precision",
+    "aliases": ["/현금흐름정밀", "/CF정밀", "/KIFRS1007"]
+  },
+  "/운전자본관리": {
+    "agent": "WorkingCapitalAgent",
+    "module": "agents.active.working_capital",
+    "aliases": ["/운전자본", "/WC관리", "/CCC분석"]
+  },
+  "/부채구조최적화": {
+    "agent": "DebtStructureAgent",
+    "module": "agents.active.debt_structure",
+    "aliases": ["/부채구조", "/Debt최적화", "/이자보상비율"]
+  },
+  "/원가구조정밀": {
+    "agent": "CostStructurePrecisionAgent",
+    "module": "agents.active.cost_structure_precision",
+    "aliases": ["/원가구조", "/Cost정밀", "/BEP분석"]
+  },
+  "/감사대비재무": {
+    "agent": "AuditPreparationAgent",
+    "module": "agents.active.audit_preparation",
+    "aliases": ["/감사대비", "/Audit재무", "/외감대비"]
   }
 }
