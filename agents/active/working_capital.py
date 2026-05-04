@@ -1,6 +1,13 @@
 """
 운전자본 관리 에이전트 (/운전자본관리) — 전문 솔루션 그룹
-핵심 기준: WC=유동자산-유동부채, CCC=DSO+DIO-DPO, K-IFRS 1007
+핵심 기준: WC=유동자산-유동부채, CCC=DSO+DIO-DPO
+핵심 법령:
+  K-IFRS 1007 (현금흐름표 — 운전자본 변동 공시)
+  법인세법§19의2 (대손금 손금 요건 — 매출채권 부실 시)
+  조특§7의2 (중소기업 매출채권 팩토링 이자비용 공제)
+  상증§38 (저가 매출·고가 매입 — 특수관계인 운전자본 이전)
+  부가가치세법§32 (세금계산서 발급 기한 — DSO 관리 연동)
+  국기법§46의2 (납기전 징수 — 유동성 위기 시 세금 관리)
 """
 from __future__ import annotations
 from agents.base.professional_solution_agent import ProfessionalSolutionAgent
@@ -46,12 +53,29 @@ class WorkingCapitalAgent(ProfessionalSolutionAgent):
             f"과세관청 관점: 재고 과다 보유 시 재고자산 평가손실 (부가가치세·법인세 연동).\n"
             f"금융기관 관점: 매출채권 팩토링·담보대출 가능 잔액 {ar_balance:,.0f}원."
         )
+        # CCC 개선 시나리오 3종
+        scenarios = [
+            {"name": "DSO 단축 (매출채권 조기 회수)",
+             "ccc_target": max(ccc - 15, 30),
+             "method": "조기결제 할인(2/10 net 30) 제공 + 팩토링 활용 (조특§7의2)",
+             "law": "법인세법§19의2 대손금 손금 요건 충족 병행 관리"},
+            {"name": "DPO 연장 (매입채무 지급 기간 연장)",
+             "ccc_target": max(ccc - 10, 30),
+             "method": "공급업체 결제 조건 재협상 (Net 60 목표)",
+             "law": "부가가치세법§32 세금계산서 기한 준수 병행"},
+            {"name": "현행 유지 (모니터링)",
+             "ccc_target": ccc,
+             "method": f"CCC {ccc:.0f}일 현행 유지 + 분기별 재진단",
+             "law": "K-IFRS 1007 현금흐름 변동 공시 유지"},
+        ]
+
         return {
             "revenue": revenue, "cogs": cogs, "ar_balance": ar_balance,
             "inventory": inventory, "ap_balance": ap_balance,
             "dso": dso, "dio": dio, "dpo": dpo, "ccc": ccc,
             "wc": wc, "wc_ratio": wc_ratio,
             "funding_gap": funding_gap, "gap_to_target": gap_to_target,
+            "scenarios": scenarios, "recommended": scenarios[0]["name"],
             "text": text,
         }
 

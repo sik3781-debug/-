@@ -1,4 +1,16 @@
-"""부동산 정식 평가 4종 에이전트 — 4단계 워크플로우"""
+"""
+부동산 정식 평가 4종 에이전트 (/부동산정식평가) — 4단계 워크플로우
+
+핵심 법령:
+  상증§60 (시가 평가 원칙 — 상속·증여 기준)
+  상증§61 (보충적 평가 — 공시지가·기준시가)
+  소득세법§94①1호 (부동산 양도소득세)
+  법인세법§52 (부당행위계산 — 저가·고가 양도)
+  조특§69 (8년 자경농지 양도소득세 감면)
+  부동산공시법§3 (공시지가 기준)
+  국기법§35 (조세채권 우선 변제 — 담보 설정 시)
+  외감법§4 (외감 대상 자산 평가 연동)
+"""
 from __future__ import annotations
 
 
@@ -59,10 +71,28 @@ class RealEstateValuationAgent:
             f"금융기관 관점: 담보 설정 시 감정평가액 기준 — 시세의 약 100%.\n"
             f"평가액 범위: {val_min:,.0f} ~ {val_max:,.0f}원"
         )
+        # 목적별 평가 전략 시나리오 3종
+        scenarios = [
+            {"name": "감정평가 (담보·매각 극대화)",
+             "value": valuations.get("감정평가", {}).get("value", market_value),
+             "purpose": "담보 대출·매각 협상",
+             "law": "상증§60 시가 원칙 + 소득세법§94①1호 양도소득 기준가액"},
+            {"name": "기준시가 (증여·상속 절세)",
+             "value": valuations.get("기준시가", {}).get("value", market_value),
+             "purpose": "증여세·상속세 절세",
+             "law": "상증§61 보충적 평가 + 조특§69 자경농지 감면 검토"},
+            {"name": "공시지가 (재산세·취득세 기준)",
+             "value": valuations.get("공시지가", {}).get("value", market_value),
+             "purpose": "취득세·재산세 신고",
+             "law": "부동산공시법§3 + 법인세법§52 부당행위 기준가액"},
+        ]
+
         return {
             "market_value": market_value, "re_type": re_type,
             "valuations": valuations, "tax_purpose": tax_purpose,
-            "val_min": val_min, "val_max": val_max, "text": text,
+            "val_min": val_min, "val_max": val_max,
+            "scenarios": scenarios, "recommended": scenarios[0]["name"],
+            "text": text,
         }
 
     def validate_risk_5axis(self, strategy: dict) -> dict:

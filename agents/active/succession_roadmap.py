@@ -3,9 +3,13 @@
 
 핵심 법령:
   상증§18의2 (가업상속공제 최대 600억)
-  상증§41의2 (차등배당)
-  조특§30의6 (가업승계 증여세 특례)
-  시행령§15 (사후관리 7년 — 업종·고용·자산 유지 의무)
+  상증§41의2 (차등배당 — 승계 전 오너 소득 확보)
+  조특§30의6 (가업승계 증여세 특례 — 10% 과세)
+  법인세법§52 (부당행위계산 — 저가 주식 이전 방지)
+  소득세법§94①3호 (비상장주식 양도소득)
+  국기법§47의4 (가업상속 사후관리 추징 이자상당액)
+  외감법§4 (외감 대상 법인 가업승계 특례 요건)
+  상증령§15 (사후관리 7년 — 업종·고용 80%·자산 80% 유지 의무)
 """
 from __future__ import annotations
 
@@ -85,6 +89,25 @@ class SuccessionRoadmapAgent:
             f"과세관청 관점: 사후관리 7년 — 업종·고용(80%)·자산(80%) 유지 의무.\n"
             f"금융기관 관점: 승계 과정 신용등급 연속성 유지 + 후계자 개인 담보 전환 계획."
         )
+        # 승계 전략 시나리오 3종
+        scenarios = [
+            {"name": "증여세 특례 (조특§30의6) — 10% 과세",
+             "cost": gift_tax_special,
+             "saving": gift_tax_saving,
+             "condition": f"CEO {ceo_age}세 이전 + 후계자 10년 경영 참여",
+             "law": "조특§30의6 + 상증령§15 사후관리 7년"},
+            {"name": "가업상속공제 (상증§18의2) — 최대 600억 공제",
+             "cost": max(0, business_value - deduction_limit) * 0.50,
+             "saving": deduction_limit * 0.50,
+             "condition": f"경영 {management_years}년 → 공제 한도 {deduction_limit:,.0f}원",
+             "law": "상증§18의2 + 국기법§47의4 추징 이자상당액 주의"},
+            {"name": "단계 증여 (10년 합산 공제 활용)",
+             "cost": business_value * 0.30,
+             "saving": business_value * 0.10,
+             "condition": "10년 단위 분할 증여 → 공제(5천만원) 반복 활용",
+             "law": "소득세법§94①3호 + 법인세법§52 부당행위 방지"},
+        ]
+
         return {
             "ceo_age": ceo_age, "successor_age": successor_age,
             "business_value": business_value,
@@ -93,7 +116,9 @@ class SuccessionRoadmapAgent:
             "is_sme": is_sme, "business_assets": business_assets,
             "deduction_limit": deduction_limit,
             "gift_tax_saving": gift_tax_saving,
-            "roadmap": roadmap, "text": text,
+            "roadmap": roadmap,
+            "scenarios": scenarios, "recommended": scenarios[0]["name"],
+            "text": text,
         }
 
     # ── ② 5축 리스크 검증 ─────────────────────────────────────

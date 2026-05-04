@@ -1,6 +1,12 @@
 """
 현금흐름 정밀분석 에이전트 (/현금흐름정밀분석) — 전문 솔루션 그룹
-핵심 법령: K-IFRS 1007 (현금흐름표), 외감법§5 (감사기준)
+핵심 법령:
+  K-IFRS 1007 (현금흐름표 직접법·간접법)
+  외감법§5 (외부감사 기준 — 현금흐름표 공시 의무)
+  법인세법§42 (현금주의 vs 발생주의 차이 세무조정)
+  조특§63의2 (중소기업 현금영수증 가맹점 세액공제)
+  국기법§47의3 (원천징수 불이행 가산세 — 현금흐름 관리 연동)
+  소득세법§127 (원천징수 의무 — 현금지급 기준)
 """
 from __future__ import annotations
 from agents.base.professional_solution_agent import ProfessionalSolutionAgent
@@ -47,11 +53,28 @@ class CashFlowPrecisionAgent(ProfessionalSolutionAgent):
             f"금융기관 관점: 영업CF/매출 {op_cf_to_rev:.1%} — {'건전' if op_cf_to_rev > 0.05 else '취약'}.\n"
             f"{'⚠️ 흑자도산 위험 감지!' if insolvency_risk else '유동성 정상'}"
         )
+        # 유동성 개선 시나리오 3종 (K-IFRS 1007 기준)
+        scenarios = [
+            {"name": "영업CF 강화",
+             "target": f"영업CF {op_cf * 1.2:,.0f}원 (20% 개선)",
+             "method": "매출채권 회수 단축 + 매입채무 지급 연장 + 불필요 재고 청산",
+             "law": "법인세법§42 발생주의→현금주의 세무조정 병행"},
+            {"name": "CapEx 최적화",
+             "target": f"FCF {max(fcf, op_cf * 0.3):,.0f}원 이상 확보",
+             "method": "비필수 자본지출 이연 + 운용리스 전환 (K-IFRS 1007 재무CF 분리)",
+             "law": "외감법§5 현금흐름표 공시 요건 충족 유지"},
+            {"name": "현행 유지 (모니터링)",
+             "target": "영업CF/매출 5% 이상 유지",
+             "method": "월간 현금흐름 예산 vs 실적 대비·조기경보 지수 운영",
+             "law": "국기법§47의3 원천징수 현금 납부 기한 관리"},
+        ]
+
         return {
             "op_cf": op_cf, "inv_cf": inv_cf, "fin_cf": fin_cf,
             "capex": capex, "fcf": fcf, "cf_quality": cf_quality,
             "op_cf_to_rev": op_cf_to_rev, "insolvency_risk": insolvency_risk,
             "health": health, "net_income": net_income, "revenue": revenue,
+            "scenarios": scenarios, "recommended": scenarios[0]["name"],
             "text": text,
         }
 

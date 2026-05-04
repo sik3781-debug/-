@@ -1,4 +1,16 @@
-"""민사신탁 4유형 설계 에이전트 — 4단계 워크플로우"""
+"""
+민사신탁 4유형 설계 에이전트 (/민사신탁) — 4단계 워크플로우
+
+핵심 법령:
+  신탁법§2 (신탁 정의 및 성립)
+  신탁법§59 (유언대용신탁)
+  상증§4의3 (신탁 이익 증여 의제)
+  상증§45의2 (명의신탁 증여 의제 — 신탁과 구별)
+  조특§91의20 (신탁 집합투자 세액공제)
+  법인세법§5 (신탁재산 과세 원칙)
+  소득세법§2의3 (수익적 소유자 — 신탁 수익자)
+  국기법§14 (실질과세 원칙 — 신탁 형식 남용 방지)
+"""
 from __future__ import annotations
 
 
@@ -65,8 +77,26 @@ class CivilTrustAgent:
             f"금융기관 관점: 신탁재산({asset_val:,.0f}원)을 담보로 활용 가능 여부 협의 필요.\n"
             f"4유형 전체: {list(TRUST_TYPES.keys())}"
         )
+        # 신탁 유형별 선택 시나리오 3종 (핵심 목적 기준)
+        scenarios = [
+            {"name": "유언대용신탁 (상속 분쟁 방지)",
+             "law": "신탁법§59 + 국기법§14 실질과세 원칙",
+             "merit": "사망 즉시 수익자에게 이전 — 유류분 분쟁 최소화",
+             "tax": "상속세 과세가액 포함 (상증§4의3)"},
+            {"name": "타익신탁 (가업승계·증여 절세)",
+             "law": "신탁법§2 + 상증§4의3 + 조특§91의20",
+             "merit": "수익자 지정 시점 증여세 과세 — 분할 납부 가능",
+             "tax": "소득세법§2의3 수익적 소유자 기준 과세"},
+            {"name": "자익신탁 (재산 보전·관리)",
+             "law": "신탁법§2 + 법인세법§5 신탁재산 과세",
+             "merit": "위탁자 = 수익자 — 비상장주식 신탁으로 평가 시점 조절",
+             "tax": "소득세 과세 시점 조절 가능"},
+        ]
+
         return {"purpose": purpose, "trust_info": info,
-                "asset_value": asset_val, "text": text}
+                "asset_value": asset_val,
+                "scenarios": scenarios, "recommended": scenarios[0]["name"],
+                "text": text}
 
     def validate_risk_5axis(self, strategy: dict) -> dict:
         info = strategy["trust_info"]

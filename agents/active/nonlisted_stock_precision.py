@@ -2,10 +2,16 @@
 비상장주식 정밀평가 에이전트 (/비상장주식정밀평가) — 4단계 워크플로우
 
 핵심 법령:
-  상증§54 (순손익3:순자산2 가중평균), §55 (순자산가치), §56 (순손익가치)
-  상증령§54~§56 (계산 세칙)
+  상증§54 (순손익3:순자산2 가중평균)
+  상증§55 (순자산가치 산정)
+  상증§56 (순손익가치 산정 — 자본환원율 10%)
   상증§63 (보충적 평가)
+  상증§63② (최대주주 할증 20%·30%)
   조특§101 (중소기업 최대주주 할증 배제)
+  법인세법§52 (부당행위계산 — 저가·고가 주식 거래)
+  소득세법§94①3호 (비상장주식 양도소득)
+  국기법§26의2 (부과제척기간 — 주식 거래 후 과세 시점)
+  외감법§4 (외부감사 대상 — 비상장주식 가치 연동)
 """
 from __future__ import annotations
 
@@ -85,6 +91,22 @@ class NonListedStockPrecisionAgent:
             f"과세관청 관점: 상증§54 보충적 평가 — 시가 우선, 없을 경우 순손익·순자산 가중.\n"
             f"금융기관 관점: 평가액 기준 주식 담보 대출 한도 산정."
         )
+        # 평가 최적화 시나리오 3종 (상증§54 기준)
+        scenarios = [
+            {"name": "순손익3:순자산2 (일반법인)",
+             "val": (net_income_per_share * 3 + net_asset_per_share * 2) / 5 * (1 + premium_pct),
+             "condition": "부동산비율 50% 미만·업력 3년 초과",
+             "law": "상증§54 + 소득세법§94①3호 양도소득 과세"},
+            {"name": "순자산 100% (부동산 과다·창업 3년)",
+             "val": net_asset_per_share * (1 + premium_pct),
+             "condition": "부동산비율 80% 이상 또는 업력 3년 이하",
+             "law": "상증§55 순자산가치 + 법인세법§52 부당행위 검토"},
+            {"name": "할증 배제 (중소기업 조특§101)",
+             "val": base_val,
+             "condition": "중소기업기본법§2 해당 최대주주",
+             "law": "조특§101 할증 면제 + 국기법§26의2 제척기간 관리"},
+        ]
+
         return {
             "net_asset_per_share": net_asset_per_share,
             "net_income_per_share": net_income_per_share,
@@ -95,6 +117,7 @@ class NonListedStockPrecisionAgent:
             "final_val": final_val, "shares_total": shares_total,
             "total_equity_val": total_equity_val,
             "is_major_holder": is_major_holder, "is_sme": is_sme,
+            "scenarios": scenarios, "recommended": label,
             "text": text,
         }
 

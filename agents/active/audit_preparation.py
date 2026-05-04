@@ -1,6 +1,15 @@
 """
 감사대비 재무 에이전트 (/감사대비재무) — 전문 솔루션 그룹
-핵심 법령: 외감법§4(대상), 외감법§9(감사인), ISA 315, K-IFRS 공시요건
+핵심 법령:
+  외감법§4 (외부감사 대상 기준 — 자산 120억·매출 100억)
+  외감법§9 (감사인 선임·해임)
+  외감법§9의2 (핵심감사항목 KAM 공시 의무)
+  K-IFRS 1001 (재무제표 표시 기준)
+  조특§126의3 (세무사·회계사 수임 세액공제)
+  법인세법§75의2 (법인세 신고 불성실 가산세)
+  국기법§81의4 (세무조사 납세자 권리 — 세무조사 연계 대응)
+  상증§41 (이익잉여금 무상이전 — 특수관계인 거래 연동)
+  ISA 315 (위험 식별 및 평가) · ISA 240 (부정 위험)
 """
 from __future__ import annotations
 from agents.base.professional_solution_agent import ProfessionalSolutionAgent
@@ -59,11 +68,28 @@ class AuditPreparationAgent(ProfessionalSolutionAgent):
             f"과세관청 관점: 감사의견 한정·부적정 → 세무조사 트리거 가능성 (외감법·국기§81).\n"
             f"금융기관 관점: 감사의견 적정 유지 → 여신 약정 재무비율 충족·신용등급 유지."
         )
+        # 감사 대응 시나리오 3종
+        scenarios = [
+            {"name": "KAM 예측 사전 자기진단 (권장)",
+             "priority": "고위험",
+             "method": "KAM 예측 계정 증빙 완비 + 감사인 사전 커뮤니케이션",
+             "law": "외감법§9의2 KAM 공시 + ISA 315 위험 식별"},
+            {"name": "내부통제 집중 보강",
+             "priority": "중위험",
+             "method": "내부통제 미비점 사전 해소 + 외감법§8 내부감사위원회 활동",
+             "law": "법인세법§75의2 불성실 가산세 방지 + 국기법§81의4 납세자 권리"},
+            {"name": "현행 유지 (소규모 법인)",
+             "priority": "저위험",
+             "method": f"{'외감 비대상 — 기본 재무제표 관리' if not is_audit_required else '외감 대상 — 최소 대응'}",
+             "law": "외감법§4 대상 기준 충족 여부 연간 재확인"},
+        ]
+
         return {
             "total_assets": total_assets, "revenue": revenue, "audit_type": audit_type,
             "is_audit_required": is_audit_required, "predicted_kam": predicted_kam,
             "related_parties": related_parties, "provisional_payment": provisional_payment,
-            "checklist": checklist, "text": text,
+            "checklist": checklist, "scenarios": scenarios,
+            "recommended": scenarios[0]["name"], "text": text,
         }
 
     def validate_risk_5axis(self, strategy: dict) -> dict:

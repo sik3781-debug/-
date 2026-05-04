@@ -1,4 +1,17 @@
-"""특허 통합 NPV 시뮬레이터 — 4단계 워크플로우"""
+"""
+특허 통합 NPV 시뮬레이터 (/특허현금흐름시뮬) — 4단계 워크플로우
+
+핵심 법령:
+  조특§10 (R&D 세액공제 — 중소기업 25%·중견 8%·대기업 2%)
+  조특§12 (기술이전·사업화 소득 50% 감면)
+  법인세법§23 (무형자산 자본화 — 특허 내용연수 20년)
+  법인세법§45 (특허 사용료 손금 인정)
+  소득세법§21①10호 (직무발명 보상금 과세)
+  상증§41의3 (특허권 이전 이익 증여 의제)
+  국기법§26의2 (부과제척기간 — R&D 공제 사후관리)
+  발명진흥법§40 (직무발명 보상 의무·IP 담보)
+  외감법§4 (외감 대상 — 특허 자산 반영 재무비율)
+"""
 from __future__ import annotations
 
 
@@ -56,12 +69,29 @@ class PatentCashflowSimulator:
             f"금융기관 관점: IP 담보 대출 활용 — 특허가치 {patent_value:,.0f}원 기준.\n"
             f"통합 NPV(세후): {royalty_npv_after:,.0f}원"
         )
+        # IP 활용 전략 시나리오 3종
+        scenarios = [
+            {"name": "R&D 세액공제 극대화 (조특§10)",
+             "benefit": rd_credit,
+             "method": "연구전담부서 설립·인건비 100% 세액공제 적용",
+             "law": "조특§10 중소기업 25% + 국기법§26의2 사후관리 5년"},
+            {"name": "기술이전 소득 감면 (조특§12)",
+             "benefit": royalty_npv_after,
+             "method": "라이선스 계약 → 기술이전 소득 50% 법인세 감면",
+             "law": "조특§12 + 법인세법§45 사용료 손금 + 발명진흥법§40 IP 담보"},
+            {"name": "특허 자본화 처리 (법인세법§23)",
+             "benefit": cap_benefit,
+             "method": "특허 취득원가 자산화 → 20년 감가상각 손금",
+             "law": "법인세법§23 무형자산 + 상증§41의3 이전이익 증여 의제 주의"},
+        ]
+
         return {
             "rd_expense": rd_expense, "patent_value": patent_value,
             "royalty_annual": royalty_annual, "years": years, "tax_rate": tax_rate,
             "inventor_reward": inventor_rwd, "rd_credit": rd_credit,
             "royalty_npv_after_tax": royalty_npv_after,
             "capitalize_benefit": cap_benefit, "expense_benefit": exp_benefit,
+            "scenarios": scenarios, "recommended": scenarios[0]["name"],
             "text": text,
         }
 
