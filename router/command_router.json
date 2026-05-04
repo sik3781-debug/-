@@ -4,7 +4,7 @@
     "created": "2026-05-05",
     "device": "DESKTOP-IHLF847",
     "description": "한국어 슬래시 명령 별칭 레지스트리 (router/ 로컬 — 정규화 + alias 기준)",
-    "total_commands": 36,
+    "total_commands": 39,
     "note": "자연어 트리거는 junggi-workspace/claude-code/commands/command_router.json 참조"
   },
 
@@ -187,5 +187,20 @@
     "agent": "TaxRefundClaimAgent",
     "module": "agents.active.scenario_comparator",
     "aliases": ["/세금환급", "/tax_refund", "/과납세금환급", "/5년환급"]
+  },
+  "/비상장주식정밀평가": {
+    "agent": "NonListedStockPrecisionAgent",
+    "module": "agents.active.nonlisted_stock_precision",
+    "aliases": ["/비상장정밀평가", "/nonlisted_precision", "/상증54정밀", "/주식정밀평가"]
+  },
+  "/가업승계로드맵": {
+    "agent": "SuccessionRoadmapAgent",
+    "module": "agents.active.succession_roadmap",
+    "aliases": ["/가업승계10년", "/succession_roadmap", "/승계로드맵", "/가업승계계획"]
+  },
+  "/재무비율정밀분석": {
+    "agent": "FinancialRatioPrecisionAgent",
+    "module": "agents.active.financial_ratio_precision",
+    "aliases": ["/재무비율분석", "/financial_ratio", "/5축재무분석", "/신용점수분석"]
   }
 }
