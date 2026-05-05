@@ -675,5 +675,71 @@
       "/탄소세",
       "/CBAM"
     ]
+  },
+  "/실무계산기": {
+    "skill": "실무계산기",
+    "path": "~/.claude/skills/junggi-consulting/skills/실무계산기/SKILL.md",
+    "aliases": [
+      "/세금계산",
+      "/빠른계산",
+      "/즉시계산"
+    ]
+  },
+  "/세무조사사전점검": {
+    "skill": "세무조사사전점검",
+    "path": "~/.claude/skills/junggi-consulting/skills/세무조사사전점검/SKILL.md",
+    "aliases": [
+      "/세무조사준비",
+      "/조사대비"
+    ]
+  },
+  "/조세불복절차": {
+    "skill": "조세불복절차",
+    "path": "~/.claude/skills/junggi-consulting/skills/조세불복절차/SKILL.md",
+    "aliases": [
+      "/이의신청",
+      "/심판청구",
+      "/조세불복"
+    ]
+  },
+  "/경정청구시뮬": {
+    "skill": "경정청구시뮬",
+    "path": "~/.claude/skills/junggi-consulting/skills/경정청구시뮬/SKILL.md",
+    "aliases": [
+      "/경정청구",
+      "/세금환급"
+    ]
+  },
+  "/주식양도세시뮬": {
+    "skill": "주식양도세시뮬",
+    "path": "~/.claude/skills/junggi-consulting/skills/주식양도세시뮬/SKILL.md",
+    "aliases": [
+      "/주식양도세",
+      "/양도세시뮬"
+    ]
+  },
+  "/우리사주조합설계": {
+    "skill": "우리사주조합설계",
+    "path": "~/.claude/skills/junggi-consulting/skills/우리사주조합설계/SKILL.md",
+    "aliases": [
+      "/우리사주",
+      "/ESOP"
+    ]
+  },
+  "/공익법인전환": {
+    "skill": "공익법인전환",
+    "path": "~/.claude/skills/junggi-consulting/skills/공익법인전환/SKILL.md",
+    "aliases": [
+      "/공익법인",
+      "/재단법인설립"
+    ]
+  },
+  "/법인전환SKILL": {
+    "skill": "법인전환",
+    "path": "~/.claude/skills/junggi-consulting/skills/법인전환/SKILL.md",
+    "aliases": [
+      "/개인법인전환SKILL",
+      "/사업자전환"
+    ]
   }
 }
