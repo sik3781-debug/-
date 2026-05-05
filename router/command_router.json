@@ -801,5 +801,14 @@
       "/Goodwill",
       "/goodwill_valuation"
     ]
+  },
+  "/영업권시뮬": {
+    "skill": "영업권시뮬",
+    "agent": "GoodwillValuationAgent",
+    "module": "agents.active.goodwill_valuation",
+    "aliases": [
+      "/영업권시뮬레이션",
+      "/goodwill_sim"
+    ]
   }
 }
