@@ -31,11 +31,8 @@ class FundingResearchAlertAgent:
 
     def __init__(self) -> None:
         self._api_key = os.environ.get("ECOS_API_KEY", "")
-        if not self._api_key:
-            raise EnvironmentError(
-                "ECOS_API_KEY 환경변수가 설정되지 않았습니다. "
-                ".env 파일에 ECOS_API_KEY=<발급키>를 추가하세요."
-            )
+        self.is_authenticated = bool(self._api_key)
+        # 모킹 모드: API 키 없이도 초기화 가능 (실제 호출은 인증 후)
 
     # ── 내부 헬퍼 ──────────────────────────────────────────────────────────
     def _fetch_stat(self, stat_code: str, item_code: str,
@@ -113,12 +110,17 @@ class FundingResearchAlertAgent:
         return alert
 
     def analyze(self, case: dict) -> dict:
-        """CommandRouter 표준 진입점"""
+        """CommandRouter 표준 진입점 — 미인증 시 모킹 응답"""
+        if not self.is_authenticated or case.get("mock"):
+            strategy = {"auth_status": "인증 대기 (ECOS_API_KEY 미설정)", "indicators": list(_STAT_CODES.keys())}
+            process = {"auth_status": "mock", "note": "ECOS_API_KEY 설정 후 본격 가동"}
+            return {"classification": self.classification, "group": self.group,
+                    "strategy": strategy, "process": process, "command": "/자금리서치알림"}
         period = case.get("period")
         alert  = self.generate_alert(period)
+        strategy = {"auth_status": "인증 완료", "data": alert.get("summary", {})}
         return {
-            "classification": self.classification,
-            "group": self.group,
-            "alert": alert,
+            "classification": self.classification, "group": self.group,
+            "strategy": strategy, "process": alert, "alert": alert,
             "command": "/자금리서치알림",
         }

@@ -741,5 +741,32 @@
       "/개인법인전환SKILL",
       "/사업자전환"
     ]
+  },
+  "/DART공시": {
+    "agent": "DartApiClientAgent",
+    "module": "agents.active.dart_api_client",
+    "aliases": [
+      "/DART",
+      "/다트공시"
+    ],
+    "auth_required": "DART_API_KEY"
+  },
+  "/법령조회": {
+    "agent": "LawApiClientAgent",
+    "module": "agents.active.law_api_client",
+    "aliases": [
+      "/법령검색",
+      "/조문조회"
+    ],
+    "auth_required": "LAW_API_ID"
+  },
+  "/홈택스조회": {
+    "agent": "HometaxClientAgent",
+    "module": "agents.active.hometax_client",
+    "aliases": [
+      "/Hometax",
+      "/홈택스"
+    ],
+    "auth_required": "HOMETAX_AUTH_TYPE"
   }
 }

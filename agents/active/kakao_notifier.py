@@ -25,11 +25,8 @@ class KakaoNotifierAgent:
         self._api_key      = os.environ.get("KAKAO_BIZ_API_KEY", "")
         self._sender_key   = os.environ.get("KAKAO_SENDER_KEY", "")
         self._template_code = os.environ.get("KAKAO_TEMPLATE_CODE", "")
-        if not all([self._api_key, self._sender_key, self._template_code]):
-            raise EnvironmentError(
-                "KAKAO_BIZ_API_KEY / KAKAO_SENDER_KEY / KAKAO_TEMPLATE_CODE "
-                "환경변수가 모두 설정되어야 합니다. .env 파일을 확인하세요."
-            )
+        self.is_authenticated = all([self._api_key, self._sender_key, self._template_code])
+        # 모킹 모드: API 키 없이도 초기화 가능 (실제 발송은 인증 후)
 
     # ── 내부 헬퍼 ──────────────────────────────────────────────────────────
     def _build_payload(self, phone: str, template_params: dict) -> bytes:
@@ -89,29 +86,27 @@ class KakaoNotifierAgent:
         return self._post(self._build_payload(phone, params))
 
     def analyze(self, case: dict) -> dict:
-        """CommandRouter 표준 진입점 — DRY RUN 기본값"""
+        """CommandRouter 표준 진입점 — 미인증 시 모킹 응답"""
         phone        = case.get("phone", "")
         client_name  = case.get("client_name", "테스트고객")
         summary_text = case.get("summary_text", "컨설팅 결과 요약 (테스트)")
-        dry_run      = case.get("dry_run", True)  # 기본 DRY RUN
+        dry_run      = case.get("dry_run", True)
+
+        if not self.is_authenticated or case.get("mock"):
+            strategy = {"auth_status": "인증 대기 (KAKAO_BIZ_API_KEY 미설정)"}
+            process  = {"auth_status": "mock", "note": "카카오 비즈채널 심사·템플릿 승인 후 가동"}
+            return {"classification": self.classification, "group": self.group,
+                    "strategy": strategy, "process": process, "command": "/카톡알림"}
 
         if dry_run:
-            return {
-                "classification": self.classification,
-                "group": self.group,
-                "dry_run": True,
-                "would_send_to": phone,
-                "client": client_name,
-                "preview": summary_text[:200],
-                "command": "/카톡알림",
-                "note": "실 발송 시 case['dry_run']=False 설정 필요",
-            }
+            strategy = {"auth_status": "인증 완료", "dry_run": True}
+            process  = {"would_send_to": phone, "client": client_name,
+                        "preview": summary_text[:200]}
+            return {"classification": self.classification, "group": self.group,
+                    "strategy": strategy, "process": process, "command": "/카톡알림",
+                    "note": "실 발송 시 case['dry_run']=False 설정 필요"}
 
         result = self.send_consulting_summary(phone, client_name, summary_text)
-        return {
-            "classification": self.classification,
-            "group": self.group,
-            "dry_run": False,
-            "result": result,
-            "command": "/카톡알림",
-        }
+        return {"classification": self.classification, "group": self.group,
+                "strategy": {"auth_status": "인증 완료"}, "process": result,
+                "command": "/카톡알림"}
