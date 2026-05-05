@@ -48,6 +48,8 @@ _AGENT_MODULE_MAP: dict[str, str] = {
     "MigrationAgent":                   "agents.infra.migration_agent",
     "FivePhasePipelineOrchestrator":    "agents.infra.five_phase_pipeline",
     "ClientReportAutoGenerator":        "agents.infra.client_report_generator",
+    # 사이클 10: 영업권 평가
+    "GoodwillValuationAgent":           "agents.active.goodwill_valuation",
 }
 
 _REQUIRED_METHODS = [
