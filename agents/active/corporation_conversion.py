@@ -74,6 +74,32 @@ class CorporationConversionAgent(ProfessionalSolutionAgent):
             f"금융기관 관점: 법인 전환 후 신용평가 갱신 — 기업여신 전환 협의 필요."
         )
 
+        # 영업권 평가 자동 통합 (법인전환 케이스 표준 연계)
+        goodwill_result = None
+        try:
+            from agents.active.goodwill_valuation import GoodwillValuationAgent
+            gw_agent = GoodwillValuationAgent()
+            gw_financials = case.get("financials", {
+                "최근3년_평균순손익": business_income * 0.20,  # 매출의 20% 추정
+                "자기자본": net_assets,
+                "매출액": business_income,
+            })
+            gw_result = gw_agent.analyze({
+                "case_type": "법인전환",
+                "financials": gw_financials,
+                "evaluation_date": case.get("evaluation_date", ""),
+                "discount_rate": case.get("discount_rate", 0.06),
+                "normal_return_rate": case.get("normal_return_rate", 0.10),
+            })
+            goodwill_result = {
+                "recommended_method": gw_result.get("strategy", {}).get("recommended_method"),
+                "recommended_value": gw_result.get("strategy", {}).get("recommended_value", 0),
+                "annual_amortization": gw_result.get("strategy", {}).get("annual_amortization", 0),
+                "transfer_tax": gw_result.get("strategy", {}).get("transfer_tax", 0),
+            }
+        except Exception:
+            goodwill_result = {"note": "영업권 평가 통합 미실행 (GoodwillValuationAgent 로드 오류)"}
+
         return {
             "business_income": business_income, "net_assets": net_assets,
             "real_estate_value": real_estate_value, "personal_tax": personal_tax,
@@ -82,6 +108,7 @@ class CorporationConversionAgent(ProfessionalSolutionAgent):
             "payback_period": payback_period, "deferred_tax": deferred_tax,
             "scenarios": scenarios, "recommended": best["name"],
             "conversion_method": conversion_method, "text": text,
+            "goodwill_valuation": goodwill_result,
         }
 
     def validate_risk_5axis(self, strategy: dict) -> dict:
