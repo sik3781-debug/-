@@ -15,7 +15,13 @@ from agents.groups.professional_solution_group import register
 
 @register
 class CashFlowPrecisionAgent(ProfessionalSolutionAgent):
-    """영업·투자·재무 현금흐름 3분류 정밀분석 + 유동성 위기 조기 경보"""
+    """영업·투자·재무 현금흐름 3분류 정밀분석 + 유동성 위기 조기 경보
+
+    K-IFRS 1007 현금흐름표(직접법·간접법) · 외감법§5 현금흐름표 공시
+    법인세법§42 발생주의 vs 현금주의 세무조정
+    조특§63의2 중소기업 현금영수증 가맹점 세액공제
+    국기법§47의3 원천징수 불이행 가산세 · 소득세법§127 원천징수
+    """
 
     def generate_strategy(self, case: dict) -> dict:
         """K-IFRS 1007 기준 현금흐름 3분류 분석 + 자유현금흐름(FCF) 산출"""

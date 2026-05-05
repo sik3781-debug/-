@@ -18,7 +18,13 @@ from agents.groups.professional_solution_group import register
 
 @register
 class AuditPreparationAgent(ProfessionalSolutionAgent):
-    """외부감사·세무조사·내부감사 통합 대응 준비 체계 구축"""
+    """외부감사·세무조사·내부감사 통합 대응 준비 체계 구축
+
+    외감법§4 외감 대상(자산 120억·매출 100억) · 외감법§9 감사인 선임
+    외감법§9의2 KAM 공시 · K-IFRS 1001 재무제표 표시 · 조특§126의3 세무사 수임
+    국기법§81의4 납세자 권리 · 법인세법§75의2 신고 불성실 가산세
+    상증§41 특수관계인 거래 · ISA 315 위험식별 · ISA 240 부정 위험
+    """
 
     # 외감 대상 기준 (외감법§4)
     _AUDIT_THRESHOLD = {

@@ -9,7 +9,13 @@ from agents.groups.professional_solution_group import register
 
 @register
 class CostStructurePrecisionAgent(ProfessionalSolutionAgent):
-    """변동비·고정비 분리 → BEP·기여이익률 분석 + 원가절감 우선순위"""
+    """변동비·고정비 분리 → BEP·기여이익률 분석 + 원가절감 우선순위
+
+    K-IFRS 1002 원가 분류(제품원가·기간비용)
+    법인세법§19 손금 요건 · 법인세법§20 접대비 한도
+    조특§7 중소기업 특별세액공제 · 소득세법§94 자산 양도
+    국기법§81의6 세무조사 비율 관리 · 외감법§4 원가명세서 공시
+    """
 
     def generate_strategy(self, case: dict) -> dict:
         """변동·고정원가 분리 + BEP + 기여이익률 + 원가절감 시뮬"""

@@ -16,7 +16,13 @@ from agents.groups.professional_solution_group import register
 
 @register
 class WorkingCapitalAgent(ProfessionalSolutionAgent):
-    """운전자본 사이클(CCC) 정밀분석 + 매출채권·재고·매입채무 최적화"""
+    """운전자본 사이클(CCC) 정밀분석 + 매출채권·재고·매입채무 최적화
+
+    K-IFRS 1007 현금흐름표 — 운전자본 변동 공시
+    법인세법§19의2 대손금 손금 요건 · 조특§7의2 매출채권 팩토링
+    상증§38 저가 매출 증여 의제 · 부가가치세법§32 세금계산서
+    국기법§46의2 납기전 징수 · 소득세법§16 이자소득
+    """
 
     def generate_strategy(self, case: dict) -> dict:
         """CCC = DSO + DIO - DPO 산출 + 자금 갭 분석"""
