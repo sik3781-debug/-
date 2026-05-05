@@ -35,6 +35,14 @@ class DartApiClientAgent(ProfessionalSolutionAgent):
         corp_code  = case.get("corp_code", "")
         query_types = case.get("query_types", ["기업정보", "재무제표", "공시목록"])
 
+        scenarios = [
+            {"name": "기업 기본정보 + 재무제표 조회", "method": "company.json + fnlttSinglAcntAll",
+             "law": "자본시장법§159 공시 의무", "auth_required": True},
+            {"name": "공시 목록 + 임원 변동 모니터링", "method": "list.json + exctvSttus",
+             "law": "외감법§4 외감 대상 변경 추적", "auth_required": True},
+            {"name": "모킹 모드 (API 키 미설정)", "method": "_mock_response()",
+             "law": "N/A — 인증 후 전환", "auth_required": False},
+        ]
         strategy = {
             "corp_name": corp_name, "corp_code": corp_code,
             "query_types": query_types,
@@ -46,6 +54,7 @@ class DartApiClientAgent(ProfessionalSolutionAgent):
                 "임원 변동 모니터링",
                 "재무지표 추출 (XBRL 파싱)",
             ],
+            "scenarios": scenarios,
         }
         return strategy
 

@@ -64,11 +64,23 @@ class FivePhasePipelineOrchestrator(ProfessionalSolutionAgent):
         active_tracks = [self.SIX_TRACKS[i] for i in tracks if i < len(self.SIX_TRACKS)]
         active_outputs = [self.OUTPUTS_5[i] for i in outputs if i < len(self.OUTPUTS_5)]
 
+        scenarios = [
+            {"name": f"긴급 ({urgency}) — 3일 완료",
+             "tracks": len(active_tracks), "outputs": 1,
+             "timeline": "진단 1일·솔루션 1일·산출물 1일"},
+            {"name": "표준 — 7일 완료",
+             "tracks": len(active_tracks), "outputs": 3,
+             "timeline": "진단 3일·솔루션 2일·산출물 2일"},
+            {"name": "여유 — 21일 완료 (전체 산출물 5종)",
+             "tracks": 6, "outputs": 5,
+             "timeline": "진단 7일·솔루션 7일·산출물 7일"},
+        ]
         return {
             "client_name": client_name, "domain": domain, "urgency": urgency,
             "pipeline": self.PIPELINE, "active_tracks": active_tracks,
             "active_outputs": active_outputs, "timeline": timeline,
             "total_stages": len(self.PIPELINE),
+            "scenarios": scenarios,
             "summary": f"{client_name} | {domain} | {urgency} | {len(active_tracks)}트랙 | {len(active_outputs)}산출물",
         }
 

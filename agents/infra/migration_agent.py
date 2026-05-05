@@ -61,10 +61,22 @@ class MigrationAgent(ProfessionalSolutionAgent):
             except (SyntaxError, Exception) as e:
                 targets.append({"file": str(py_file), "error": str(e)})
 
+        scenarios = [
+            {"name": "dry_run 미리보기 (변환 없음)",
+             "risk": "없음 — 코드 변경 없이 대상만 식별",
+             "action": "dry_run=True (기본값)"},
+            {"name": "단계적 변환 (10개씩 배치)",
+             "risk": "낮음 — 배치별 py_compile 검증 후 진행",
+             "action": "auto_fix=True + batch_size=10"},
+            {"name": "전체 일괄 변환 (사용자 승인 후)",
+             "risk": "중간 — .bak 백업 후 전체 변환",
+             "action": "auto_fix=True + git commit 선행"},
+        ]
         return {
             "scan_dir": scan_dir, "dry_run": dry_run, "auto_fix": auto_fix,
             "targets": targets, "skipped": skipped,
             "target_count": len(targets), "skip_count": len(skipped),
+            "scenarios": scenarios,
             "summary": f"마이그레이션 대상: {len(targets)}개 / 이미 PSA: {len(skipped)}개",
         }
 

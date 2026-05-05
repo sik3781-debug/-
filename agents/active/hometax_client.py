@@ -42,6 +42,17 @@ class HometaxClientAgent(ProfessionalSolutionAgent):
         query_types = case.get("query_types", list(self._QUERY_TYPES.keys()))
         tax_period  = case.get("tax_period", "202501")
 
+        scenarios = [
+            {"name": "공동인증서 자동조회",
+             "auth": "HOMETAX_AUTH_TYPE=cert + 인증서 경로",
+             "law": "부가가치세법§32 세금계산서 자동 조회"},
+            {"name": "간편인증 조회 (카카오·네이버·PASS)",
+             "auth": "HOMETAX_AUTH_TYPE=simple",
+             "law": "국기법§81의6 납세자 자료 열람권"},
+            {"name": "모킹 모드 (인증 미완료)",
+             "auth": "미인증 — 샘플 데이터 반환",
+             "law": "N/A — 인증 완료 후 전환"},
+        ]
         return {
             "business_no": business_no, "query_types": query_types,
             "tax_period": tax_period,
@@ -52,6 +63,7 @@ class HometaxClientAgent(ProfessionalSolutionAgent):
                 "간편인증": "HOMETAX_AUTH_TYPE=simple (카카오·네이버·PASS)",
                 "API토큰": "사업자 등록 후 API 토큰 발급",
             },
+            "scenarios": scenarios,
         }
 
     def validate_risk_5axis(self, strategy: dict) -> dict:

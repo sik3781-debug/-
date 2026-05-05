@@ -76,11 +76,23 @@ class ClientReportAutoGenerator(ProfessionalSolutionAgent):
                     format_map[out] = "docx"  # 기본값
                 break
 
+        scenarios = [
+            {"name": "1페이지 요약 + docx (기본)",
+             "outputs": ["1페이지요약", "docx"], "time": "2~3시간",
+             "law": "외감법§5 재무제표 표시 기준 준수"},
+            {"name": "전체 5종 (PPT·docx·xlsx·HTML·체크리스트)",
+             "outputs": self.OUTPUTS_5, "time": "1~2일",
+             "law": "자본시장법§159 대규모법인 공시 형식"},
+            {"name": "Excel 시뮬 전용 (절세·재무 계산)",
+             "outputs": ["xlsx"], "time": "1~2시간",
+             "law": "법인세법§60 세무 신고서 첨부"},
+        ]
         return {
             "client_name": client_name, "report_type": report_type,
             "outputs": outputs, "file_names": file_names,
             "format_map": format_map, "design": self._DESIGN_STANDARDS,
             "has_consulting_data": bool(consulting_data),
+            "scenarios": scenarios,
             "summary": f"{client_name} — {len(outputs)}종 산출물 생성 계획",
         }
 

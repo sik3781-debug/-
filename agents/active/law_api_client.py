@@ -36,6 +36,17 @@ class LawApiClientAgent(ProfessionalSolutionAgent):
         article_no  = case.get("article_no", "")
         query_mode  = case.get("query_mode", "조문검색")  # 조문검색|판례검색|개정이력
 
+        scenarios = [
+            {"name": "조문 검색 (법령명 + 조문번호)",
+             "method": "lawSearch.do?target=law&type=JSON",
+             "law": "국기법§15 법령 해석 신청 연계"},
+            {"name": "판례 검색 (대법원·조세심판원)",
+             "method": "lawSearch.do?target=prec&type=JSON",
+             "law": "조세심판원 결정례 실시간 조회"},
+            {"name": "모킹 모드 (LAW_API_ID 미설정)",
+             "method": "_mock_response()",
+             "law": "N/A — open.law.go.kr 신청 후 전환"},
+        ]
         return {
             "law_name": law_name, "article_no": article_no,
             "query_mode": query_mode,
@@ -47,6 +58,7 @@ class LawApiClientAgent(ProfessionalSolutionAgent):
                 "판례 검색 (대법원·심판원)",
                 "입법예고 모니터링",
             ],
+            "scenarios": scenarios,
         }
 
     def validate_risk_5axis(self, strategy: dict) -> dict:

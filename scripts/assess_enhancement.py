@@ -1,5 +1,5 @@
 """
-자체 고도화 필요성 평가 스크립트 (v2 — 전체 22종 + SKILL.md)
+자체 고도화 필요성 평가 스크립트 (v3 — 전체 40종 + SKILL.md 26종)
 실행: python scripts/assess_enhancement.py [--full]
 출력: 콘솔 + outputs/ENHANCEMENT_ASSESSMENT_[FULL_]YYYYMMDD.json
 """
@@ -34,6 +34,20 @@ _AGENT_MODULE_MAP: dict[str, str] = {
     "SpecialCorpTransactionAgent":       "agents.active.special_corp_transaction",
     "SuccessionRoadmapAgent":            "agents.active.succession_roadmap",
     "ValuationOptimizationAgent":        "agents.active.valuation_optimization",
+    # 신규 작업 1: 전문영역 에이전트 5종
+    "TaxAuditResponseStrategyAgent":    "agents.active.tax_audit_response_strategy",
+    "CapitalImpairmentRecoveryAgent":   "agents.active.capital_impairment_recovery",
+    "CorporationConversionAgent":       "agents.active.corporation_conversion",
+    "TransferPricingBEPSAgent":         "agents.active.transfer_pricing_beps",
+    "ESGCarbonTaxAgent":                "agents.active.esg_carbon_tax",
+    # 신규 작업 3: 플러그인 3종 (PSA 상속)
+    "DartApiClientAgent":               "agents.active.dart_api_client",
+    "LawApiClientAgent":                "agents.active.law_api_client",
+    "HometaxClientAgent":               "agents.active.hometax_client",
+    # 신규 작업 4: 인프라 3종
+    "MigrationAgent":                   "agents.infra.migration_agent",
+    "FivePhasePipelineOrchestrator":    "agents.infra.five_phase_pipeline",
+    "ClientReportAutoGenerator":        "agents.infra.client_report_generator",
 }
 
 _REQUIRED_METHODS = [
@@ -42,13 +56,16 @@ _REQUIRED_METHODS = [
 ]
 _LAW_KEYWORDS = ["§", "K-IFRS", "국기", "외감", "조특", "상증", "법인세", "소득세"]
 
-# SKILL 평가 대상 18종
+# SKILL 평가 대상 26종 (기존 18 + 신규 8)
 _SKILL_TARGETS = [
     "실효세율계산", "정관진단", "4자관점매트릭스", "배당vs급여Mix",
     "임원보수한도산출", "통합투자세액공제", "감사대응팩",
     "DART공시조회", "법령조문조회", "판례검색", "사업자상태조회",
     "가업상속사후관리", "명의신탁시효표", "자녀법인설계", "특허현금흐름",
     "가지급금월별추적", "비상장주식할증면제", "이월결손금시뮬",
+    # 신규 작업 2: SKILL 8종
+    "실무계산기", "세무조사사전점검", "법인전환", "조세불복절차",
+    "경정청구시뮬", "주식양도세시뮬", "우리사주조합설계", "공익법인전환",
 ]
 
 

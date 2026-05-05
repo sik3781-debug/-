@@ -76,6 +76,22 @@ class TaxAuditResponseStrategyAgent(ProfessionalSolutionAgent):
             "불복_절차": "이의신청(30일) → 심판청구(90일) → 행정소송(90일)",
         }
 
+        # 대응 시나리오 3종
+        scenarios = [
+            {"name": "증빙 완비·리스크 사전 해소",
+             "expected_tax": total_estimated * 0.1,
+             "action": "은닉 리스크 자진 정리 + 증빙 완비 → 추징 최소화",
+             "law": "국기법§81의6 권리 행사 + §45의2 경정청구"},
+            {"name": "협력적 조사 대응 + 의견 진술",
+             "expected_tax": total_estimated * 0.5,
+             "action": "자료 제출 최소화 + 의견 진술로 부분 추징 감액",
+             "law": "국기령§63의2 조사 기간 준수 요구"},
+            {"name": "불복 청구 (이의신청→심판→소송)",
+             "expected_tax": total_estimated * 0.0,
+             "action": "추징 전액 다툼 — 심판원·행정소송 승소 시 0원",
+             "law": "국기법§55·§61·§79 불복 절차"},
+        ]
+
         text = (
             f"법인 측면: {audit_type} ({', '.join(tax_types)}) — 조사 잔여 {remaining_days}일, 추정 추징액 {total_estimated:,.0f}원.\n"
             f"주주(오너) 관점: 은닉 리스크 {len(hidden_risks)}건 — {', '.join(hidden_risks) if hidden_risks else '없음'}.\n"
@@ -89,7 +105,7 @@ class TaxAuditResponseStrategyAgent(ProfessionalSolutionAgent):
             "notice_received": notice_received, "remaining_days": remaining_days,
             "hidden_risks": hidden_risks, "tax_calc": tax_calc,
             "total_estimated": total_estimated, "priority_actions": priority_actions,
-            "stages": stages, "text": text,
+            "stages": stages, "scenarios": scenarios, "text": text,
         }
 
     def validate_risk_5axis(self, strategy: dict) -> dict:
