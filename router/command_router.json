@@ -792,5 +792,14 @@
       "/보고서자동생성",
       "/산출물생성"
     ]
+  },
+  "/영업권평가": {
+    "agent": "GoodwillValuationAgent",
+    "module": "agents.active.goodwill_valuation",
+    "aliases": [
+      "/영업권",
+      "/Goodwill",
+      "/goodwill_valuation"
+    ]
   }
 }
