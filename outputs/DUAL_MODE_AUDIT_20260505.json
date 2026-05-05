@@ -1,0 +1,24 @@
+{
+  "router_valid": true,
+  "router_total": 65,
+  "router_korean": 65,
+  "router_aliases": 65,
+  "router_meta_count": 65,
+  "abs_path_files": [],
+  "env_direct": [
+    "business_plan_agent.py",
+    "legal_document_drafter.py",
+    "legal_risk_hedge.py",
+    "rnd_lab_notebook.py"
+  ],
+  "env_missing": [],
+  "skill_no_korean": [],
+  "route_pass": [
+    "/비상장주식정밀평가",
+    "/실효세율계산",
+    "/자기주식주가유동화",
+    "/시스템검증",
+    "/현금흐름정밀분석"
+  ],
+  "route_fail": []
+}

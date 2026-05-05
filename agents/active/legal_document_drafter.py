@@ -187,7 +187,7 @@ class LegalDocumentDrafterAgent(BaseAgent):
         if self.client is None:
             import anthropic
             self.client = anthropic.Anthropic(
-                api_key=os.environ["ANTHROPIC_API_KEY"]
+                api_key=os.environ.get("ANTHROPIC_API_KEY", '')
             )
 
     def run(self, user_message: str, *, reset: bool = False) -> str:
