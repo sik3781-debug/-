@@ -768,5 +768,29 @@
       "/홈택스"
     ],
     "auth_required": "HOMETAX_AUTH_TYPE"
+  },
+  "/마이그레이션": {
+    "agent": "MigrationAgent",
+    "module": "agents.infra.migration_agent",
+    "aliases": [
+      "/migration",
+      "/에이전트마이그레이션"
+    ]
+  },
+  "/파이프라인": {
+    "agent": "FivePhasePipelineOrchestrator",
+    "module": "agents.infra.five_phase_pipeline",
+    "aliases": [
+      "/컨설팅파이프라인",
+      "/5단계"
+    ]
+  },
+  "/보고서생성": {
+    "agent": "ClientReportAutoGenerator",
+    "module": "agents.infra.client_report_generator",
+    "aliases": [
+      "/보고서자동생성",
+      "/산출물생성"
+    ]
   }
 }
