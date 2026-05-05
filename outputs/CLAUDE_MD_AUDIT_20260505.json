@@ -1,0 +1,47 @@
+[
+  {
+    "path": "C:\\Users\\Jy\\consulting-agent\\기타\\CLAUDE.md",
+    "has_bom": false,
+    "score": 40.0,
+    "missing": [
+      "device_branching",
+      "memory_dir_std",
+      "skill_priority",
+      "law_citation",
+      "prof_solution_grp",
+      "four_party_matrix"
+    ],
+    "size": 3949
+  },
+  {
+    "path": "C:\\Users\\Jy\\consulting-agent\\CLAUDE.md",
+    "has_bom": false,
+    "score": 70.0,
+    "missing": [
+      "memory_dir_std",
+      "law_citation",
+      "prof_solution_grp"
+    ],
+    "size": 12589
+  },
+  {
+    "path": "C:\\Users\\Jy\\.claude\\CLAUDE.md",
+    "has_bom": false,
+    "score": 80.0,
+    "missing": [
+      "device_branching",
+      "prof_solution_grp"
+    ],
+    "size": 5037
+  },
+  {
+    "path": "C:\\Users\\Jy\\junggi-workspace\\claude-code\\CLAUDE.md",
+    "has_bom": false,
+    "score": 80.0,
+    "missing": [
+      "memory_dir_std",
+      "prof_solution_grp"
+    ],
+    "size": 14382
+  }
+]

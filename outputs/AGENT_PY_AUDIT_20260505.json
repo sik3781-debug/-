@@ -1,0 +1,1373 @@
+[
+  {
+    "agent": "PIIMaskingAgent",
+    "module": "pii_masking_agent",
+    "score": 10.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix",
+      "analyze_method"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "BaseAgent",
+    "module": "base_agent",
+    "score": 10.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix",
+      "analyze_method"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "CashFlowAgent",
+    "module": "cash_flow_agent",
+    "score": 10.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix",
+      "analyze_method"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "TaxAgent",
+    "module": "consulting_agents",
+    "score": 10.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix",
+      "analyze_method"
+    ],
+    "doc_law": 0,
+    "total_law": 9
+  },
+  {
+    "agent": "StockAgent",
+    "module": "consulting_agents",
+    "score": 10.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix",
+      "analyze_method"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "SuccessionAgent",
+    "module": "consulting_agents",
+    "score": 10.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix",
+      "analyze_method"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "FinanceAgent",
+    "module": "consulting_agents",
+    "score": 10.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix",
+      "analyze_method"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "CreditRatingAgent",
+    "module": "credit_rating_agent",
+    "score": 10.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix",
+      "analyze_method"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "ESGRiskAgent",
+    "module": "esg_risk_agent",
+    "score": 10.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix",
+      "analyze_method"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "IndustryAgent",
+    "module": "industry_agent",
+    "score": 10.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix",
+      "analyze_method"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "InsuranceAgent",
+    "module": "insurance_agent",
+    "score": 10.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix",
+      "analyze_method"
+    ],
+    "doc_law": 0,
+    "total_law": 1
+  },
+  {
+    "agent": "LaborAgent",
+    "module": "labor_agent",
+    "score": 10.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix",
+      "analyze_method"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "LegalAgent",
+    "module": "legal_agent",
+    "score": 10.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix",
+      "analyze_method"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "MAValuationAgent",
+    "module": "ma_valuation_agent",
+    "score": 10.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix",
+      "analyze_method"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "PatentAgent",
+    "module": "patent_agent",
+    "score": 10.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix",
+      "analyze_method"
+    ],
+    "doc_law": 0,
+    "total_law": 1
+  },
+  {
+    "agent": "PolicyFundingAgent",
+    "module": "policy_funding_agent",
+    "score": 10.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix",
+      "analyze_method"
+    ],
+    "doc_law": 0,
+    "total_law": 1
+  },
+  {
+    "agent": "RealEstateAgent",
+    "module": "real_estate_agent",
+    "score": 10.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix",
+      "analyze_method"
+    ],
+    "doc_law": 0,
+    "total_law": 4
+  },
+  {
+    "agent": "VerifyAgent",
+    "module": "verify_agent",
+    "score": 10.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix",
+      "analyze_method"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "WebResearchAgent",
+    "module": "web_research_agent",
+    "score": 10.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix",
+      "analyze_method"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "FundingResearchAlertAgent",
+    "module": "funding_research_alert",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 1
+  },
+  {
+    "agent": "GmailSenderAgent",
+    "module": "gmail_sender",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "InheritanceTaxAgent",
+    "module": "inheritance_gift_agent",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 2
+  },
+  {
+    "agent": "KakaoNotifierAgent",
+    "module": "kakao_notifier",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "LongTermAssetTransferAgent",
+    "module": "long_term_asset_transfer",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 1
+  },
+  {
+    "agent": "RiskPropagationAgent",
+    "module": "risk_propagation",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "ScenarioComparatorAgent",
+    "module": "scenario_comparator",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "TaxRefundClaimAgent",
+    "module": "scenario_comparator",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 1,
+    "total_law": 5
+  },
+  {
+    "agent": "MonitorAgent",
+    "module": "all_agents",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "ScenarioAgent",
+    "module": "all_agents",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 12
+  },
+  {
+    "agent": "TaxLawUpdateAgent",
+    "module": "all_agents",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 2
+  },
+  {
+    "agent": "AutoFixAgent",
+    "module": "all_agents",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "ComplianceAgent",
+    "module": "compliance_agent",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "ContractReviewAgent",
+    "module": "contract_review_agent",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "CostAnalysisAgent",
+    "module": "cost_analysis_agent",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "DataValidationAgent",
+    "module": "data_validation_agent",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "DebtRestructuringAgent",
+    "module": "debt_restructuring_agent",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 1
+  },
+  {
+    "agent": "DividendPolicyAgent",
+    "module": "dividend_policy_agent",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 5
+  },
+  {
+    "agent": "DXAgent",
+    "module": "dx_agent",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "ExecutivePayAgent",
+    "module": "executive_pay_agent",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 25
+  },
+  {
+    "agent": "FinancialForecastAgent",
+    "module": "financial_forecast_agent",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "FranchiseAgent",
+    "module": "franchise_agent",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "GiftTaxAgent",
+    "module": "gift_tax_agent",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "GlobalExpansionAgent",
+    "module": "global_expansion_agent",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "HRDAgent",
+    "module": "hrd_agent",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 1
+  },
+  {
+    "agent": "InheritanceTaxAgent",
+    "module": "inheritance_tax_agent",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "InvestTaxCreditAgent",
+    "module": "invest_tax_credit_agent",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 2
+  },
+  {
+    "agent": "IPOAgent",
+    "module": "ipo_agent",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "NomineeStockAgent",
+    "module": "nominee_stock_agent",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 7
+  },
+  {
+    "agent": "PerformancePayAgent",
+    "module": "performance_pay_agent",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 7
+  },
+  {
+    "agent": "PrivacyAgent",
+    "module": "privacy_agent",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "ProvisionalPaymentAgent",
+    "module": "provisional_payment_agent",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 20
+  },
+  {
+    "agent": "QueryClassifierAgent",
+    "module": "query_classifier_agent",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 2
+  },
+  {
+    "agent": "RDTaxCreditAgent",
+    "module": "rd_tax_credit_agent",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 3
+  },
+  {
+    "agent": "RelatedPartyAgent",
+    "module": "related_party_agent",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 11
+  },
+  {
+    "agent": "RiskScoreAgent",
+    "module": "risk_score_agent",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "SocialInsuranceAgent",
+    "module": "social_insurance_agent",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 8
+  },
+  {
+    "agent": "SubcontractAgent",
+    "module": "subcontract_agent",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "SummaryAgent",
+    "module": "summary_agent",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "SupplyChainAgent",
+    "module": "supply_chain_agent",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "TradeAgent",
+    "module": "trade_agent",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "VATAgent",
+    "module": "vat_agent",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "VentureCapitalAgent",
+    "module": "venture_capital_agent",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "WorkingCapitalAgent",
+    "module": "working_capital_agent",
+    "score": 20.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof",
+      "has_generate_strategy",
+      "has_validate_5axis",
+      "has_hedge_4stage",
+      "has_manage_exec",
+      "has_post_mgmt",
+      "has_4party_matrix"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "AuditPreparationAgent",
+    "module": "audit_preparation",
+    "score": 80.0,
+    "missing": [
+      "class_doc_law5",
+      "analyze_method"
+    ],
+    "doc_law": 0,
+    "total_law": 27
+  },
+  {
+    "agent": "CashFlowPrecisionAgent",
+    "module": "cash_flow_precision",
+    "score": 80.0,
+    "missing": [
+      "class_doc_law5",
+      "analyze_method"
+    ],
+    "doc_law": 0,
+    "total_law": 18
+  },
+  {
+    "agent": "CivilTrustAgent",
+    "module": "civil_trust",
+    "score": 80.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof"
+    ],
+    "doc_law": 0,
+    "total_law": 16
+  },
+  {
+    "agent": "ComprehensiveCorporateTaxAgent",
+    "module": "comprehensive_corporate_tax",
+    "score": 80.0,
+    "missing": [
+      "class_doc_law5",
+      "analyze_method"
+    ],
+    "doc_law": 1,
+    "total_law": 12
+  },
+  {
+    "agent": "CostStructurePrecisionAgent",
+    "module": "cost_structure_precision",
+    "score": 80.0,
+    "missing": [
+      "class_doc_law5",
+      "analyze_method"
+    ],
+    "doc_law": 0,
+    "total_law": 7
+  },
+  {
+    "agent": "FinancialRatioPrecisionAgent",
+    "module": "financial_ratio_precision",
+    "score": 80.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof"
+    ],
+    "doc_law": 0,
+    "total_law": 18
+  },
+  {
+    "agent": "NonListedStockPrecisionAgent",
+    "module": "nonlisted_stock_precision",
+    "score": 80.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof"
+    ],
+    "doc_law": 1,
+    "total_law": 20
+  },
+  {
+    "agent": "PatentCashflowSimulator",
+    "module": "patent_cashflow_simulator",
+    "score": 80.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof"
+    ],
+    "doc_law": 0,
+    "total_law": 26
+  },
+  {
+    "agent": "RealEstateDesktopAppraisalAgent",
+    "module": "real_estate_desktop_appraisal",
+    "score": 80.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof"
+    ],
+    "doc_law": 0,
+    "total_law": 5
+  },
+  {
+    "agent": "RealEstateValuationAgent",
+    "module": "real_estate_valuation",
+    "score": 80.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof"
+    ],
+    "doc_law": 0,
+    "total_law": 12
+  },
+  {
+    "agent": "RetainedEarningsManagementAgent",
+    "module": "retained_earnings_management",
+    "score": 80.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof"
+    ],
+    "doc_law": 0,
+    "total_law": 28
+  },
+  {
+    "agent": "Section45_5TaxStrategyAgent",
+    "module": "section_45_5_tax_strategy",
+    "score": 80.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof"
+    ],
+    "doc_law": 1,
+    "total_law": 28
+  },
+  {
+    "agent": "SpecialCorpTransactionAgent",
+    "module": "special_corp_transaction",
+    "score": 80.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof"
+    ],
+    "doc_law": 0,
+    "total_law": 15
+  },
+  {
+    "agent": "SuccessionRoadmapAgent",
+    "module": "succession_roadmap",
+    "score": 80.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof"
+    ],
+    "doc_law": 0,
+    "total_law": 18
+  },
+  {
+    "agent": "TreasuryStockLiquidationAgent",
+    "module": "treasury_stock_liquidation",
+    "score": 80.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof"
+    ],
+    "doc_law": 0,
+    "total_law": 48
+  },
+  {
+    "agent": "TreasuryStockStrategyAgent",
+    "module": "treasury_stock_strategy",
+    "score": 80.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof"
+    ],
+    "doc_law": 0,
+    "total_law": 26
+  },
+  {
+    "agent": "ValuationOptimizationAgent",
+    "module": "valuation_optimization",
+    "score": 80.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof"
+    ],
+    "doc_law": 0,
+    "total_law": 9
+  },
+  {
+    "agent": "WorkingCapitalAgent",
+    "module": "working_capital",
+    "score": 80.0,
+    "missing": [
+      "class_doc_law5",
+      "analyze_method"
+    ],
+    "doc_law": 0,
+    "total_law": 9
+  },
+  {
+    "agent": "ProfessionalSolutionAgent",
+    "module": "professional_solution_agent",
+    "score": 80.0,
+    "missing": [
+      "class_doc_law5",
+      "inherits_prof"
+    ],
+    "doc_law": 0,
+    "total_law": 0
+  },
+  {
+    "agent": "CapitalStructureImprovementAgent",
+    "module": "capital_structure_improvement",
+    "score": 90.0,
+    "missing": [
+      "inherits_prof"
+    ],
+    "doc_law": 18,
+    "total_law": 20
+  },
+  {
+    "agent": "ChildCorpDesignAgent",
+    "module": "child_corp_design",
+    "score": 90.0,
+    "missing": [
+      "inherits_prof"
+    ],
+    "doc_law": 14,
+    "total_law": 22
+  },
+  {
+    "agent": "CorporateBenefitsFundAgent",
+    "module": "corporate_benefits_fund",
+    "score": 90.0,
+    "missing": [
+      "inherits_prof"
+    ],
+    "doc_law": 13,
+    "total_law": 27
+  },
+  {
+    "agent": "DebtStructureAgent",
+    "module": "debt_structure",
+    "score": 90.0,
+    "missing": [
+      "analyze_method"
+    ],
+    "doc_law": 16,
+    "total_law": 25
+  },
+  {
+    "path": "C:\\Users\\Jy\\consulting-agent\\agents\\active\\business_plan_agent.py",
+    "error": "invalid non-printable character U+FEFF (<unknown>, line 1)"
+  },
+  {
+    "path": "C:\\Users\\Jy\\consulting-agent\\agents\\active\\discovery_agent.py",
+    "error": "invalid non-printable character U+FEFF (<unknown>, line 1)"
+  },
+  {
+    "path": "C:\\Users\\Jy\\consulting-agent\\agents\\active\\executor_agent.py",
+    "error": "invalid non-printable character U+FEFF (<unknown>, line 1)"
+  },
+  {
+    "path": "C:\\Users\\Jy\\consulting-agent\\agents\\active\\legal_document_drafter.py",
+    "error": "invalid non-printable character U+FEFF (<unknown>, line 1)"
+  },
+  {
+    "path": "C:\\Users\\Jy\\consulting-agent\\agents\\active\\legal_risk_hedge.py",
+    "error": "invalid non-printable character U+FEFF (<unknown>, line 1)"
+  },
+  {
+    "path": "C:\\Users\\Jy\\consulting-agent\\agents\\active\\rnd_lab_notebook.py",
+    "error": "invalid non-printable character U+FEFF (<unknown>, line 1)"
+  },
+  {
+    "path": "C:\\Users\\Jy\\consulting-agent\\agents\\active\\verifier_agent.py",
+    "error": "invalid non-printable character U+FEFF (<unknown>, line 1)"
+  },
+  {
+    "path": "C:\\Users\\Jy\\consulting-agent\\agents\\business_plan_agent.py",
+    "error": "invalid non-printable character U+FEFF (<unknown>, line 1)"
+  }
+]

@@ -1,0 +1,665 @@
+[
+  {
+    "skill": "감사지원",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\감사지원\\SKILL.md",
+    "score": 20.0,
+    "missing": [
+      "fm_trigger",
+      "fm_classif",
+      "fm_workflow",
+      "input_param",
+      "legal_5refs",
+      "stage_4",
+      "matrix_4party",
+      "example"
+    ],
+    "size": 856
+  },
+  {
+    "skill": "결산관리",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\결산관리\\SKILL.md",
+    "score": 20.0,
+    "missing": [
+      "fm_trigger",
+      "fm_classif",
+      "fm_workflow",
+      "input_param",
+      "legal_5refs",
+      "stage_4",
+      "matrix_4party",
+      "example"
+    ],
+    "size": 826
+  },
+  {
+    "skill": "계정대사",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\계정대사\\SKILL.md",
+    "score": 20.0,
+    "missing": [
+      "fm_trigger",
+      "fm_classif",
+      "fm_workflow",
+      "input_param",
+      "legal_5refs",
+      "stage_4",
+      "matrix_4party",
+      "example"
+    ],
+    "size": 961
+  },
+  {
+    "skill": "내부통제",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\내부통제\\SKILL.md",
+    "score": 20.0,
+    "missing": [
+      "fm_trigger",
+      "fm_classif",
+      "fm_workflow",
+      "input_param",
+      "legal_5refs",
+      "stage_4",
+      "matrix_4party",
+      "example"
+    ],
+    "size": 1040
+  },
+  {
+    "skill": "데이터검증",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\데이터검증\\SKILL.md",
+    "score": 20.0,
+    "missing": [
+      "fm_trigger",
+      "fm_classif",
+      "fm_workflow",
+      "input_param",
+      "legal_5refs",
+      "stage_4",
+      "matrix_4party",
+      "example"
+    ],
+    "size": 683
+  },
+  {
+    "skill": "데이터탐색",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\데이터탐색\\SKILL.md",
+    "score": 20.0,
+    "missing": [
+      "fm_trigger",
+      "fm_classif",
+      "fm_workflow",
+      "input_param",
+      "legal_5refs",
+      "stage_4",
+      "matrix_4party",
+      "example"
+    ],
+    "size": 778
+  },
+  {
+    "skill": "리스크평가",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\리스크평가\\SKILL.md",
+    "score": 20.0,
+    "missing": [
+      "fm_trigger",
+      "fm_classif",
+      "fm_workflow",
+      "input_param",
+      "legal_5refs",
+      "stage_4",
+      "matrix_4party",
+      "example"
+    ],
+    "size": 819
+  },
+  {
+    "skill": "메모리관리",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\메모리관리\\SKILL.md",
+    "score": 20.0,
+    "missing": [
+      "fm_trigger",
+      "fm_classif",
+      "fm_workflow",
+      "input_param",
+      "legal_5refs",
+      "stage_4",
+      "matrix_4party",
+      "example"
+    ],
+    "size": 685
+  },
+  {
+    "skill": "벤더평가",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\벤더평가\\SKILL.md",
+    "score": 20.0,
+    "missing": [
+      "fm_trigger",
+      "fm_classif",
+      "fm_workflow",
+      "input_param",
+      "legal_5refs",
+      "stage_4",
+      "matrix_4party",
+      "example"
+    ],
+    "size": 680
+  },
+  {
+    "skill": "변경요청서",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\변경요청서\\SKILL.md",
+    "score": 20.0,
+    "missing": [
+      "fm_trigger",
+      "fm_classif",
+      "fm_workflow",
+      "input_param",
+      "legal_5refs",
+      "stage_4",
+      "matrix_4party",
+      "example"
+    ],
+    "size": 732
+  },
+  {
+    "skill": "분개작성",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\분개작성\\SKILL.md",
+    "score": 20.0,
+    "missing": [
+      "fm_trigger",
+      "fm_classif",
+      "fm_workflow",
+      "input_param",
+      "legal_5refs",
+      "stage_4",
+      "matrix_4party",
+      "example"
+    ],
+    "size": 839
+  },
+  {
+    "skill": "분산분석",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\분산분석\\SKILL.md",
+    "score": 20.0,
+    "missing": [
+      "fm_trigger",
+      "fm_classif",
+      "fm_workflow",
+      "input_param",
+      "legal_5refs",
+      "stage_4",
+      "matrix_4party",
+      "example"
+    ],
+    "size": 1055
+  },
+  {
+    "skill": "시스템시작",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\시스템시작\\SKILL.md",
+    "score": 20.0,
+    "missing": [
+      "fm_trigger",
+      "fm_classif",
+      "fm_workflow",
+      "input_param",
+      "legal_5refs",
+      "stage_4",
+      "matrix_4party",
+      "example"
+    ],
+    "size": 585
+  },
+  {
+    "skill": "업무동기화",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\업무동기화\\SKILL.md",
+    "score": 20.0,
+    "missing": [
+      "fm_trigger",
+      "fm_classif",
+      "fm_workflow",
+      "input_param",
+      "legal_5refs",
+      "stage_4",
+      "matrix_4party",
+      "example"
+    ],
+    "size": 520
+  },
+  {
+    "skill": "역량계획",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\역량계획\\SKILL.md",
+    "score": 20.0,
+    "missing": [
+      "fm_trigger",
+      "fm_classif",
+      "fm_workflow",
+      "input_param",
+      "legal_5refs",
+      "stage_4",
+      "matrix_4party",
+      "example"
+    ],
+    "size": 742
+  },
+  {
+    "skill": "일간다이제스트",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\일간다이제스트\\SKILL.md",
+    "score": 20.0,
+    "missing": [
+      "fm_trigger",
+      "fm_classif",
+      "fm_workflow",
+      "input_param",
+      "legal_5refs",
+      "stage_4",
+      "matrix_4party",
+      "example"
+    ],
+    "size": 1105
+  },
+  {
+    "skill": "컴플라이언스",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\컴플라이언스\\SKILL.md",
+    "score": 20.0,
+    "missing": [
+      "fm_trigger",
+      "fm_classif",
+      "fm_workflow",
+      "input_param",
+      "legal_5refs",
+      "stage_4",
+      "matrix_4party",
+      "example"
+    ],
+    "size": 764
+  },
+  {
+    "skill": "통합검색",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\통합검색\\SKILL.md",
+    "score": 20.0,
+    "missing": [
+      "fm_trigger",
+      "fm_classif",
+      "fm_workflow",
+      "input_param",
+      "legal_5refs",
+      "stage_4",
+      "matrix_4party",
+      "example"
+    ],
+    "size": 1082
+  },
+  {
+    "skill": "프로세스최적화",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\프로세스최적화\\SKILL.md",
+    "score": 20.0,
+    "missing": [
+      "fm_trigger",
+      "fm_classif",
+      "fm_workflow",
+      "input_param",
+      "legal_5refs",
+      "stage_4",
+      "matrix_4party",
+      "example"
+    ],
+    "size": 772
+  },
+  {
+    "skill": "현황보고서",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\현황보고서\\SKILL.md",
+    "score": 20.0,
+    "missing": [
+      "fm_trigger",
+      "fm_classif",
+      "fm_workflow",
+      "input_param",
+      "legal_5refs",
+      "stage_4",
+      "matrix_4party",
+      "example"
+    ],
+    "size": 834
+  },
+  {
+    "skill": "대시보드",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\대시보드\\SKILL.md",
+    "score": 30.0,
+    "missing": [
+      "fm_trigger",
+      "fm_classif",
+      "fm_workflow",
+      "input_param",
+      "legal_5refs",
+      "stage_4",
+      "matrix_4party"
+    ],
+    "size": 995
+  },
+  {
+    "skill": "데이터분석",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\데이터분석\\SKILL.md",
+    "score": 30.0,
+    "missing": [
+      "fm_trigger",
+      "fm_classif",
+      "fm_workflow",
+      "input_param",
+      "legal_5refs",
+      "stage_4",
+      "matrix_4party"
+    ],
+    "size": 664
+  },
+  {
+    "skill": "시각화",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\시각화\\SKILL.md",
+    "score": 30.0,
+    "missing": [
+      "fm_trigger",
+      "fm_classif",
+      "fm_workflow",
+      "input_param",
+      "legal_5refs",
+      "stage_4",
+      "matrix_4party"
+    ],
+    "size": 706
+  },
+  {
+    "skill": "재무제표",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\재무제표\\SKILL.md",
+    "score": 30.0,
+    "missing": [
+      "fm_trigger",
+      "fm_classif",
+      "fm_workflow",
+      "legal_5refs",
+      "stage_4",
+      "matrix_4party",
+      "example"
+    ],
+    "size": 1105
+  },
+  {
+    "skill": "쿼리작성",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\쿼리작성\\SKILL.md",
+    "score": 30.0,
+    "missing": [
+      "fm_trigger",
+      "fm_classif",
+      "fm_workflow",
+      "input_param",
+      "legal_5refs",
+      "stage_4",
+      "matrix_4party"
+    ],
+    "size": 796
+  },
+  {
+    "skill": "통계분석",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\통계분석\\SKILL.md",
+    "score": 30.0,
+    "missing": [
+      "fm_trigger",
+      "fm_classif",
+      "fm_workflow",
+      "input_param",
+      "legal_5refs",
+      "stage_4",
+      "matrix_4party"
+    ],
+    "size": 724
+  },
+  {
+    "skill": "프로세스문서",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\프로세스문서\\SKILL.md",
+    "score": 30.0,
+    "missing": [
+      "fm_trigger",
+      "fm_classif",
+      "fm_workflow",
+      "input_param",
+      "legal_5refs",
+      "stage_4",
+      "matrix_4party"
+    ],
+    "size": 719
+  },
+  {
+    "skill": "할일관리",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\할일관리\\SKILL.md",
+    "score": 30.0,
+    "missing": [
+      "fm_trigger",
+      "fm_classif",
+      "fm_workflow",
+      "input_param",
+      "legal_5refs",
+      "stage_4",
+      "matrix_4party"
+    ],
+    "size": 632
+  },
+  {
+    "skill": "가지급금월별추적",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\가지급금월별추적\\SKILL.md",
+    "score": 40.0,
+    "missing": [
+      "fm_classif",
+      "fm_workflow",
+      "legal_5refs",
+      "stage_4",
+      "matrix_4party",
+      "example"
+    ],
+    "size": 1215
+  },
+  {
+    "skill": "사업자상태조회",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\사업자상태조회\\SKILL.md",
+    "score": 40.0,
+    "missing": [
+      "fm_classif",
+      "fm_workflow",
+      "legal_5refs",
+      "stage_4",
+      "matrix_4party",
+      "example"
+    ],
+    "size": 1104
+  },
+  {
+    "skill": "운영런북",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\운영런북\\SKILL.md",
+    "score": 40.0,
+    "missing": [
+      "fm_trigger",
+      "fm_classif",
+      "fm_workflow",
+      "legal_5refs",
+      "stage_4",
+      "matrix_4party"
+    ],
+    "size": 763
+  },
+  {
+    "skill": "지식합성",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\지식합성\\SKILL.md",
+    "score": 40.0,
+    "missing": [
+      "fm_trigger",
+      "fm_classif",
+      "fm_workflow",
+      "legal_5refs",
+      "stage_4",
+      "matrix_4party"
+    ],
+    "size": 1115
+  },
+  {
+    "skill": "판례검색",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\판례검색\\SKILL.md",
+    "score": 40.0,
+    "missing": [
+      "fm_classif",
+      "fm_workflow",
+      "legal_5refs",
+      "stage_4",
+      "matrix_4party",
+      "example"
+    ],
+    "size": 889
+  },
+  {
+    "skill": "DART공시조회",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\DART공시조회\\SKILL.md",
+    "score": 50.0,
+    "missing": [
+      "fm_classif",
+      "fm_workflow",
+      "legal_5refs",
+      "stage_4",
+      "example"
+    ],
+    "size": 1134
+  },
+  {
+    "skill": "명의신탁시효표",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\명의신탁시효표\\SKILL.md",
+    "score": 50.0,
+    "missing": [
+      "fm_classif",
+      "fm_workflow",
+      "stage_4",
+      "matrix_4party",
+      "example"
+    ],
+    "size": 1278
+  },
+  {
+    "skill": "법령조문조회",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\법령조문조회\\SKILL.md",
+    "score": 50.0,
+    "missing": [
+      "fm_classif",
+      "fm_workflow",
+      "stage_4",
+      "matrix_4party",
+      "example"
+    ],
+    "size": 868
+  },
+  {
+    "skill": "이월결손금시뮬",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\이월결손금시뮬\\SKILL.md",
+    "score": 50.0,
+    "missing": [
+      "fm_classif",
+      "fm_workflow",
+      "stage_4",
+      "matrix_4party",
+      "example"
+    ],
+    "size": 1504
+  },
+  {
+    "skill": "자녀법인설계",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\자녀법인설계\\SKILL.md",
+    "score": 50.0,
+    "missing": [
+      "fm_classif",
+      "fm_workflow",
+      "stage_4",
+      "matrix_4party",
+      "example"
+    ],
+    "size": 1278
+  },
+  {
+    "skill": "특허현금흐름",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\특허현금흐름\\SKILL.md",
+    "score": 50.0,
+    "missing": [
+      "fm_classif",
+      "fm_workflow",
+      "stage_4",
+      "matrix_4party",
+      "example"
+    ],
+    "size": 1265
+  },
+  {
+    "skill": "가업상속사후관리",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\가업상속사후관리\\SKILL.md",
+    "score": 60.0,
+    "missing": [
+      "fm_classif",
+      "fm_workflow",
+      "stage_4",
+      "example"
+    ],
+    "size": 1331
+  },
+  {
+    "skill": "비상장주식할증면제",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\비상장주식할증면제\\SKILL.md",
+    "score": 60.0,
+    "missing": [
+      "fm_classif",
+      "fm_workflow",
+      "stage_4",
+      "example"
+    ],
+    "size": 1412
+  },
+  {
+    "skill": "임원보수한도산출",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\임원보수한도산출\\SKILL.md",
+    "score": 90.0,
+    "missing": [
+      "legal_5refs"
+    ],
+    "size": 1395
+  },
+  {
+    "skill": "4자관점매트릭스",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\4자관점매트릭스\\SKILL.md",
+    "score": 100.0,
+    "missing": [],
+    "size": 1750
+  },
+  {
+    "skill": "감사대응팩",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\감사대응팩\\SKILL.md",
+    "score": 100.0,
+    "missing": [],
+    "size": 1457
+  },
+  {
+    "skill": "배당vs급여Mix",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\배당vs급여Mix\\SKILL.md",
+    "score": 100.0,
+    "missing": [],
+    "size": 1387
+  },
+  {
+    "skill": "실효세율계산",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\실효세율계산\\SKILL.md",
+    "score": 100.0,
+    "missing": [],
+    "size": 1328
+  },
+  {
+    "skill": "정관진단",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\정관진단\\SKILL.md",
+    "score": 100.0,
+    "missing": [],
+    "size": 1247
+  },
+  {
+    "skill": "통합투자세액공제",
+    "path": "C:\\Users\\Jy\\.claude\\skills\\junggi-consulting\\skills\\통합투자세액공제\\SKILL.md",
+    "score": 100.0,
+    "missing": [],
+    "size": 1357
+  }
+]
