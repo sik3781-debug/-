@@ -1,141 +1,5 @@
 [
   {
-    "agent": "FinancialRatioPrecisionAgent",
-    "total_score": 60,
-    "scores": {
-      "5단계_메서드": 20,
-      "4자×3시점": 20,
-      "법령_참조": 0,
-      "시나리오_3종": 0,
-      "코드_완결성": 20
-    },
-    "enhancement_list": [
-      "법령 참조 대폭 보강 필요 (2종)",
-      "시나리오 구조 신설 필요"
-    ],
-    "enhancement_needed": true,
-    "priority": "중간"
-  },
-  {
-    "agent": "RealEstateDesktopAppraisalAgent",
-    "total_score": 60,
-    "scores": {
-      "5단계_메서드": 20,
-      "4자×3시점": 20,
-      "법령_참조": 0,
-      "시나리오_3종": 0,
-      "코드_완결성": 20
-    },
-    "enhancement_list": [
-      "법령 참조 대폭 보강 필요 (0종)",
-      "시나리오 구조 신설 필요"
-    ],
-    "enhancement_needed": true,
-    "priority": "중간"
-  },
-  {
-    "agent": "CashFlowPrecisionAgent",
-    "total_score": 70,
-    "scores": {
-      "5단계_메서드": 20,
-      "4자×3시점": 20,
-      "법령_참조": 10,
-      "시나리오_3종": 0,
-      "코드_완결성": 20
-    },
-    "enhancement_list": [
-      "법령 참조 보강 필요 (현재 3종 → 목표 5종)",
-      "시나리오 구조 신설 필요"
-    ],
-    "enhancement_needed": true,
-    "priority": "중간"
-  },
-  {
-    "agent": "WorkingCapitalAgent",
-    "total_score": 70,
-    "scores": {
-      "5단계_메서드": 20,
-      "4자×3시점": 20,
-      "법령_참조": 10,
-      "시나리오_3종": 0,
-      "코드_완결성": 20
-    },
-    "enhancement_list": [
-      "법령 참조 보강 필요 (현재 3종 → 목표 5종)",
-      "시나리오 구조 신설 필요"
-    ],
-    "enhancement_needed": true,
-    "priority": "중간"
-  },
-  {
-    "agent": "AuditPreparationAgent",
-    "total_score": 70,
-    "scores": {
-      "5단계_메서드": 20,
-      "4자×3시점": 20,
-      "법령_참조": 10,
-      "시나리오_3종": 0,
-      "코드_완결성": 20
-    },
-    "enhancement_list": [
-      "법령 참조 보강 필요 (현재 4종 → 목표 5종)",
-      "시나리오 구조 신설 필요"
-    ],
-    "enhancement_needed": true,
-    "priority": "중간"
-  },
-  {
-    "agent": "TreasuryStockLiquidationAgent",
-    "total_score": 70,
-    "scores": {
-      "5단계_메서드": 20,
-      "4자×3시점": 0,
-      "법령_참조": 10,
-      "시나리오_3종": 20,
-      "코드_완결성": 20
-    },
-    "enhancement_list": [
-      "_build_4party_3time_matrix 구현 필요",
-      "법령 참조 보강 필요 (현재 3종 → 목표 5종)"
-    ],
-    "enhancement_needed": true,
-    "priority": "중간"
-  },
-  {
-    "agent": "Section45_5TaxStrategyAgent",
-    "total_score": 70,
-    "scores": {
-      "5단계_메서드": 20,
-      "4자×3시점": 0,
-      "법령_참조": 10,
-      "시나리오_3종": 20,
-      "코드_완결성": 20
-    },
-    "enhancement_list": [
-      "_build_4party_3time_matrix 구현 필요",
-      "법령 참조 보강 필요 (현재 4종 → 목표 5종)"
-    ],
-    "enhancement_needed": true,
-    "priority": "중간"
-  },
-  {
-    "agent": "NonListedStockPrecisionAgent",
-    "total_score": 70,
-    "scores": {
-      "5단계_메서드": 20,
-      "4자×3시점": 20,
-      "법령_참조": 10,
-      "시나리오_3종": 0,
-      "코드_완결성": 20
-    },
-    "enhancement_list": [
-      "법령 참조 보강 필요 (현재 3종 → 목표 5종)",
-      "시나리오 구조 신설 필요"
-    ],
-    "enhancement_needed": true,
-    "priority": "중간"
-  },
-  {
     "agent": "DebtStructureAgent",
     "total_score": 80,
     "scores": {
@@ -168,6 +32,38 @@
     "priority": "낮음"
   },
   {
+    "agent": "ChildCorpDesignAgent",
+    "total_score": 80,
+    "scores": {
+      "5단계_메서드": 20,
+      "4자×3시점": 20,
+      "법령_참조": 0,
+      "시나리오_3종": 20,
+      "코드_완결성": 20
+    },
+    "enhancement_list": [
+      "법령 참조 대폭 보강 필요 (2종)"
+    ],
+    "enhancement_needed": false,
+    "priority": "낮음"
+  },
+  {
+    "agent": "CorporateBenefitsFundAgent",
+    "total_score": 80,
+    "scores": {
+      "5단계_메서드": 20,
+      "4자×3시점": 20,
+      "법령_참조": 0,
+      "시나리오_3종": 20,
+      "코드_완결성": 20
+    },
+    "enhancement_list": [
+      "법령 참조 대폭 보강 필요 (2종)"
+    ],
+    "enhancement_needed": false,
+    "priority": "낮음"
+  },
+  {
     "agent": "ComprehensiveCorporateTaxAgent",
     "total_score": 90,
     "scores": {
@@ -178,7 +74,23 @@
       "코드_완결성": 20
     },
     "enhancement_list": [
-      "법령 참조 보강 필요 (현재 3종 → 목표 5종)"
+      "법령 참조 보강 (현재 3종 → 목표 5종)"
+    ],
+    "enhancement_needed": false,
+    "priority": "낮음"
+  },
+  {
+    "agent": "WorkingCapitalAgent",
+    "total_score": 90,
+    "scores": {
+      "5단계_메서드": 20,
+      "4자×3시점": 20,
+      "법령_참조": 10,
+      "시나리오_3종": 20,
+      "코드_완결성": 20
+    },
+    "enhancement_list": [
+      "법령 참조 보강 (현재 4종 → 목표 5종)"
     ],
     "enhancement_needed": false,
     "priority": "낮음"
@@ -194,8 +106,234 @@
       "코드_완결성": 20
     },
     "enhancement_list": [
-      "법령 참조 보강 필요 (현재 3종 → 목표 5종)"
+      "법령 참조 보강 (현재 3종 → 목표 5종)"
     ],
+    "enhancement_needed": false,
+    "priority": "낮음"
+  },
+  {
+    "agent": "FinancialRatioPrecisionAgent",
+    "total_score": 90,
+    "scores": {
+      "5단계_메서드": 20,
+      "4자×3시점": 20,
+      "법령_참조": 10,
+      "시나리오_3종": 20,
+      "코드_완결성": 20
+    },
+    "enhancement_list": [
+      "법령 참조 보강 (현재 4종 → 목표 5종)"
+    ],
+    "enhancement_needed": false,
+    "priority": "낮음"
+  },
+  {
+    "agent": "RealEstateDesktopAppraisalAgent",
+    "total_score": 90,
+    "scores": {
+      "5단계_메서드": 20,
+      "4자×3시점": 20,
+      "법령_참조": 10,
+      "시나리오_3종": 20,
+      "코드_완결성": 20
+    },
+    "enhancement_list": [
+      "법령 참조 보강 (현재 3종 → 목표 5종)"
+    ],
+    "enhancement_needed": false,
+    "priority": "낮음"
+  },
+  {
+    "agent": "TreasuryStockLiquidationAgent",
+    "total_score": 90,
+    "scores": {
+      "5단계_메서드": 20,
+      "4자×3시점": 20,
+      "법령_참조": 10,
+      "시나리오_3종": 20,
+      "코드_완결성": 20
+    },
+    "enhancement_list": [
+      "법령 참조 보강 (현재 3종 → 목표 5종)"
+    ],
+    "enhancement_needed": false,
+    "priority": "낮음"
+  },
+  {
+    "agent": "TreasuryStockStrategyAgent",
+    "total_score": 90,
+    "scores": {
+      "5단계_메서드": 20,
+      "4자×3시점": 20,
+      "법령_참조": 10,
+      "시나리오_3종": 20,
+      "코드_완결성": 20
+    },
+    "enhancement_list": [
+      "법령 참조 보강 (현재 3종 → 목표 5종)"
+    ],
+    "enhancement_needed": false,
+    "priority": "낮음"
+  },
+  {
+    "agent": "Section45_5TaxStrategyAgent",
+    "total_score": 90,
+    "scores": {
+      "5단계_메서드": 20,
+      "4자×3시점": 20,
+      "법령_참조": 10,
+      "시나리오_3종": 20,
+      "코드_완결성": 20
+    },
+    "enhancement_list": [
+      "법령 참조 보강 (현재 4종 → 목표 5종)"
+    ],
+    "enhancement_needed": false,
+    "priority": "낮음"
+  },
+  {
+    "agent": "RetainedEarningsManagementAgent",
+    "total_score": 90,
+    "scores": {
+      "5단계_메서드": 20,
+      "4자×3시점": 20,
+      "법령_참조": 10,
+      "시나리오_3종": 20,
+      "코드_완결성": 20
+    },
+    "enhancement_list": [
+      "법령 참조 보강 (현재 4종 → 목표 5종)"
+    ],
+    "enhancement_needed": false,
+    "priority": "낮음"
+  },
+  {
+    "agent": "SpecialCorpTransactionAgent",
+    "total_score": 90,
+    "scores": {
+      "5단계_메서드": 20,
+      "4자×3시점": 20,
+      "법령_참조": 10,
+      "시나리오_3종": 20,
+      "코드_완결성": 20
+    },
+    "enhancement_list": [
+      "법령 참조 보강 (현재 3종 → 목표 5종)"
+    ],
+    "enhancement_needed": false,
+    "priority": "낮음"
+  },
+  {
+    "agent": "ValuationOptimizationAgent",
+    "total_score": 90,
+    "scores": {
+      "5단계_메서드": 20,
+      "4자×3시점": 20,
+      "법령_참조": 10,
+      "시나리오_3종": 20,
+      "코드_완결성": 20
+    },
+    "enhancement_list": [
+      "법령 참조 보강 (현재 3종 → 목표 5종)"
+    ],
+    "enhancement_needed": false,
+    "priority": "낮음"
+  },
+  {
+    "agent": "CashFlowPrecisionAgent",
+    "total_score": 100,
+    "scores": {
+      "5단계_메서드": 20,
+      "4자×3시점": 20,
+      "법령_참조": 20,
+      "시나리오_3종": 20,
+      "코드_완결성": 20
+    },
+    "enhancement_list": [],
+    "enhancement_needed": false,
+    "priority": "낮음"
+  },
+  {
+    "agent": "AuditPreparationAgent",
+    "total_score": 100,
+    "scores": {
+      "5단계_메서드": 20,
+      "4자×3시점": 20,
+      "법령_참조": 20,
+      "시나리오_3종": 20,
+      "코드_완결성": 20
+    },
+    "enhancement_list": [],
+    "enhancement_needed": false,
+    "priority": "낮음"
+  },
+  {
+    "agent": "NonListedStockPrecisionAgent",
+    "total_score": 100,
+    "scores": {
+      "5단계_메서드": 20,
+      "4자×3시점": 20,
+      "법령_참조": 20,
+      "시나리오_3종": 20,
+      "코드_완결성": 20
+    },
+    "enhancement_list": [],
+    "enhancement_needed": false,
+    "priority": "낮음"
+  },
+  {
+    "agent": "RealEstateValuationAgent",
+    "total_score": 100,
+    "scores": {
+      "5단계_메서드": 20,
+      "4자×3시점": 20,
+      "법령_참조": 20,
+      "시나리오_3종": 20,
+      "코드_완결성": 20
+    },
+    "enhancement_list": [],
+    "enhancement_needed": false,
+    "priority": "낮음"
+  },
+  {
+    "agent": "CivilTrustAgent",
+    "total_score": 100,
+    "scores": {
+      "5단계_메서드": 20,
+      "4자×3시점": 20,
+      "법령_참조": 20,
+      "시나리오_3종": 20,
+      "코드_완결성": 20
+    },
+    "enhancement_list": [],
+    "enhancement_needed": false,
+    "priority": "낮음"
+  },
+  {
+    "agent": "PatentCashflowSimulator",
+    "total_score": 100,
+    "scores": {
+      "5단계_메서드": 20,
+      "4자×3시점": 20,
+      "법령_참조": 20,
+      "시나리오_3종": 20,
+      "코드_완결성": 20
+    },
+    "enhancement_list": [],
+    "enhancement_needed": false,
+    "priority": "낮음"
+  },
+  {
+    "agent": "SuccessionRoadmapAgent",
+    "total_score": 100,
+    "scores": {
+      "5단계_메서드": 20,
+      "4자×3시점": 20,
+      "법령_참조": 20,
+      "시나리오_3종": 20,
+      "코드_완결성": 20
+    },
+    "enhancement_list": [],
     "enhancement_needed": false,
     "priority": "낮음"
   }
