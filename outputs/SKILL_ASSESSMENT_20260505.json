@@ -232,5 +232,109 @@
     },
     "enhancement_list": [],
     "enhancement_needed": false
+  },
+  {
+    "skill": "/실무계산기",
+    "total_score": 100,
+    "scores": {
+      "frontmatter": 20,
+      "입력_파라미터": 20,
+      "법령_참조": 20,
+      "4자관점": 20,
+      "출력_형식": 20
+    },
+    "enhancement_list": [],
+    "enhancement_needed": false
+  },
+  {
+    "skill": "/세무조사사전점검",
+    "total_score": 100,
+    "scores": {
+      "frontmatter": 20,
+      "입력_파라미터": 20,
+      "법령_참조": 20,
+      "4자관점": 20,
+      "출력_형식": 20
+    },
+    "enhancement_list": [],
+    "enhancement_needed": false
+  },
+  {
+    "skill": "/법인전환",
+    "total_score": 100,
+    "scores": {
+      "frontmatter": 20,
+      "입력_파라미터": 20,
+      "법령_참조": 20,
+      "4자관점": 20,
+      "출력_형식": 20
+    },
+    "enhancement_list": [],
+    "enhancement_needed": false
+  },
+  {
+    "skill": "/조세불복절차",
+    "total_score": 100,
+    "scores": {
+      "frontmatter": 20,
+      "입력_파라미터": 20,
+      "법령_참조": 20,
+      "4자관점": 20,
+      "출력_형식": 20
+    },
+    "enhancement_list": [],
+    "enhancement_needed": false
+  },
+  {
+    "skill": "/경정청구시뮬",
+    "total_score": 100,
+    "scores": {
+      "frontmatter": 20,
+      "입력_파라미터": 20,
+      "법령_참조": 20,
+      "4자관점": 20,
+      "출력_형식": 20
+    },
+    "enhancement_list": [],
+    "enhancement_needed": false
+  },
+  {
+    "skill": "/주식양도세시뮬",
+    "total_score": 100,
+    "scores": {
+      "frontmatter": 20,
+      "입력_파라미터": 20,
+      "법령_참조": 20,
+      "4자관점": 20,
+      "출력_형식": 20
+    },
+    "enhancement_list": [],
+    "enhancement_needed": false
+  },
+  {
+    "skill": "/우리사주조합설계",
+    "total_score": 100,
+    "scores": {
+      "frontmatter": 20,
+      "입력_파라미터": 20,
+      "법령_참조": 20,
+      "4자관점": 20,
+      "출력_형식": 20
+    },
+    "enhancement_list": [],
+    "enhancement_needed": false
+  },
+  {
+    "skill": "/공익법인전환",
+    "total_score": 100,
+    "scores": {
+      "frontmatter": 20,
+      "입력_파라미터": 20,
+      "법령_참조": 20,
+      "4자관점": 20,
+      "출력_형식": 20
+    },
+    "enhancement_list": [],
+    "enhancement_needed": false
   }
 ]

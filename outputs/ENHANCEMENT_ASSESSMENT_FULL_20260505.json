@@ -128,6 +128,54 @@
     "priority": "낮음"
   },
   {
+    "agent": "CapitalImpairmentRecoveryAgent",
+    "total_score": 90,
+    "scores": {
+      "5단계_메서드": 20,
+      "4자×3시점": 20,
+      "법령_참조": 10,
+      "시나리오_3종": 20,
+      "코드_완결성": 20
+    },
+    "enhancement_list": [
+      "법령 참조 보강 (현재 4종 → 목표 5종)"
+    ],
+    "enhancement_needed": false,
+    "priority": "낮음"
+  },
+  {
+    "agent": "CorporationConversionAgent",
+    "total_score": 90,
+    "scores": {
+      "5단계_메서드": 20,
+      "4자×3시점": 20,
+      "법령_참조": 10,
+      "시나리오_3종": 20,
+      "코드_완결성": 20
+    },
+    "enhancement_list": [
+      "법령 참조 보강 (현재 4종 → 목표 5종)"
+    ],
+    "enhancement_needed": false,
+    "priority": "낮음"
+  },
+  {
+    "agent": "HometaxClientAgent",
+    "total_score": 90,
+    "scores": {
+      "5단계_메서드": 20,
+      "4자×3시점": 20,
+      "법령_참조": 10,
+      "시나리오_3종": 20,
+      "코드_완결성": 20
+    },
+    "enhancement_list": [
+      "법령 참조 보강 (현재 4종 → 목표 5종)"
+    ],
+    "enhancement_needed": false,
+    "priority": "낮음"
+  },
+  {
     "agent": "ComprehensiveCorporateTaxAgent",
     "total_score": 100,
     "scores": {
@@ -311,6 +359,132 @@
   },
   {
     "agent": "SuccessionRoadmapAgent",
+    "total_score": 100,
+    "scores": {
+      "5단계_메서드": 20,
+      "4자×3시점": 20,
+      "법령_참조": 20,
+      "시나리오_3종": 20,
+      "코드_완결성": 20
+    },
+    "enhancement_list": [],
+    "enhancement_needed": false,
+    "priority": "낮음"
+  },
+  {
+    "agent": "TaxAuditResponseStrategyAgent",
+    "total_score": 100,
+    "scores": {
+      "5단계_메서드": 20,
+      "4자×3시점": 20,
+      "법령_참조": 20,
+      "시나리오_3종": 20,
+      "코드_완결성": 20
+    },
+    "enhancement_list": [],
+    "enhancement_needed": false,
+    "priority": "낮음"
+  },
+  {
+    "agent": "TransferPricingBEPSAgent",
+    "total_score": 100,
+    "scores": {
+      "5단계_메서드": 20,
+      "4자×3시점": 20,
+      "법령_참조": 20,
+      "시나리오_3종": 20,
+      "코드_완결성": 20
+    },
+    "enhancement_list": [],
+    "enhancement_needed": false,
+    "priority": "낮음"
+  },
+  {
+    "agent": "ESGCarbonTaxAgent",
+    "total_score": 100,
+    "scores": {
+      "5단계_메서드": 20,
+      "4자×3시점": 20,
+      "법령_참조": 20,
+      "시나리오_3종": 20,
+      "코드_완결성": 20
+    },
+    "enhancement_list": [],
+    "enhancement_needed": false,
+    "priority": "낮음"
+  },
+  {
+    "agent": "DartApiClientAgent",
+    "total_score": 100,
+    "scores": {
+      "5단계_메서드": 20,
+      "4자×3시점": 20,
+      "법령_참조": 20,
+      "시나리오_3종": 20,
+      "코드_완결성": 20
+    },
+    "enhancement_list": [],
+    "enhancement_needed": false,
+    "priority": "낮음"
+  },
+  {
+    "agent": "LawApiClientAgent",
+    "total_score": 100,
+    "scores": {
+      "5단계_메서드": 20,
+      "4자×3시점": 20,
+      "법령_참조": 20,
+      "시나리오_3종": 20,
+      "코드_완결성": 20
+    },
+    "enhancement_list": [],
+    "enhancement_needed": false,
+    "priority": "낮음"
+  },
+  {
+    "agent": "MigrationAgent",
+    "total_score": 100,
+    "scores": {
+      "5단계_메서드": 20,
+      "4자×3시점": 20,
+      "법령_참조": 20,
+      "시나리오_3종": 20,
+      "코드_완결성": 20
+    },
+    "enhancement_list": [],
+    "enhancement_needed": false,
+    "priority": "낮음"
+  },
+  {
+    "agent": "FivePhasePipelineOrchestrator",
+    "total_score": 100,
+    "scores": {
+      "5단계_메서드": 20,
+      "4자×3시점": 20,
+      "법령_참조": 20,
+      "시나리오_3종": 20,
+      "코드_완결성": 20
+    },
+    "enhancement_list": [],
+    "enhancement_needed": false,
+    "priority": "낮음"
+  },
+  {
+    "agent": "ClientReportAutoGenerator",
+    "total_score": 100,
+    "scores": {
+      "5단계_메서드": 20,
+      "4자×3시점": 20,
+      "법령_참조": 20,
+      "시나리오_3종": 20,
+      "코드_완결성": 20
+    },
+    "enhancement_list": [],
+    "enhancement_needed": false,
+    "priority": "낮음"
+  },
+  {
+    "agent": "GoodwillValuationAgent",
     "total_score": 100,
     "scores": {
       "5단계_메서드": 20,

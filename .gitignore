@@ -39,3 +39,5 @@ logs/
 **/secrets/
 .secrets/
 .env
+*.backup_*
+CLAUDE.md.backup_*

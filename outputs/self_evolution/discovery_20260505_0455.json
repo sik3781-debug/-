@@ -1,0 +1,178 @@
+{
+  "agent": "SystemEnhancementDiscoveryAgent",
+  "text": "법인 측면: 시스템 고도화 발견 80건 — TOP: 3_unused_commands.\n주주(오너) 관점: 우선도 HIGH 항목 자동 식별 + AutoFix 영구 적용 후보.\n과세관청 관점: 법령·세율 변경 대응 누락 영역 자동 발견 (perspective_gaps).\n금융기관 관점: KPI 미달성 에이전트 자동 식별 (응답시간 2분 초과 모니터링).",
+  "summary": "발견 기회 80건 — TOP: 3_unused_commands",
+  "discovery_report": {
+    "date": "2026-05-05",
+    "total_opportunities": 80,
+    "prioritized_top10": [
+      {
+        "key": "3_unused_commands",
+        "score": 80,
+        "priority": "LOW",
+        "count": 80,
+        "action": "sunset_candidate",
+        "items": [
+          "/4대보험최적화",
+          "/DART공시조회",
+          "/DX전략",
+          "/ESG진단",
+          "/IPO전략",
+          "/KPI모니터링",
+          "/PII마스킹",
+          "/PPT검수",
+          "/RD세액공제",
+          "/VAT분석"
+        ]
+      }
+    ],
+    "summary": "발견 기회 80건 — TOP: 3_unused_commands",
+    "raw": {
+      "1_recurring_errors": {
+        "count": 0,
+        "items": [],
+        "action": "permanent_fix_candidate"
+      },
+      "2_frequent_unmatched_nl": {
+        "count": 0,
+        "items": [],
+        "action": "new_slash_command_candidate"
+      },
+      "3_unused_commands": {
+        "count": 80,
+        "items": [
+          "/4대보험최적화",
+          "/DART공시조회",
+          "/DX전략",
+          "/ESG진단",
+          "/IPO전략",
+          "/KPI모니터링",
+          "/PII마스킹",
+          "/PPT검수",
+          "/RD세액공제",
+          "/VAT분석"
+        ],
+        "action": "sunset_candidate"
+      },
+      "4_kpi_underperformers": {
+        "count": 0,
+        "items": [],
+        "action": "performance_optimization_candidate"
+      },
+      "5_perspective_gaps": {
+        "count": 0,
+        "items": [],
+        "action": "perspective_template_enhancement"
+      },
+      "6_autofix_promotable": {
+        "count": 0,
+        "items": [],
+        "action": "autofix_pattern_promote"
+      },
+      "7_new_simulator_candidates": {
+        "count": 0,
+        "items": [],
+        "action": "new_simulator_candidate"
+      }
+    }
+  },
+  "require_full_4_perspective": true,
+  "findings": [
+    {
+      "key": "3_unused_commands",
+      "score": 80,
+      "priority": "LOW",
+      "count": 80,
+      "action": "sunset_candidate",
+      "items": [
+        "/4대보험최적화",
+        "/DART공시조회",
+        "/DX전략",
+        "/ESG진단",
+        "/IPO전략",
+        "/KPI모니터링",
+        "/PII마스킹",
+        "/PPT검수",
+        "/RD세액공제",
+        "/VAT분석"
+      ]
+    }
+  ],
+  "matrix_4x3": {
+    "법인": {
+      "사전": "주간 시스템 스캔 — 7가지 발견 영역 베이스라인",
+      "현재": "발견 80건 (재발 오류·미매칭NL·미사용·KPI·관점누락·AutoFix·신설후보)",
+      "사후": "Executor 단계로 발견 결과 전달 → 자동/승인/차단 분류"
+    },
+    "주주": {
+      "사전": "사용자 자연어 입력 누적 (router.jsonl 7일치)",
+      "현재": "TOP 1 발견 영역: 3_unused_commands",
+      "사후": "신설 슬래시 후보 사용자 승인 → 시스템 확장"
+    },
+    "과세관청": {
+      "사전": "perspective_gaps 영역 (4자관점 누락) 자동 추적",
+      "현재": "법령 인용·시행일 누락 자동 감지 (self_check.jsonl)",
+      "사후": "perspective_template_enhancement 액션 자동 등록"
+    },
+    "금융기관": {
+      "사전": "KPI 베이스라인 (응답시간 2분 기준)",
+      "현재": "KPI 미달 에이전트 자동 식별 (kpi_metrics.jsonl)",
+      "사후": "performance_optimization_candidate 액션 등록"
+    }
+  },
+  "risk_hedge_4stage": {
+    "1_pre": [
+      "discover() 실행 전 storage·logs 디렉토리 존재 확인",
+      "7일치 jsonl 누적 데이터 cutoff 적용",
+      "command_router.json 최신 동기화 확인"
+    ],
+    "2_now": [
+      "7가지 발견 로직 병렬 실행 (count + items + action)",
+      "우선순위 가중치(WEIGHTS) 적용 → score 정렬",
+      "TOP 10 보고서 생성 + audit/discovery/ 저장"
+    ],
+    "3_post": [
+      "Executor 단계 trigger (월 10:00 schtask)",
+      "발견 결과 누적 (주간 비교 가능)",
+      "discovery_report_*.md 7일 보존"
+    ],
+    "4_worst": [
+      "storage·logs 디렉토리 부재 시 빈 결과 반환 (빈 dict)",
+      "command_router.json 부재 시 unused_commands 검증 건너뜀",
+      "예외 발생 시 _save_report 실패해도 result 반환 (best-effort)"
+    ]
+  },
+  "risk_5axis": {
+    "all_pass": true,
+    "axes": {
+      "DOMAIN": {
+        "pass": true,
+        "detail": "7가지 발견 영역 7/7"
+      },
+      "LEGAL": {
+        "pass": true,
+        "detail": "action 정합 — 7/7"
+      },
+      "CALC": {
+        "pass": true,
+        "detail": "total 80 = sum 80"
+      },
+      "LOGIC": {
+        "pass": true,
+        "detail": "score 내림차순 정렬 OK (1개)"
+      },
+      "CROSS": {
+        "pass": true,
+        "detail": "매트릭스 12/12"
+      }
+    },
+    "summary": "5축 통과 5/5"
+  },
+  "self_check_4axis": {
+    "calc": true,
+    "law": true,
+    "perspective_4": true,
+    "regression": true,
+    "all_pass": true
+  }
+}

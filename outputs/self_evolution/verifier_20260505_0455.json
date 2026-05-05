@@ -1,0 +1,105 @@
+{
+  "agent": "EnhancementVerifierAgent",
+  "text": "법인 측면: 시스템 회귀 검증 — status=PASS.\n주주(오너) 관점: 5대 시뮬레이터 매칭 5/5 통과.\n과세관청 관점: KPI 이상 0건, AutoFix DB 중복 0건.\n금융기관 관점: 회귀 미발생 시 정책자금 매칭 라우팅 안정성 보장.",
+  "summary": "법인 측면: 시스템 회귀 검증 — status=PASS.",
+  "verify_result": {
+    "status": "PASS",
+    "report": {
+      "functional": {
+        "failed": false,
+        "passed": 5,
+        "total": 5,
+        "failures": []
+      },
+      "performance": {
+        "failed": false,
+        "anomalies": [],
+        "message": "KPI 정상"
+      },
+      "stability": {
+        "failed": false,
+        "duplicates": [],
+        "message": "DB 일관성 OK"
+      }
+    }
+  },
+  "require_full_4_perspective": true,
+  "matrix_4x3": {
+    "법인": {
+      "사전": "executor 실행 전 5대 시뮬레이터 베이스라인 확보",
+      "현재": "5대 시뮬 5/5 통과 + KPI·AutoFix DB 점검",
+      "사후": "회귀 발견 시 자동 롤백 (git revert HEAD)"
+    },
+    "주주": {
+      "사전": "주요 컨설팅 산출물(주식평가·가업승계) 회귀 베이스라인",
+      "현재": "라우터 매칭 정확성 → 사용자 입력 신뢰성 보장",
+      "사후": "회귀 발생 시 EnhancementVerifierAgent 학습 (실패 패턴 DB)"
+    },
+    "과세관청": {
+      "사전": "법령·세율 기준 시뮬 결과 사전 검증",
+      "현재": "KPI 7일 평균 ±20% 이내 — 응답시간 이상 모니터링",
+      "사후": "회귀 시 부당한 세무 산출 방지 (자동 롤백)"
+    },
+    "금융기관": {
+      "사전": "정책자금 매칭 라우팅 베이스라인",
+      "현재": "AutoFix DB 일관성 → 신용평가 일관성 유지",
+      "사후": "회귀 발견 시 정책자금 매칭 정확성 복원"
+    }
+  },
+  "risk_hedge_4stage": {
+    "1_pre": [
+      "Executor 실행 전 git tag로 롤백 포인트 확보",
+      "5대 시뮬레이터 베이스라인 결과 백업",
+      "KPI 7일 평균치 캐시 보존"
+    ],
+    "2_now": [
+      "회귀 검증 3축 (functional·performance·stability) 자동 실행",
+      "결과를 logs/verifier.jsonl에 jsonl 추가",
+      "regression 발견 시 즉시 _auto_rollback() 호출"
+    ],
+    "3_post": [
+      "PASS 시 회귀 미발생 보고서 audit/ 저장",
+      "회귀 시 실패 패턴 error_patterns.jsonl 학습",
+      "주간 verifier 리포트 누적 (7일치)"
+    ],
+    "4_worst": [
+      "롤백 실패 시 backup-* 브랜치 수동 복원 안내",
+      "치명적 회귀 시 사용자 즉시 알림 + schtask 일시 중단",
+      "복구 후 지난 결과 학습 + 동일 패턴 재발 차단"
+    ]
+  },
+  "risk_5axis": {
+    "all_pass": true,
+    "axes": {
+      "DOMAIN": {
+        "pass": true,
+        "detail": "3축 검증 완료 — ['functional', 'performance', 'stability']"
+      },
+      "LEGAL": {
+        "pass": true,
+        "detail": "회귀 검증 정책 (자동 롤백 git revert) 명시"
+      },
+      "CALC": {
+        "pass": true,
+        "detail": "통과 5/5"
+      },
+      "LOGIC": {
+        "pass": true,
+        "detail": "분기 정합성 — status=PASS"
+      },
+      "CROSS": {
+        "pass": true,
+        "detail": "매트릭스 12/12"
+      }
+    },
+    "summary": "5축 통과 5/5"
+  },
+  "self_check_4axis": {
+    "calc": true,
+    "law": true,
+    "perspective_4": true,
+    "regression": true,
+    "all_pass": true
+  },
+  "verification_score": 100
+}
