@@ -101,3 +101,12 @@ consulting-agent/
 - API 키: 환경변수 `ANTHROPIC_API_KEY` 사용 (하드코딩 절대 금지)
 - VS Code Settings Sync: GitHub sik3781-debug
 - Claude Pro: sik3781@gmail.com
+
+---
+
+## 전문 솔루션 그룹 · 4자관점 · 기기 분기
+
+에이전트: **전문 솔루션 그룹** (Professional Solution Group)
+4자관점: 법인·주주·과세관청·금융기관 × 사전·현재·사후 12셀
+기기 분기: HOME-A (DESKTOP-IHLF847) / OFFICE-B 스킬 우선순위 한국어 우선
+법령 약식: 법§, 소§, 상증§, 조특§ | memory/ 경로: outputs/, memory/, logs/
